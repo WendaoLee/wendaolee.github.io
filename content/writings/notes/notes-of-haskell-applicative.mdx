@@ -1,0 +1,124 @@
+---
+title: 【Note】Haskell 的 Applicative
+description: 个人关于 Haskell 的 Applicative 的一些笔记。
+category: note
+date: 2023-12-03 
+--- 
+> 个人review时的笔记
+
+总结：Applicative 是扩展的函子，它可以将函数应用到函子上，并且能够将计算过程串联在一起，并且组合出计算过程的结果。
+
+## 1.0 Applicative ，可应用函子
+
+什么是 Applicative  (Functor)？
+
+Applicative 是可应用函子，对函子的扩展。可应用的函子的特性在于它能够支持这样的运算：
+
+```haskell
+> Just (+) <*> Just 1 <*> Just 2
+Just 3
+```
+
+即可应用函子能够将计算过程串联在一起，并组合它们的结果。[^R.1]
+
+
+Applicative的定义为：
+
+```haskell
+class Functor f => Applicative f where
+    pure :: a -> f a
+    (<*>) :: f (a -> b) -> f a -> f b
+    liftA2 :: (a -> b -> c) -> f a -> f b -> f c
+```
+
+`pure` 用于将一个值提升为一个函子，或者说，将它包装到容器中。
+
+> 可以把 `pure` 看作是 `fmap0`。以此为基础不断扩展多个函子的操作：
+> `fmap0::a -> f a`
+> `fmap1::(a->b) -> f a -> f b`
+> `fmap2::(a->b->c) -> f a -> f b -> f c`
+> ...
+> 数量总不是问题。
+
+`<*>` 则是一个中缀运算符，将一个被包装在容器里的函数应用到包装在容器里的值，而后产生结果。
+
+关于 `<*>` ，横向对比 Functor 的 `<$>` 会发现一些很有意思的东西：
+
+```haskell
+(<*>) :: f (a -> b) -> f a -> f b
+(<$>) :: (a -> b) -> f a -> f b
+```
+
+即 `<*>` 传入了一个包装过的函数，而不是普通的函数。[^R.2]这也是为什么它叫做 Applicative Functor，因为它是可应用函数的函子。它能够调用包装在容器内的函数。[^R.3]
+
+比较有意思的是，你可以通过运用 `<$>` 和 `<$>` 创建记录：
+
+```haskell
+>>> data MyState = MyState {arg1 :: Foo, arg2 :: Bar, arg3 :: Baz}
+>>> produceFoo :: Applicative f => f Foo
+>>> produceBar :: Applicative f => f Bar
+>>> produceBaz :: Applicative f => f Baz
+>>> mkState :: Applicative f => f MyState
+>>> mkState = MyState <$> produceFoo <*> produceBar <*> produceBaz
+```
+
+`liftA2` 则是提升一个二元函数后，将它应用到两个容器上。如：
+
+```haskell
+liftA2 :: (a -> b -> c) -> f a -> f b -> f c
+
+>>> liftA2 (,) (Just 3) (Just 5)
+Just (3,5)
+```
+
+## 2.0 有趣的运算符 `*>` 与 `<*`
+
+运算符 `*>`与 `<*` 用于将计算过程串联起来。但是在计算过程中，会按序忽略第一个或第二个计算结果：
+
+```haskell
+(*>) :: f a -> f b -> f b
+(<*) :: f a -> f b -> f a
+```
+
+它可以用来构建更加简洁且有效率的计算过程，如库文档中给出的示例：
+
+```haskell
+>>> import Data.Char
+>>> import Text.ParserCombinators.ReadP
+>>> let p = string "my name is " *> munch1 isAlpha <* eof
+>>> readP_to_S p "my name is Simon"
+[("Simon","")]
+```
+
+这段代码中，p是一个组合起来的解析器。它由以下解析器组合起来：
+
+- `string "my name is "` ，匹配字符串是否由 "my name is" 开头
+- `munch1 isAlpha` ，用于匹配所有属于Unicode  `Ll`, `Lu`, `Lt`, `Lo` , `Lm` 之一的字符类的字符。[^R.4]
+- `eof` 用于判断是否到了输入流的末尾。
+
+这个解析器做的便是匹配形如 `my name is xxxx` 的字符串：
+
+1. 先匹配字符串是否是由 "my name is" 开头。
+2. 如果成功，此时输入流已经到了"my name is"的结尾处，而后会忽略刚才匹配的结果，将控制权转给`munch1 isAlpha`，它将继续配对"my name is" 之后的所有属于Unicode  `Ll`, `Lu`, `Lt`, `Lo` , `Lm` 之一的字符类的字符。因此空格不算，因为空格属于 `Zs` , 是 space separator。
+3. 当匹配到非上述类的字符时，例如空格，则会将控制权转给 `eof` ，但是保留它的匹配结果。`eof` 判断是否到了输入流的末尾，如果不是末尾，则抛出Fail。如果成功，那么最终返回前面保留的匹配结果。
+4. 由于计算是串联在一起的。因此其中的一个环节出错抛出Fail后，都会直接返回代表Fail的结果。
+
+完成以上，只是巧妙利用了 Applicative 的特性构造出了一个 Parser `let p = string "my name is " *> munch1 isAlpha <* eof` 。
+
+这便是 Applicative的妙处。
+
+## 3.0 Applicative 还需要满足的性质
+
+一个函子是可应用的，应该还要满足以下性质：
+
+1. 为单位元，`pure id <*> v = v`
+2. 是可复合的，`pure (.) <*> u <*> v <*> w = u <*> (v <*> w)`
+3. 是同态的，`pure f <*> pure x = pure (f x)`
+4. 是可互换的，`u <*> pure y = pure ($ y) <*> u`
+
+## Reference
+
+[^R.1]: R.1 https://hackage.haskell.org/package/base-4.19.0.0/docs/Control-Applicative.html#t:Applicative
+[^R.2]: R.2 http://scarletsky.github.io/2016/03/07/what-is-applicative-in-haskell/
+[^R.3]: R.3 https://www.epubit.com/bookDetails?id=N20794 9.2.7
+[^R.4]: R.4 https://discourse.haskell.org/t/why-isalpha-can-parse-some-non-alphabetic-unicode-characters-like-chinese/8263?u=wendaolee

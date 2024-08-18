@@ -42,7 +42,7 @@ export default function Home() {
             <li>【Translation】标识的为翻译</li>
           </ul>
           <br />
-          这个博客站点还在缓慢更新中。
+          这个博客站点还在缓慢更新中。有很多我过去写的东西还没有迁移过来~
           <br />
           想要与我联系可以在下方找到联系方式😉。
           <br />

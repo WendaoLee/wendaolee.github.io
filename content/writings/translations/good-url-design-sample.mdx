@@ -1,0 +1,127 @@
+---
+title: 【Translation】优秀的URL设计示例
+description: 【翻译】优秀的URL设计示例，原作者 Jim Nielsen。
+category: translation
+date: 2024-08-15
+---
+原文：[Examples of Great URL Design](https://blog.jim-nielsen.com/2023/examples-of-great-urls/)
+
+下面内容来自于大模型机翻，个人轻微润色修改了一点内容：
+
+***
+
+凯尔·阿斯特（Kyle Aster）于2010年，在《URL Designs》一文中阐述了为什么精心设计URL尤为重要：
+
+>URL 是通用的。它们在 Firefox、Chrome、Safari、Internet Explorer、cURL、wget、iPhone、Android 等设备上都能使用，甚至可以写在便利贴上。URL 是网络的通用语法，不要因为觉得它随处可见便忽视了它们。
+
+我喜欢这个提醒，它让我意识到网址无处不在。它们不只是用来在浏览器地址栏中输入的一串链接，还会有各种各样的用途：
+
+- 它可以作为脚本编写、数据抓取和其他程序化数据获取的目标。
+
+- 它可以作为参考，印在纸质书籍的脚注和附录中。
+
+- 它可以变成通过物理介质访问的操作触发器，例如可扫描的二维码或物联网设备按钮。
+
+当我回顾这些年来我所遇到的优秀URL设计示例时——每当我看到这些URL时，我都会停下来想：“哇，真不错！”——以下是我脑海中浮现出的一些示例。
+
+## StackOverflow
+我还记得第一次遇到的很好地平衡了计算机和人类的需求的URL是在StackOverflow上。这些URL遵循如下格式：
+
+```
+/questions/:id/:slug
+```
+
+`:id`  是揭示问题内容的唯一标识符。另一方面， `:slug`  是人类可读的对问题的重述，使您无需访问网站即可理解问题。
+
+这种URL设计的魅力在于， `:slug` 是一个可选的URL参数，例如：
+
+```
+stackoverflow.com/questions/16245767
+stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+```
+
+在上面的例子中， `stackoverflow.com/questions/16245767` 是一个有效的URL，可以让服务器轻松找到并提供该唯一内容；而  `stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript` 同样是一个有效的URL，不同的地方在于它存在可读的  :slug 部分，这使得人们可以快速理解位于该URL的页面内容。
+
+正如前面所述， `:slug` 是可选的。服务器并不要求必须找到并提供相关内容。实际上，它可以在不破坏URL的情况下随时进行更改（我认为这非常优雅）。
+
+当然，它也可以被恶意使用。例如，下面的URL与上面的相同，但它预示着完全不同的内容（不破坏链接）：
+
+```
+stackoverflow.com/questions/16245767/how-to-bake-a-cake // 这不是该问题的真正标题，可能会让人误解原链接的内容
+```
+
+不过，任何事情都有取舍。这便是这种设计应付的代价。
+
+## Slack
+
+> 注：Slack 是国外非常流行的一种工作协作管理工具
+
+我记得Slack曾经发起了一场营销活动，旨在向人们普及这款产品的使用方法。他们在页面内容和URL中都使用了“Slack是……”的语言，例如:
+
+> slack.com/is
+> 
+> slack.com/is/team-communication
+> 
+> slack.com/is/everything-in-one-place
+>
+> slack.com/is/wherever-you-are
+
+我还记得当时的我对这种将故事讲述活动设计融入网址的做法感到非常着迷。
+
+从那时起，我总是对那些试图使用自然语言句子的形式来构建URL（ slack.com/is/team-communication ）而不是通过拼接一系列层次结构的关键词来构建URL（ slack.com/product/team-communication ）感到兴奋。
+
+说到在URL中使用有趣的句子结构…...
+
+## Jessica Hische
+
+> 注：这是一个外国作家
+
+Jessica Hische 的个人网站使用的是带有“.is”后缀的域名（显然，.is 是归属于冰岛的域名）。
+
+她在整个网站上都采用了这种有趣的第三人称“我是”形式。例如，点击主导航中的“关于”，它会带你进入：
+
+```
+jessicahische.is/anoversharer
+```
+
+这很有趣！虽然“about”部分的描述很清晰，但我喜欢用句子结构来描述“about”的随意性。
+
+她的主要导航中的所有名词都遵循这种模式，同样，她的个人作品也是如此。例如，关于她其中一个假日烹饪包装项目的介绍的网址为：
+
+```
+jessicahische.is/sofulloffancypopcorn // 充满了华丽的爆米花~
+```
+
+非常有趣对吧？
+
+## URL作为产品
+
+我一直喜欢那些URL与它们的领域语义匹配得很好的服务。例如，GitHub的URL与Git语义匹配得很好，比如Git中的点号差异比较：
+
+```
+/:owner/:project/compare/ref1...ref2 
+e.g. github.com/django/django/compare/4.2.7...main // 比较 4.2.7 分支和 main 分支之间的区别
+```
+对于技术产品来说，能够在不看到用户界面的情况下浏览网站是一种很酷的超能力。
+
+NPM也有类似的情况。如果你想要查看NPM上的某个包，你不需要去NPM的主页点击来点击去或者使用他们的搜索框。一旦你熟悉了该网站的结构，你就知道可以通过以下方式查找包：
+```
+/package/:package-name e.g. npmjs.com/package/react-router // 搜索 react-router 这个包
+```
+
+如果你想要查找某个特定版本的包：
+
+```
+/package/:package-name/v/:semver e.g.
+npmjs.com/package/react-router/v/5.3.4
+```
+
+当你在使用某个特定产品时，这些快捷方式非常有用。以NPM为例，如果你正在浏览你的项目目录，需要查找某个特定版本的包的详细信息，只需输入你想要的版本号，然后将详细信息复制到URL栏中，即可直接跳转到NPM该包的详细信息页面。
+
+NPM的CDN服务，如unpkg，在这方面做得很好。如果你想要从已发布的包中获取文件，只需按照unpkg的主页上说的这样，按照 unpkg.com/:package@:version/:file 去访问，便能获取到对应的文件。
+
+在这种情况下，URL本身就可以是产品，因此其设计就显得尤为重要。
+
+***
+
+<div style={{textAlign:"right"}}>【END】<br />因为觉得好玩，所以翻译一下。部分内容有删改。</div>

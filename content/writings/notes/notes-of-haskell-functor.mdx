@@ -1,0 +1,122 @@
+---
+title: 【Note】Haskell 的 Functor
+description: 个人关于 Haskell 的 Functor 的一些笔记。
+category: note
+date: 2023-12-02 
+--- 
+> 个人review时的笔记
+
+总结来讲，Functor 是一个在结构上满足恒等映射、存在可以应用在容器上映射方法的一种结构。或者说，可以应用函数将结构内的值映射为其他值、但保留结构的一种数据结构。
+
+## 1.0 Functor
+
+为什么需要 Functor ？
+
+考虑重要的遍历函数 `map` :
+
+```haskell
+map :: (a -> b) -> [a] -> [b]
+```
+
+它实际上可被认为是：
+
+```haskell
+map :: (a -> b) -> List a -> List b
+```
+
+> 这只是一个示例，即把列表 `[]` 看作是一个名为 “List” 的容器。
+
+即 `map` 本身是这样一个函数：应用一个函数到容器上，使容器里的包裹值转变为同样包裹在容器里的其他结果。
+
+如：
+
+```haskell
+toString :: Show a => a -> String
+toString = show
+
+sample :: List Int
+sample = [1,2,3]
+
+sampleToString :: List Int -> List String
+sampleToString = toString sample
+```
+
+同样，形如 `Maybe` 、 `Tree` 之类的类型也可被认为是一种容器，因为它们总是有构造时需要的参数。我们也总是有这样的操作：应用一个函数，将容器里的某种值映射成另一种值。故而，我们抽象出了类型类 `Functor` ，它有一个操作 `fmap` ：
+
+```haskell
+class Functor f where
+  fmap :: (a -> b) -> f a -> f b
+```
+
+此处的 `f` 为一个kind为 `* -> *` 的类型，即 `f` 为一个类型构造器，一个容器。它需要传入一个类型而后产生出该类型，如 `Maybe Int` 需要 `Int` 才能成为 `Maybe Int` 。这也是它命名为 `f` 的原因——某种意义上，它也是一个函数，不过是定义在类型之上的。
+
+但是，并不是所有有 `fmap` 操作的类型属于 `Functor` ，因为 `Functor` 需要满足这个条件：
+
+- `fmap id = id`
+
+即`fmap` 只能对值调用 `f`，不能做额外的事情[^R.1]。
+
+由它可以推出[^R.2]：
+
+-  `fmap f . fmap g = fmap (f . g)`
+
+即 fmap 在复合函数运算符上是满足分配律的[^R.3]。
+
+总结下来，函子具有以下两条性质：
+
+1. `fmap id = id`
+2. `fmap f . fmap g = fmap (f . g)`
+
+关于这一性质的证明，请见 R.2
+
+## 2.0 Data.Functor 中的一些运算符
+
+现代的 Haskell 里，标准库中关于 `Functor` 还定义了一些运算符：
+
+> 请注意，下面的默认定义可能会根据具体类型的实现不同而有不同的行为。下文仅作阅读。
+
+1. `<$` 
+
+```haskell
+-- 默认定义
+(<$) :: a -> f b -> f a
+(<$) =  fmap . const
+
+
+ghci> 'a' <$ Just 2
+Just 'a'
+```
+
+2. `<$` 的 flipped 版本 `$>`
+
+```haskell
+($>) :: Functor f => f a -> b -> f b
+($>) = flip (<$)
+
+>>> Left 8675309 $> "foo"
+Left 8675309
+>>> Right 8675309 $> "foo"
+Right "foo"
+```
+
+3.  `<$>` 即 `fmap` ，中缀版本。
+
+```haskell
+(<$>) :: Functor f => (a -> b) -> f a -> f b
+(<$>) = fmap
+```
+
+4.  `<&>` ，`<$>` 的 flip 版本。
+
+```haskell
+(<&>) :: Functor f => f a -> (a -> b) -> f b
+as <&> f = f <$> as
+```
+
+
+## Reference
+
+[^R.1]: R.1 http://scarletsky.github.io/2016/02/09/what-is-functor-in-haskell/#functor-%E7%AE%80%E4%BB%8B
+[^R.2]: R.2 https://www.schoolofhaskell.com/user/edwardk/snippets/fmap
+[^R.3]: R.3 https://www.epubit.com/bookDetails?id=N20794 9.2.6
+
