@@ -14,5 +14,7 @@ interface MdxProps {
 export function Mdx({ code }: MdxProps) {
   const Component = useMDXComponent(code)
 
-  return <Component components={components} />
+  return <Component components={{...components,
+    p: (props) => <p {...props} className="text-base md:text-lg leading-7" />,
+  }} />
 }
