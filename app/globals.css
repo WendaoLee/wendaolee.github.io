@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body{
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.6;
+}
+
+:root .prose{
+    --tw-prose-body:black;
+    --tw-prose-headings:black;
+    --tw-prose-code:black;
+    --tw-prose-links:black;
+    --tw-prose-quotes:black;
+    --tw-prose-bold:black;
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 1.6;
+}
+
+.prose :where(blockquote):not(:where([class~="not-prose"],[class~="not-prose"] *)){
+    font-style: normal;
+}
