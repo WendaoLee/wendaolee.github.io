@@ -41,7 +41,7 @@ export async function generateMetadata({
 export const dynamicParams = false 
 export const dynamic = 'force-static'
 
-export async function generateStaticParams(): Promise<PageProps["params"][]> {
+export async function generateStaticParams(): Promise<{slug:string[]}[]> {
   console.log(
     allPages.map((page) => ({
       slug: page.slugAsParams.split("/"),
@@ -61,14 +61,14 @@ export default async function PagePage({ params }: PageProps) {
     notFound();
   }
 
+  console.log(page.title)
+
   return (
     <article className="py-6 prose dark:prose-invert">
-      <h1>{page.title}</h1>
       {match(page.title)
         .with("About", () => <WritingsLists></WritingsLists>)
         .otherwise(() => <></>)}
 
-      {page.description && <p className="text-xl">{page.description}</p>}
       <hr />
       <Mdx code={page.body.code} />
     </article>
