@@ -13,7 +13,7 @@ export interface CatalogProps {
  * 仅在大屏下在右侧显示的目录
  * @returns
  */
-export function Catalog({ catalogs }: CatalogProps) {
+export function RightCatalog({ catalogs }: CatalogProps) {
   useEffect(() => {
     window.addEventListener("DOMContentLoaded", () => {
         // 定义视口观察者
