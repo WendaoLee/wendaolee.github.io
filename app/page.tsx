@@ -15,12 +15,29 @@ export default function Home() {
   return (
     <div className=" w-full">
       <div className="mt-[5%] text-base flex flex-col leading-normal">
-        <div className="w-full mb-4 flex items-center justify-between">
+        <div className="w-full mb-4 flex items-center justify-between gap-6">
           <div className="avatar">
             <div className="rounded-full w-16 md:w-24">
-              <img src="/wendaolee.jpeg" alt="avatar" className="mt-0 mb-0 object-contain" />
+              <img
+                src="/wendaolee.jpeg"
+                alt="avatar"
+                className="mt-0 mb-0 object-contain"
+              />
             </div>
           </div>
+          <div className="flex flex-col flex-grow items-start">
+            <div className="flex align-middle items-center gap-2">
+              <h1 className="text-2xl md:text-3xl mb-0 mt-0">李 问 道</h1>
+              <div className="h-full">
+                <p className="mt-0 mb-0 text-gray-400 items-center">
+                  /li'wən'daʊ/
+                </p>
+              </div>
+            </div>
+
+            <h3 className="text-lg mb-0 mt-0">WendaoLee</h3>
+          </div>
+
         </div>
         <div className="divider"></div>
         <section className="mb-[20px] w-full">
@@ -30,8 +47,10 @@ export default function Home() {
           “苔痕深院雨，人影小窗灯”——这是我个人对自己目前的人生评价。
           <br />
           <br />
-          在本站，文章产出存放在 Writings
-          中，其他产出存放在 Works 里。
+          目前就职于一家AI创业公司，司职技术总监。
+          <br />
+          <br />
+          在本站，文章产出存放在 Writings 中，其他产出存放在 Works 里。
           <br />
           <br />
           其中，<strong>Writings</strong> 里:
@@ -48,10 +67,7 @@ export default function Home() {
           <br />
         </section>
         <div className="divider"></div>
-        <section
-          className="mb-0"
-          style={{ width: "80%", display: "flex" }}
-        >
+        <section className="mb-0" style={{ width: "80%", display: "flex" }}>
           Wendao Lee, also known as Erika Lee, is a writer and a programmer.
           <br />
           Most of the articles here are Chinese.

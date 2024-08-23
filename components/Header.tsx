@@ -1,7 +1,6 @@
-import IntelligentLInk from "next/link";
 import { ModeToggle } from "./ModeToggle";
-import { useRouter } from "next/navigation";
 import { IntelligentLink } from "./IntelligentLink";
+import { Rss } from "lucide-react";
 
 export default function Header(){
 
@@ -17,7 +16,12 @@ export default function Header(){
                   <IntelligentLink className={linkFontClass} href="/works">Works</IntelligentLink>
                   {/* <IntelligentLInk className={linkFontClass} href="/about"></Link> */}
                 </nav>
-                <ModeToggle />
+                <div className="flex justify-between gap-3">
+                  <a href="/rss">
+                    <Rss href="/rss" />
+                  </a>
+                  <ModeToggle />
+                </div>
               </div>
             </header>
     )

@@ -1,0 +1,58 @@
+---
+title: 【Note】适用于构建即时应用的客户端侧数据库 InstantDB
+description: 个人关于 InstantDB 这个项目的一些笔记。
+category: note
+tags: [InstantDB , 李问道个人体验]
+date: 2024-08-23 
+--- 
+
+Github: [InstantDB](https://github.com/instantdb/instant)
+
+这个标题我个人觉得是个噱头。因为存储数据的数据库本身并不是存储在客户端侧的。
+
+它所说说的 `Clinet-side-databse` 是指它有一个类似于 React Server Component 的方便的API在客户端侧使用：
+
+```typescript
+function Chat() {
+      // 1. 读取数据
+      const { isLoading, error, data } = useQuery({
+        messages: {},
+      });
+    
+      // 2. 写数据
+      const addMessage = (message) => {
+        transact(tx.messages[id()].update(message));
+      }
+    
+      // 3. 根据数据进行渲染
+      return <UI data={data} onAdd={addMessage} />
+    }
+```
+
+然而，React的 Server Components 现在正在逐渐推进类似的操作：
+
+```typescript
+// 这段代码是在服务端侧运行的，用户在请求页面时，服务端会把相应数据渲染发过来
+// React 本身也已经有了 streaming 之类的特性，例如 Next.js：
+// https://nextjs.org/docs/app/building-your-application/rendering/server-components#streaming
+import Expandable from './Expandable';
+
+async function Notes() {
+  const notes = await db.notes.getAll();
+  return (
+    <div>
+      {notes.map(note => (
+        <Expandable key={note.id}>
+          <p note={note} />
+        </Expandable>
+      ))}
+    </div>
+  )
+}
+```
+
+它解决的问题是：极大地方便了例如 Notion 之类的可以实时协作的软件开发，因为数据直接通过客户端向服务端的数据库读取，减少了设计后端的痛苦。
+
+而他们CEO在 [HN 上的宣传](https://news.ycombinator.com/item?id=41322281) 也让我觉得他们只是想卖他们的数据服务 :(
+
+之所以记录一下是因为它似乎支持本地部署，btw，我总归不看好。

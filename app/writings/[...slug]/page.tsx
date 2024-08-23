@@ -3,6 +3,7 @@ import { allWritings } from "contentlayer/generated"
 
 import { Metadata } from "next"
 import { Mdx } from "@/components/MdxComponents"
+import { match } from "ts-pattern"
 
 interface PostProps {
   params: {
@@ -30,9 +31,14 @@ export async function generateMetadata({
     return {}
   }
 
+  const postSEOCategory = match(post.category)
+                            .with("blog", () => "technology")
+                            .otherwise(() => post.category)
+
   return {
     title: post.title,
     description: post.description,
+    category: postSEOCategory, 
   }
 }
 
