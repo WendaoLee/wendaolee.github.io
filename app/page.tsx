@@ -30,7 +30,7 @@ export default function Home() {
               <h1 className="text-2xl md:text-3xl mb-0 mt-0">李 问 道</h1>
               <div className="h-full">
                 <p className="mt-0 mb-0 text-gray-400 items-center">
-                  /li'wən'daʊ/
+                  /li&apos;wən&apos;daʊ/
                 </p>
               </div>
             </div>
