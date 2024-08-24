@@ -11,7 +11,7 @@ export default function Home() {
         date: getReadableDate(post.date),
       };
     })
-    .slice(0, 4);
+    .slice(0, 8);
   return (
     <div className=" w-full">
       <div className="mt-[5%] text-base flex flex-col leading-normal">
@@ -59,6 +59,7 @@ export default function Home() {
             <li>【Essay】标识的为杂文随笔</li>
             <li>【Novel】标识的为小说</li>
             <li>【Translation】标识的为翻译</li>
+            <li>【Note】标识的为笔记，一般只是用来记录一下让自己不要忘掉的东东。</li>
           </ul>
           <br />
           这个博客站点还在缓慢更新中。有很多我过去写的东西还没有迁移过来~

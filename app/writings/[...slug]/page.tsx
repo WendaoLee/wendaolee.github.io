@@ -34,11 +34,13 @@ export async function generateMetadata({
   const postSEOCategory = match(post.category)
                             .with("blog", () => "technology")
                             .otherwise(() => post.category)
+  const postTags = post.tags ?? []
 
   return {
     title: post.title,
     description: post.description,
     category: postSEOCategory, 
+    keywords: postTags,
   }
 }
 
