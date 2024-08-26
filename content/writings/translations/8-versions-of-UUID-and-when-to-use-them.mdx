@@ -1,0 +1,63 @@
+---
+title: 【Translation】 八种版本的 UUID 的区别及其使用场景
+description: 【翻译】 八种版本的 UUID 的区别及其使用场景，原作者 nicole。
+category: translation
+date: 2024-08-26
+---
+
+原文：[8 Versions of UUID and When to Use Them](https://ntietz.com/blog/til-uses-for-the-different-uuid-versions/)。原作者是 nicole 女士。
+
+当你使用 UUID（Universally Unique Identifier，通用唯一标识符，用于在所有同类资源中唯一标识资源的标签） 相关的包时，会发现相关的包会提供不同版本的UUID。而这篇文章主要讲述了 UUID的八个版本之间的区别，并且介绍了八个版本的 UUID 的不同适用场景。
+
+以下内容主要来源于大模型机翻，个别内容存在个人润色修改。
+
+## 背景
+
+大约一个月前，我让我的一个朋友参与到我的一个边缘项目的代码维护中。在查看我现有的代码时，她问我为什么我使用了某种特定类型的UUID。我向她解释道，这是因为我在开发这个项目时，恰好了解到了 UUID 的不同版本的差异，而我个人觉得这种设计非常优雅整洁，因此我直接在项目里用上了。
+
+现在，为了让更多人了解这些不同版本的UUID的优点，我决定分享一下这些内容。
+
+## UUID 有哪些版本？
+
+通常情况下，对于大多数程序的版本号命名，当我们有多个编号版本时，数字越大往往表示版本越新，也意味着质量更好。然而 UUID 的版本号命名恰好不同，它有8个版本（从v1到v8），版本之间各不相同，有不同的适用场景。你可以在 [RFC 9562](https://datatracker.ietf.org/doc/html/rfc9562) 找到相应的标准定义。
+
+现在，我将言简意赅地从宏观上解释它们的含义，并提供指向RFC中具体部分的链接，以便您可以获取更多详细信息：
+
+- [UUID Version 1 (v1)](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-1) 是由时间戳、单调计数器和MAC地址生成的。
+- [UUID Version 2 (v2)](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-2) 是一个根据其他安全规范定义的保留版本，适用于分布式计算环境。
+- [UUID Version 3 (v3)](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-3) 是从您提供的某些数据的 MD5 hash值 生成的。RFC建议将 DNS 和 URL 作为数据的候选值。
+- [UUID Version 4 (v4)](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-4) 是从完全随机的数据生成的。这可能是大多数人想到的并且在使用UUID时遇到的情况。
+- [UUID Version 5 (v5)](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-5) 是从您提供的某些数据的 SHA-1 hash值 生成的。与v3类似，RFC建议将 DNS 和 URL 作为数据的候选值。
+- [UUID Version 6 (v6)](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-6) 是从时间戳、单调计数器（monotonic counter）和MAC地址生成的。这些数据与版本1相同，但它们改变了顺序，因此按创建时间排序。
+- [UUID Version 7 (v7)](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-7) 是从时间戳和随机数据生成的。它支持按照时间进行排序。
+- [UUID Version 8 (v8)](https://www.rfc-editor.org/rfc/rfc9562.html#name-uuid-version-8) 是供使用者自定义实现的。使用者可根据它的规范自定义 UUID 的生成规则。
+
+## 什么时候使用哪个版本的 UUID？
+
+有八种不同的版本可供选择，你应该使用哪一种呢？ 有几个常见的使用场景决定了你应该使用哪种版本，其中一些已经被其他版本所取代。
+
+你通常只需要在 `v4` 与 `v7` 两个版本之间进行选择，也有一些情况下需要选择 `v5` 或者 `v8` 的 UUID。
+
+以下是一些通用情况的 UUID版本选择 参考：
+
+- 当您只想获取一个随机ID时，请使用 `v4`。 *这是一个不错的默认选择* 。
+
+- 如果您在需要排序的上下文中使用ID，请使用 `v7`。例如，如果您将UUID用作数据库键，请考虑使用 `v7`。
+
+- 如果您有自己的数据需要放入UUID中，则可以使用v5或v8，但通常情况下，这不需要我建议，只要您知道 UUID 不同版本的差异，届时您自然会知道是否需要这样做。
+
+其他情况下，您可以参考以下意见使用：
+
+- 根据以下优先级选用：`v7` > `v6` > `v1`。根据 [RFC](https://www.rfc-editor.org/rfc/rfc9562.html#section-5.7-4) 的规定，`v7` 比`v1` 和 `v6` 更先进，如果可能的话，应优先使用 `v7`。因此，通常情况下，您不会需要使用 `v1` 或 `v6`。如果您确实需要其中的一个版本，可以使用 `v6`。
+
+- `v2` 仅使用于特定的环境，请阅读相应的 RFC 文档确认你是否应该使用。
+
+- 如果要在 `v5` 和 `v3` 之间选择使用，优先使用 `v5` 版本的 UUID，而不是 `v3` 版本的 UUID。因为 `v5` 使用了更安全的 SHA-1 hash算法。
+
+## 总结
+
+通常情况下，优先使用 `v7` 版本的 UUID ；当你存在时间排序需求，那么一定是优先使用 `v7` 版本的 UUID。
+
+当你只是需要一个随机的 UUID 时，那么优先使用 `v4` 版本的 UUID。
+
+有自定义生成需求，那么可以考虑使用 `v5` 或者 `v8` 版本的 UUID。 
