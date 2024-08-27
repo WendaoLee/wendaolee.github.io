@@ -7,7 +7,7 @@ export async function GET() {
         title: "李问道博客最新文章 / Wendaole's new writings",
         description: "该 seed 用于获取李问道个人最新十条文章 / This feed is used to get the latest ten articles of Wendaolee",
         site_url: 'https://leewendao.otterstack.cn',
-        feed_url: 'https://leewendao.otterstack.cn/rss',
+        feed_url: 'https://leewendao.otterstack.cn/rss.xml',
         image_url: 'https://leewendao.otterstack.cn/wendaolee.jpg',
     })
 

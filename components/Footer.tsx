@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="flex flex-col mt-6 gap-5 justify-center items-center w-full h-24 border-t bg-white dark:bg-slate-950 dark:border-slate-900">
         <div className="flex gap-3">
-            <a href="/rss">
+            <a href="/rss.xml">
                 <Rss></Rss>
             </a>
             {/* <a href="https://github.com/WendaoLee">

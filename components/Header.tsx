@@ -17,8 +17,8 @@ export default function Header(){
                   {/* <IntelligentLInk className={linkFontClass} href="/about"></Link> */}
                 </nav>
                 <div className="flex justify-between gap-3">
-                  <a href="/rss">
-                    <Rss href="/rss" />
+                  <a href="/rss.xml">
+                    <Rss/>
                   </a>
                   <ModeToggle />
                 </div>
