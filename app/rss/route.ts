@@ -22,7 +22,8 @@ export async function GET() {
 
     return new NextResponse(feed.xml(), {
         headers: {
-            'Content-Type': 'application/xml'
+            'Content-Type': 'application/xml',
+            'Content-Disposition': 'inline; filename="rss.xml"'
         }
     })
 }
