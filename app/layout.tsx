@@ -22,6 +22,9 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
+      <head>
+        <meta name="msvalidate.01" content="57E0CBA3CFE186ABC92C0F15F03951DF" />
+      </head>
       <body
         className={`font-serif antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${inter.className}`}
       >
