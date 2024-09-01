@@ -1,0 +1,342 @@
+---
+title: SHOW 正组 | 2024年8月内容合辑
+description: SHOW 正组 | 2024年8月内容合辑
+category: note
+date: 2024-09-01 
+--- 
+
+现在的互联网越发无聊，原先的我喜欢在一些论坛常驻，但这些论坛或社群都慢慢消失了。现在在网上我常去的一个社群是豆瓣上的一个生活小组（其实它前身不是什么好地方，但现在变成生活组了）。为了防止我看到一些项目会忘掉，于是我会把一些我觉得有意思的项目都发帖分享到那个组里。
+
+由于许多内容都来自于 Hacker News ，而 Hacker News 有一个版块叫做 SHOW HN ，于是我把这一系列的帖子都归类到 “SHOW 正组” 中。
+
+这些帖子的内容大多聚焦在技术上，但也有一些其他的内容。
+
+以下是我在八月期间看到的内容在筛选（将一些不够实用或不够有趣的过滤）后的汇总。
+
+## Dasel:让数据在 JSON，YAML, TOML, XML, CSV 格式之间快速转换 
+
+Dasel 是一个用 Go 写的库，通过它可以便捷地将数据在 JSON，YAML, TOML, XML, CSV 格式之间快速转换。
+
+它支持以下途径的使用：
+
+1. 通过 brew 等包管理工具安装到命令行中使用
+2. 作为一个 Go 库使用
+
+这是在 k8s 中更新数据的示例：
+
+![1-Dasel.jpg](/img/【Note】SHOW%20正组八月合辑/1.jpg)
+
+## Lookup API，可以验证一个电话号码是否被注册到 Facetime / iMessage
+
+Website:[https://loopmessage.com/lookup](https://loopmessage.com/lookup)
+
+在这个网站上可以查询某个电话号码是否被绑定到了 Facetime / iMessage 账号上。
+
+这是我在阅读 [https://alexyancey.com/lost-airpods/](https://alexyancey.com/lost-airpods) 这篇博文的时候看到的东东。该博文讲述了作者如何帮助他的朋友寻找到捡到的 Airpods 的失主，其中在过滤没有绑定 iMessage 的手机号的步骤上用了这一个API。
+
+![2-Lookup-API.jpg](/img/【Note】SHOW%20正组八月合辑/2.webp)
+
+## 可以把一个视频转换为纯 CSS 播放么？
+
+一篇非常有意思的 Blog：[https://dgerrells.com/blog/can-you-convert-a-video-to-pure-css](https://dgerrells.com/blog/can-you-convert-a-video-to-pure-css)
+
+原理是利用了 CSS 的 ` animation-timeline ` 相关属性，这个属性的作用是，当你滚动一个网页时，会根据滚动程度移动相应的元素的位置，从而让你能够通过滚动网页让页面动起来——也就是形成了动画。
+
+例如：
+
+![3-Video-to-CSS.jpg](/img/【Note】SHOW%20正组八月合辑/3.jpg)
+
+作者的做法便是从视频流中抽帧，抽取帧内的一定区域为页面上的一个个 div 元素：
+
+![4-Video-to-CSS.jpg](/img/【Note】SHOW%20正组八月合辑/4.jpg)
+
+配合CSS属性就能变成动画咯：
+
+![5-Video-to-CSS.jpg](/img/【Note】SHOW%20正组八月合辑/5.jpg)
+
+唯一的缺点是，这个计算量有点哈人。滑太快我的网页直接崩溃了~
+
+## 中世纪风格的节拍器
+
+官网：[https://teenage.engineering/products/ep-1320](https://teenage.engineering/products/ep-1320)
+
+这个做的是中世纪风格的音乐节拍器。
+
+一个很奇怪的东东。但它的官网做得非常有特色：
+
+![6-Medieval-Metronome.jpg](/img/【Note】SHOW%20正组八月合辑/6.jpg)
+
+广告片的画风也很清奇，怪异的服装的人手上捧着对应的节拍器，举办奇妙的仪式：
+
+![7-Medieval-Metronome.jpg](/img/【Note】SHOW%20正组八月合辑/7.webp)
+
+![8-Medieval-Metronome.jpg](/img/【Note】SHOW%20正组八月合辑/8.webp)
+
+![9-Medieval-Metronome.jpg](/img/【Note】SHOW%20正组八月合辑/9.webp)
+
+
+## text-search-engine:在Nodejs和Web环境可用的模糊文本搜索引擎，支持拼音模糊搜索 
+
+Github：https://github.com/cjinhuo/text-search-engine/blob/master/docs/README_zh.md
+
+在线Demo：https://cjinhuo.github.io/text-search-engine/
+
+这是一个 js/ts 开发时可用的库。个人体验挺好的。打算把它引入我的博客。
+
+## Vega: 一种声明式的语言，用于生成可视化图表，支持 Web/Server/CLI 生成
+
+Website: [Vega](https://vega.github.io/vega/usage/#node)
+
+Vega 是一种用于生成可视化图表的声明式语言，它基于JSON定义，只要你根据特定的JSON格式进行描述，并且使用它的工具链，便能生成相应的可视化图表。
+
+例如：
+
+```JSON
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 400,
+  "height": 200,
+  "padding": 5,
+
+  "data": [
+    {
+      "name": "table",
+      "values": [
+        {"category": "A", "amount": 28},
+        {"category": "B", "amount": 55},
+        {"category": "C", "amount": 43},
+        {"category": "D", "amount": 91},
+        {"category": "E", "amount": 81},
+        {"category": "F", "amount": 53},
+        {"category": "G", "amount": 19},
+        {"category": "H", "amount": 87}
+      ]
+    }
+  ],
+
+  "signals": [
+    {
+      "name": "tooltip",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover", "update": "datum"},
+        {"events": "rect:mouseout",  "update": "{}"}
+      ]
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "xscale",
+      "type": "band",
+      "domain": {"data": "table", "field": "category"},
+      "range": "width",
+      "padding": 0.05,
+      "round": true
+    },
+    {
+      "name": "yscale",
+      "domain": {"data": "table", "field": "amount"},
+      "nice": true,
+      "range": "height"
+    }
+  ],
+
+  "axes": [
+    { "orient": "bottom", "scale": "xscale" },
+    { "orient": "left", "scale": "yscale" }
+  ],
+
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data":"table"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "xscale", "field": "category"},
+          "width": {"scale": "xscale", "band": 1},
+          "y": {"scale": "yscale", "field": "amount"},
+          "y2": {"scale": "yscale", "value": 0}
+        },
+        "update": {
+          "fill": {"value": "steelblue"}
+        },
+        "hover": {
+          "fill": {"value": "red"}
+        }
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "align": {"value": "center"},
+          "baseline": {"value": "bottom"},
+          "fill": {"value": "#333"}
+        },
+        "update": {
+          "x": {"scale": "xscale", "signal": "tooltip.category", "band": 0.5},
+          "y": {"scale": "yscale", "signal": "tooltip.amount", "offset": -2},
+          "text": {"signal": "tooltip.amount"},
+          "fillOpacity": [
+            {"test": "isNaN(tooltip.amount)", "value": 0},
+            {"value": 1}
+          ]
+        }
+      }
+    }
+  ]
+}
+
+```
+
+会生成一张这样的柱状图：
+
+![Vega](/originImg/vega/1.png)
+
+令我比较喜欢的是它的工具链支持在命令行与服务器端使用，这样在使用的时候便可以考虑把图像生成直接放在后端：
+
+```typescript
+// 官网的例子
+var vega = require('vega');
+
+// create a new view instance for a given Vega JSON spec
+var view = new vega.View(vega.parse(spec), {renderer: 'none'});
+
+// generate a static SVG image
+view.toSVG()
+  .then(function(svg) {
+    // process svg string
+  })
+  .catch(function(err) { console.error(err); });
+
+// generate a static PNG image
+view.toCanvas()
+  .then(function(canvas) {
+    // process node-canvas instance
+    // for example, generate a PNG stream to write
+    var stream = canvas.createPNGStream();
+  })
+  .catch(function(err) { console.error(err); });
+```
+
+## public.work：搜索公众开放领域的免费艺术作品 
+
+website:[https://public.work/](https://public.work)
+
+可以使用这个网站搜索不受版权保护的图像。虽然如此，感觉搜到的基本上都是艺术作品的照片：
+
+![10-public.work.jpg](/img/【Note】SHOW%20正组八月合辑/10.webp)
+
+
+## tmpmail:在终端里临时创建邮箱，自由发送or接收邮件 
+
+仓库地址：[https://github.com/sdushantha/tmpmail?tab=readme-ov-file](https://github.com/sdushantha/tmpmail?tab=readme-ov-file)
+
+示例：
+
+![11-tmpmail.jpg](/img/【Note】SHOW%20正组八月合辑/11.jpg)
+
+实际上它还是借助了别的应用提供的开放API实现的。不过意义在于如果你在开发邮件相关的功能，想测试邮件的收发可以使用它。
+
+## ascii-3d-renderer.js 一个使用 ASCII 字符渲染出3D效果的Js库 
+
+Github：[https://github.com/kciter/ascii-3d-renderer.js?tab=readme-ov-file](https://github.com/kciter/ascii-3d-renderer.js?tab=readme-ov-file)
+
+示例：
+
+![12-ascii-3d-renderer.js.jpg](/img/【Note】SHOW%20正组八月合辑/12.jpg)
+
+## 在线绘制有限状态机图的网站
+
+Webiste：[https://madebyevan.com/fsm/](https://madebyevan.com/fsm/)
+
+支持以PNG、SVG、LaTex形式导出。
+
+## nomenclature.ctang.art : 从广东漂泊到美国的华裔的个人记录粤语字典网站 
+
+Website:[https://nomenclature.ctang.art/](https://nomenclature.ctang.art/)
+
+一个在美国的华裔为了学习自己的故乡的语言，建立的一个方言字典网站。
+
+看他的打算是将来把它作为一种方言保留的网站框架放出来。
+
+
+![13](/img/【Note】SHOW%20正组八月合辑/13.webp)
+
+下面是对于这个网站的背景故事，以下内容来自于LLM机翻，部分个人润色修正。
+
+### 背景故事
+#### 关于粤语 Yuht Yúh
+广东是粤语的发源地和所在地。我的祖父母也都来自广东。 
+
+在粤语中，“广东”直接翻译为“广州”。粤语中所使用的词汇的英文音译为“Guangdong”。这两个词是同义的。“广东”和“广州”都指的是中国最南部的同一个省份。因此，当你加上“话”这个词——“话”表示“词汇”、“语言”或“交谈”——你就会得到“广东话”，即“广东语言”、“广州语言”或“广州话”，这是指粤语这种语言。 
+
+此外，当“广东”与“人”结合在一起时，意味着“人”，即“广东人”，意思是“广州人”或“广东人”。 
+
+这是我认识里关于广东的一切。实际上广东话是用来指称粤语的一种非正式、口语化的表达方式。正式的表达方式是粤语。用耶鲁音标系统来发音，即“yuht  yúh”。“粤”（yuht）一词指广东省，“语”（yuh）一词也指语言、口语、词汇、说话、交谈。粤语是如此广杂，也许你可以开始理解我创建这本词典的动机，并且能够想象我学习粤语的旅程将会是怎样的——这是一项终生的追求。 
+
+#### 廣東花園 Guangdong Fa Yun
+随着时间的推移，我逐渐了解到我的祖先的个人历史的点点滴滴——每当我回顾这段历史时，我总是能感受到，这是一段关于战争、政治冲突和全球移民模式的深刻反思。这是一个关于那些家族一代又一代被分离和流离失所的人们如何生存下来的故事。对我来说，这是一个关于生存和坚韧的故事。 
+
+据我所知，这段历史可以追溯到 廣東花園 (Guangdong Fa Yun)。我的祖父就是在那里出生的，我的曾祖父在那里拥有一座农场。在日本入侵/占领期间——在二战期间——那座农场被摧毁，我的祖父不得不离开家乡，寻找谋生的办法。在粤语中，我们将这种境况称为“揾食”(to find something to eat)。他先去了香港，但那里竞争激烈，也有很多人在寻找经济机会。然后他去了西贡，并在那里定居下来。一个烧腊猪肉摊位和云吞面摊位逐渐变成了一家成功的肉店和餐厅。后来，我的父亲出生了；而在同一个西贡的长老区(Cho Lon)的另一边，我的母亲出生了。她的父母也来自于廣東花園，而我母亲的祖父在制作和修理电影放映机以及分发电影方面取得了成功。
+
+我的父母在越南战争的背景下长大。最终他们相遇、结婚并有了孩子。战争以战火蔓延到家门口告终。然而，任何幸存下来的商家或家庭都因政府更迭而失去了一切，从此，我父母和兄弟姐妹在接下来的四年里不断奔波逃离，最终来到了美国。
+
+我之后会制作一部关于这段经历的电影，讲述我们的家族从故乡广东来到异乡西贡，最后来到美国的故事。
+
+#### 我与粤语
+（这段我就懒得改了）
+
+这个学习粤语的项目是我在还是个孩子的时候开始的，那时我想像英语一样流利地掌握一门母语。上初中时，我去了当地的书店，但最终只找到了一本袖珍的旅游用广东话短语书，用于去香港旅行。上高中时，我查看了附近的社区学院是否有面向公众开放的课程，但没有一个提供粤语课程。上大学时，我学了一年的普通话。从那时起已经过去了十多年，我开始了自学广东话、阅读和有一天能用广东话写作的旅程。 
+
+我从学习广东话的偏旁部首开始，父亲给我讲了许多帮助记忆汉字的记忆故事和方法。随着时间的推移，这些关联逐渐扩展到更多的汉字、哲学名言和父母亲的生活故事。3x5英寸的卡片已经无法跟上记忆的步伐。这种基于纸质卡片的系统无法充分利用相似偏旁和概念的维度。此外，由于我不会写汉字，所以自己对汉字的音标化（phonetization）尝试也未能帮助我记住汉字的发音。于是，我开始创建一个互动式的个人词典，并开始了终身学习广东话的旅程。 
+
+## dns.fish ： 查询一个域名的DNS记录 
+
+Website：[https://dns.fish/](https://dns.fish/)
+
+它的特色在于支持通过 HTTP/HTTPS 请求调用。
+
+![14-dns.fish.jpg](/img/【Note】SHOW%20正组八月合辑/14.webp)
+
+## billard.medusis.com:在2D平面里通过球体碰撞生成音乐的网站 
+
+Website：[https://billard.medusis.com/](https://billard.medusis.com/)
+
+一个很奇妙的网站，球体之间发生碰撞时会弹出一个音。于是你能在这个2D平面里，观测球体之间的运动的同时聆听它们奏出的音乐。
+
+嗯，一个有趣的混乱无序系统。
+
+![15-billard.medusis.com.jpg](/img/【Note】SHOW%20正组八月合辑/15.webp)
+
+
+## WebCheck —— 输入网址，查看关于该网页的全部信息（服务器地址、同源域名、DNS等） 
+
+Website:https://v1.web-check.xyz/
+
+源代码：https://github.com/lissy93/web-check
+
+一个很 awesome 的东东，适合开发人员使用。
+
+## 很酷的墨水屏卡片
+
+![16-Wyldcards.jpg](/img/【Note】SHOW%20正组八月合辑/16.jpg)
+
+Wyldcards 是一种用于交易卡片游戏的E-Ink显示屏塑料卡片， 这些卡片可以更换图像，内置的存储芯片可以记录游戏数据。
+
+魔法阵一般的电路：
+
+![18-Wyldcards.jpg](/img/【Note】SHOW%20正组八月合辑/18.webp)
+
+## 其他的一些翻译博文：
+
+- [八种版本的 UUID 的区别及其使用场景](https://leewendao.otterstack.cn/writings/translations/8-versions-of-UUID-and-when-to-use-them)
+
+- [Toast 会带来糟糕的用户体验](https://leewendao.otterstack.cn/writings/translations/toasts-are-bad-UX)
+
+- [两种软件开发的方法论](https://leewendao.otterstack.cn/writings/translations/algorithms-we-develop-software-by)
+
+- [微型库已经过时了](https://leewendao.otterstack.cn/writings/translations/micro-libralies-need-to-die-already)
+
+- [优秀的URL设计示例](https://leewendao.otterstack.cn/writings/translations/good-url-design-sample)
