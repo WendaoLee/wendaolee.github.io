@@ -1,0 +1,594 @@
+---
+title: 【Translation】Web浏览器的剪切板是如何存储不同类型的数据的？
+description: Alex Harri 的博文 The web's clipboard, and how it stores data of different types 的翻译。
+tags:
+    - 翻译
+    - Web
+    - clipboard
+category: translation
+date: 2024-09-02
+---
+
+本文是对 Alex Harri 的博文 [The web's clipboard, and how it stores data of different types](https://alexharri.com/blog/clipboard) 的翻译。
+
+下面内容部分来自于 LLM 翻译，大部分内容由我修改润色。
+
+## 背景
+
+如果你用过一段时间电脑，那么你可能会知道电脑的剪贴板可以存储多种类型的数据（图片、富文本内容、文件等等）。然而，作为一名软件开发人员，我并不能很好地理解剪贴板是如何存储和组织不同类型的数据的，这让我感到非常沮丧。
+
+于是，最近我决定揭开剪贴板的神秘面纱，并且基于我的学习成果撰写了本文。我们将主要关注Web浏览器的剪贴板及其API，同时也会稍微提及它是如何与操作系统的剪贴板交互的。
+
+我们将从研究 Web 剪贴板的 API 及其历史开始。Web 剪贴板 API 对数据类型有一些有趣的限制，我们将看看一些公司是如何绕过这些限制的。同时，我们还将探讨一些旨在解决这些限制的提议（尤其是 Web 自定义格式）。
+
+如果你曾经好奇过网络剪贴板的工作原理，那么这篇文章就是为你准备的。
+
+## 使用浏览器的异步剪切板API `Clipboard`
+
+如果从其他网站上复制了一些内容并粘贴到Google文档中，不难发现其中一些格式会被保留下来，比如链接、字体大小和颜色等：
+
+![复制内容时格式保留的示例](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/1-copy-paste-rich-content.png)
+
+但是如果我把内容黏贴到 VSCode 中，那么只会保留原始的文本内容：
+
+![复制内容时格式保留的示例](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/2-copy-paste-into-vscode.png)
+
+剪切板是通过将信息以用MIME类型标记的不同[数据表示形式（representations）](https://www.w3.org/TR/clipboard-apis/#list-of-representations)进行存储来满足这两种使用场景的。W3C关于剪切板相关的[规范](https://www.w3.org/TR/clipboard-apis/#mandatory-data-types-x)要求，向剪切板写入数据或从剪切板读取数据时，这三种数据类型必须要被支持：
+
+- `text/plain`：它用于存储纯文本数据。
+- `text/html`：它用于存储 HTML 格式的数据。
+- `image/png`：用于存储 PNG 格式的图像数据。
+
+所以当我黏贴文本到 Google Docs 时，Google Docs 会读取 `text/html` 的表示形式，由于它使用 `HTML` 格式进行保存，因此能够保留相应的富文本格式；而 VSCode 只关心原始文本，因此它只会读取 `text/plain` 的表示形式的数据。这非常合理。
+
+通过浏览器的异步剪切板API `navigator.clipboard` 的 `read` 方法读取相应表示形式的数据是非常简单的：
+
+```javascript
+const items = await navigator.clipboard.read();
+
+for (const item of items) {
+  if (item.types.includes("text/html")) {
+    const blob = await item.getType("text/html");
+    const html = await blob.text();
+    // 使用HTML做一些事情…...
+  }
+}
+```
+
+通过 `write` 方法向剪切板写入不同表示形式的数据稍微复杂一点，但它依然比较简单。首先，我们为每个想要写入剪贴板的表示形式构造 `Blob` 对象：
+
+```javascript
+// 创建一个包含文本的Blob对象
+const textBlob = new Blob(["Hello, world"], { type: "text/plain" });
+// 创建一个包含HTML文本的的Blob对象
+const htmlBlob = new Blob(["Hello, <em>world<em>"], { type: "text/html" });
+```
+一旦我们有了这些 `Blob` 对象，我们便可以以键值对的形式将数据传递给 `ClipboardItem` 类，构造出新的剪切板项对象：
+
+```javascript
+// 我们以数据类型的字面量作为键，并将数据块作为值
+const clipboardItem = new ClipboardItem({
+  [textBlob.type]: textBlob,
+  [htmlBlob.type]: htmlBlob,
+});
+```
+
+> 原作者注：我喜欢 `ClipboardItem` 能够接受键值存储的设计。这与在[《解析，而不是验证》](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/#:~:text=Use%20a%20data%20structure%20that%20makes%20illegal%20states%20unrepresentable) 一文中讨论的使用一种使非法状态不可表示的数据结构的想法相吻合。
+
+最后，我们使用我们新构建的 `ClipboardItem` 对象，在调用 `write` 方法时传入，便可以向用户的剪切板中写入多格式的数据 ：
+
+```javascript
+await navigator.clipboard.write([clipboardItem]);
+```
+
+## 除此之外，还能有其他数据类型么？
+
+HTML和图片很酷，但是像JSON这样的通用数据交换格式呢？如果我要编写一个支持复制粘贴的应用程序，不难想象存在将JSON或一些二进制数据复制到剪贴板上的需求。
+
+让我们尝试将JSON数据写入剪贴板：
+
+```javascript
+// Create JSON blob
+const json = JSON.stringify({ message: "Hello" });
+const blob = new Blob([json], { type: "application/json" });
+
+// Write JSON blob to clipboard
+const clipboardItem = new ClipboardItem({ [blob.type]: blob });
+await navigator.clipboard.write([clipboardItem]);
+```
+
+然而当我们运行这样的代码时，会抛出这样的异常：
+
+```bash
+Failed to execute 'write' on 'Clipboard':
+  Type application/json not supported on write.
+```
+
+嗯？这是咋回事？这是因为对于 `write` 函数的[规范](https://www.w3.org/TR/clipboard-apis/#dom-clipboard-write)规定了，`text/plain` 、 `text/html` 和 `image/png` 之外的所有数据类型都会被拒绝：
+
+> If type is not in the [mandatory data types](https://www.w3.org/TR/clipboard-apis/#mandatory-data-types-x) list, then reject [...] and abort these steps.
+> 如果“type”不在强制性数据类型列表中，则拒绝……并终止这些步骤。
+
+有趣的是， `application/json` 这一MIME类型在2012年至2021年期间是 强制数据类型（mandatory data types） 列表中的一部分，但在 [w3c/clipboard-apis#155](https://github.com/w3c/clipboard-apis/pull/155) 中从规范里删除了。在此之前，强制数据类型的列表要长得多，其中用于从剪贴板中读取的数据类型有16种，用于向剪切板写入的数据类型有8种。更改之后，仅保留了 `text/plain` 、 `text/html` 和 `image/png` 。
+
+之所以规范做出了如此更改，是因为大部分浏览器出于安全考虑不愿支持许多强制类型。这一点在规范中的 [强制数据类型](https://www.w3.org/TR/clipboard-apis/#mandatory-data-types-x) 部分中有相应的体现：
+
+> Warning! The data types that untrusted scripts are allowed to write to the clipboard are limited as a security precaution.
+>
+> 警告！出于安全考虑，不受信任的脚本只能写入剪贴板的有限数据类型。
+>
+> Untrusted scripts can attempt to exploit security vulnerabilities in local software by placing data known to trigger those vulnerabilities on the clipboard.
+>
+> 不可信的脚本可能会通过将已知的触发本地软件安全漏洞的数据复制到剪贴板，从而尝试利用这些漏洞。
+
+好吧，现在我们只能将有限的数据类型写入剪贴板。但是“不可信脚本”是什么意思呢？我们能否在“可信脚本”中运行代码，从而允许我们将其他数据类型写入剪贴板？
+
+## `isTrusted` 属性
+
+也许如何判断一个脚本是规范里说的 “不可信的脚本” 是通过[浏览器事件中的 `isTrusted` 属性](https://developer.mozilla.org/en-US/docs/Web/API/Event/isTrusted)确定的。`isTrusted `是一个只读属性，只有在事件由用户代理程序触发时才会被设置为true：
+
+```javascript
+document.addEventListener("copy", (e) => {
+  if (e.isTrusted) {
+    // 这个事件是由用户代理程序触发的
+  }
+})
+```
+
+“由用户代理程序触发”的意思是它由用户触发的，比如由用户按下`Command`键触发的复制事件。这与通过编程方式使用 `dispatchEvent()` 程序触发的合成事件不同，`dispatchEvent` 触发的事件总是不可信的：
+
+```javascript
+document.addEventListener("copy", (e) => {
+  console.log("e.isTrusted is " + e.isTrusted);
+});
+
+document.dispatchEvent(new ClipboardEvent("copy"));
+//=> "e.isTrusted is false"
+```
+
+让我们来看看剪贴板相关的浏览器事件(ClipboardEvent)，看看它们是否允许我们将任意数据类型写入剪贴板。
+
+## Clipboard Event API
+
+一个 `ClipboardEvent` 对象被用于处理复制、剪切和粘贴事件，其中包含一个 `clipboardData` 属性，其类型为 `DataTransfer` 。 `DataTransfer` 对象由剪贴板事件API使用，它用于存储多个数据表示。
+
+在 `copy` 和 `paste` 事件中将内容复制到剪贴板上是非常简单的：
+
+```javascript
+document.addEventListener("copy", (e) => {
+  e.preventDefault(); // 阻止默认的 copy 行为
+
+  e.clipboardData.setData("text/plain", "Hello, world");
+  e.clipboardData.setData("text/html", "Hello, <em>world</em>");
+});
+
+document.addEventListener("paste", (e) => {
+  e.preventDefault(); 
+
+  const html = e.clipboardData.getData("text/html");
+  if (html) {
+    // do something
+  }
+});
+```
+
+现在，让我们回答我们前面的问题：我们能否将JSON数据复制到剪贴板中呢？
+
+```javascript
+document.addEventListener("copy", (e) => {
+  e.preventDefault();
+
+  const json = JSON.stringify({ message: "Hello" });
+  e.clipboardData.setData("application/json", json); // No error
+});
+```
+
+它没有抛出异常，但是它真的将JSON写入了剪贴板吗？让我们通过编写一个遍历剪贴板中所有条目的粘贴处理程序来验证这一点：
+
+```javascript
+document.addEventListener("paste", (e) => {
+  for (const item of e.clipboardData.items) {
+    const { kind, type } = item;
+    if (kind === "string") {
+      item.getAsString((content) => {
+        // 如果 JSON 真的写入了剪切板，那么这里应该会打印出 { "type": "application/json", content: "{\"message\":\"Hello\"}" }
+        console.log({ type, content });
+      });
+    }
+  }
+});
+```
+
+添加这两个处理程序并执行复制粘贴操作后，成功打印了以下内容：
+
+```javascript
+{ "type": "application/json", content: "{\"message\":\"Hello\"}" }
+```
+
+有效！看起来 `clipboardData.setData` 函数并不像 `write` 函数那样对数据类型进行限制。
+
+但是……为什么呢？为什么我们可以使用 `Clipboard Event` 中的 `clipboardData` 读写任意的数据类型，但在使用 `Clipboard`API时却不能呢？
+
+## `clipboardData` 的历史
+
+`Clipboard`API，或者说异步剪切板API是较新的，它是在[2017](https://www.w3.org/TR/2017/WD-clipboard-apis-20170929/)年添加到规范中的，但 `clipboardData` 的出现时间要早得多。
+
+2006年的[W3C草案](https://www.w3.org/TR/2006/WD-clipboard-apis-20061115/)便已定义了 `clipboardData` 及其 `setData` 和 `getData` 方法（当时还没有MIME类型）：
+
+> `setData()` This takes one or two parameters. The first must be set to either 'text' or 'URL' (case-insensitive).
+>
+> `setData()` 方法需要一到两个参数。其中第一个参数必须设置为'text'或'URL'（大小写不敏感）。
+>
+> `getData()` This takes one parameter, that allows the target to request a specific type of data.
+>
+> `getData()` 方法只接受一个参数，该参数允许目标请求特定类型的数据。
+
+但事实证明，`clipboardData` 甚至比2006年的草案还要古老。请看下面这段来自草案里“本文档状态”（"Status of this Document"）部分的引述：
+
+> In large part [this document] describes the functionalities as implemented in Internet Explorer...
+>
+> 这份文件在很大程度上描述了在Internet Explorer中实现的功能…
+>
+> The intention of this document is [...] to specify what actually works in current browsers, or [be] a simple target for them to improve interoperability, rather than adding new features.
+>
+> 本文档的目的是 ... 明确当前浏览器中实际可行的功能，或者作为它们提高互操作性的简单目标，而不是添加新的功能。
+
+这说明了早在这份草案前，IE 一类浏览器中便存在着 `clipboardData` 对象。
+
+而这篇 [2003 年的文章](https://www.arstdesign.com/articles/clipboardexploit.html) 详细说明了如何在 Internet Explorer 4及以上版本中使用 clipboardData 读取用户剪贴板内容而无需获得用户同意。由于Internet Explorer 4是在 1997 年发布的，因此 `clipboardData` API 在撰写本文时至少已有26年历史。
+
+
+而 MIME 类型是在 [2011年的规范](https://www.w3.org/TR/2011/WD-clipboard-apis-20110412/) 中引入的：
+
+> The dataType argument is a string, for example but not limited to a MIME type...
+> 
+> dataType 参数是一个字符串，例如但不限于 MIME 类型…
+>
+> If a script calls getData('text/html')...
+>
+> 如果一个脚本调用getData('text/html')…
+
+当时，规范尚未明确应使用哪些数据类型：
+
+> While it is possible to use any string for setData()'s type argument, sticking to common types is recommended.
+>
+> 虽然可以使用任何字符串作为 setData() 的 type 参数，但建议使用常见的数据类型。
+>
+>
+> [Issue] Should we list some "common types"?
+> [议题] 我们是否应该列出一些“常见类型”？
+
+因此，在使用 `setData` 和 `getData` 时传入任意字符串的做法至今仍然适用。这种使用方式完全没问题：
+
+```javascript
+document.addEventListener("copy", (e) => {
+  e.preventDefault();
+  e.clipboardData.setData("foo bar baz", "Hello, world");
+});
+
+document.addEventListener("paste", (e) => {
+  const content = e.clipboardData.getData("foo bar baz");
+  if (content) {
+    console.log(content); // Logs "Hello, world!"
+  }
+});
+```
+
+如果你将这段代码片段粘贴到开发者工具中，你会在控制台中看到“Hello, world”的消息。
+
+之所以 `Clipboard Events API` 的 `clipboardData` 能够允许我们使用任意数据类型是因为历史问题，你懂的，"Don't break the web"，我们总是要前向兼容。
+
+## 再看 `isTrusted` 属性
+
+我们再考虑一下规范里关于[强制数据类型](https://www.w3.org/TR/clipboard-apis/#mandatory-data-types-x)的那部分内容中的这句话：
+
+> The data types that untrusted scripts are allowed to write to the clipboard are limited as a security precaution.
+>
+> 出于安全考虑，未受信任的脚本直接写入剪贴板的数据类型是有限的。
+
+如果我们借助剪贴板事件主动尝试向剪贴板写入数据（根据规范，此时它应该是不可信的），此时会发生什么？
+
+```javascript
+document.addEventListener("copy", (e) => {
+  e.preventDefault();
+  e.clipboardData.setData("text/plain", "Hello");
+});
+
+document.dispatchEvent(new ClipboardEvent("copy", {
+  clipboardData: new DataTransfer(),
+}));
+```
+这段代码运行虽然成功了，但它并没有修改剪贴板。正如规格中所规定的那样，这是预期的行为。
+
+> Synthetic cut and copy events must not modify data on the system clipboard.
+>
+> 合成的（意味着存在用户的修改）剪切和复制操作事件不得修改系统剪贴板上的数据。
+>
+> Synthetic paste events must not give a script access to data on the real system clipboard.
+> 
+> 合成的粘贴事件不得让脚本访问真实系统剪贴板上的数据。
+
+因此，只有用户代理程序发送的事件才允许修改剪贴板。这完全合理，因为我不想让网站随意读取我的剪贴板内容并窃取我的密码。
+
+***
+
+现在，让我们简单总结一下：
+
+- 2017年引入的异步剪贴板API（`Clipboard` API）限制了哪些数据类型可以写入和从剪贴板中读取。但是，只要用户已经授权（且文档处于激活状态），它可以在任何时候读取和写入剪贴板。
+- 较旧的剪贴板事件API(`Clipboard Event` API) 对可以写入和读取的数据类型没有真正的限制。然而，它只能在由用户代理（即当 `isTrusted` 为真时）触发的复制和粘贴事件处理程序中使用。
+
+如果您想要将非纯文本、HTML或图像的数据类型写入剪贴板，那么使用“剪贴板事件”API似乎是唯一可行的方法。在这方面，它具有更大的灵活性。
+
+但是如果你想创建一个 复制按钮 将非标准的数据类型写入剪贴板，这该怎么办呢？毕竟如果用户没有触发复制事件，似乎就不能使用“剪贴板事件”API。
+
+## 创建一个可复制任意数据类型的按钮
+
+我尝试在不同的网页应用程序中使用 复制按钮，并检查了被复制的内容被存储到剪贴板中的内容。结果很有趣。
+
+Google Docs有一个复制按钮，它可以在右键菜单中找到。
+
+这个复制按钮会将以下三种表现形式复制黏贴到剪切板中：
+
+- `text/plain`,
+- `text/html` ,
+- `application/x-vnd.google-docs-document-slice-clip+wrapped`
+
+他们正在向剪贴板中写入自定义数据类型，这意味着他们没有使用异步剪贴板API。他们是如何通过单击处理程序（click handler）实现这一点的？
+
+我运行了 profiler，点击了复制按钮，并查看了结果。结果显示，点击复制按钮会触发对 `document.execCommand("copy")` 的调用:
+
+![3-通过 profile 查看 Google Doc 的复制按钮的结果](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/3-google-docs-exec-command.png)
+
+
+这让我感到很惊讶。发现这一点时，我的第一反应是：“这不是已弃用的复制文本到剪贴板的方法吗？”
+
+是的，但谷歌这样做是有原因的。`execCommand` 的特殊之处在于，它允许您通过编程的方式触发一个可信的复制事件，就好像用户亲自执行了“复制”命令一样。
+
+```javascript
+document.addEventListener("copy", (e) => {
+  console.log("e.isTrusted is " + e.isTrusted);
+});
+
+document.execCommand("copy");
+//=> "e.isTrusted is true"
+```
+
+> 作者注：
+>
+> safari要求对`execCommand("copy")`元素有一个激活的选择才能触发复制事件。
+>
+> 但我们可以通过向DOM中添加一个非空的输入元素并在调用`execCommand("copy")`之前选择它，最后再将该输入元素从DOM中删除来伪造用户激活了选择。
+
+
+好了，现在我们可以使用`execCommand` 让我们在一个点击事件中将任意数据类型写入剪贴板。这太酷了！
+
+那么，黏贴呢？我们可以使用 `execCommand("paste")` 吗？
+
+## 创建一个粘贴按钮
+
+让我们试试Google Docs中的“粘贴”按钮，看看它能做些什么。
+
+![4-Google Doc的黏贴按钮](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/4-google-docs-paste-button.png)
+
+在我的MacBook上，我收到了一个弹出窗口，它提示我需要安装一个扩展程序才能使用粘贴按钮。
+
+![5-MacBook上使用黏贴按钮提示需要安装扩展程序](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/5-google-docs-paste-popup.png)
+
+但奇怪的是，在我的Windows笔记本电脑上，粘贴按钮却可以正常使用。
+
+好奇怪，这个不一致性是怎么产生的呢？我们可以使用粘贴按钮可以通过运行 `queryCommandSupported("paste")` 来检查：
+
+```javascript
+document.queryCommandSupported("paste");
+```
+
+在我的MacBook上，Chrome和Firefox浏览器中出现了 `false` ，但在Safari浏览器中却出现了 `true`。
+
+Safari 考虑到用户的隐私问题，要求我确认粘贴操作。我认为这是一个非常好的设计。这让用户非常清楚地知道网站会从剪贴板中读取内容。
+
+![6-在Mac上进行黏贴需要确认](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/6-google-docs-paste-confirm.png)
+
+为什么Chrome允许 `execCommand("paste")` 在Windows上运行，但在macOS上却不行？可惜的是，我没能找到任何相关信息。
+
+令人惊讶的是，我发现当 `execCommand("paste")` 不可用时，谷歌并没有尝试切换到异步剪贴板 API。尽管他们无法使用该 API 读取 `application/x-vnd.google-[...]` 的表示形式，但当 HTML 表示形式包含内部 ID时，你依旧可以使用它们。
+
+```html
+<!-- HTML representation, cleaned up -->
+<meta charset="utf-8">
+<!-- 此处的 guid 就是相应的内部Id -->
+<b id="docs-internal-guid-[guid]" style="...">
+  <span style="...">Copied text</span>
+</b>
+```
+
+另一个带有粘贴按钮的网页应用是Figma，它们采用了完全不同的方法。让我们看看它们在做什么。
+
+>  译者注：Figma 是一个给设计师使用的 Web 软件。特色便在于它的跨平台性。
+
+## 在 Figma 中复制黏贴
+
+Figma 是一个基于Web的应用程序（其原生应用的技术栈使用了 Electron）。让我们看看他们的复制按钮会把什么内容复制到剪贴板上。
+
+![7-Figma的复制按钮](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/7-figma-copy-button.png)
+
+Figma的复制按钮会将两个表示形式复制到剪贴板中： `text/plain` 和 `text/html` 。这让我感到惊讶。Figma是如何用纯HTML表示它们的各种布局和样式功能的呢？
+
+查看它复制的HTML数据后，我们会发现有两个空的 `span` 元素，带有 `data-metadata` 和 `data-buffer` 属性：
+
+```html
+<meta charset="utf-8">
+<div>
+  <span data-metadata="<!--(figmeta)eyJma[...]9ifQo=(/figmeta)-->"></span>
+  <span data-buffer="<!--(figma)ZmlnL[...]P/Ag==(/figma)-->"></span>
+</div>
+<span style="white-space:pre-wrap;">Text</span>
+```
+
+这看起来像是base64编码。`eyJ` 的开头清楚地表明 `data-metadata` 是一个经过base64编码的JSON字符串。对 `data-metadata` 执行 `JSON.parse(atob())` 将会产出以下结果：
+
+```json
+{
+  "fileKey": "4XvKUK38NtRPZASgUJiZ87",
+  "pasteID": 1261442360,
+  "dataType": "scene"
+}
+```
+
+对 `data-buffer` 执行 Base64 解码后会得到以下内容：
+```text
+fig-kiwiF\x00\x00\x00\x1CK\x00\x00µ½\v\x9CdI[...]\x197Ü\x83\x03
+```
+
+这看起来是二进制格式。经过一番挖掘——以 `fig-kiwi` 作为线索——我发现这是Kiwi消息格式（由Figma的联合创始人兼前CTO Evan Wallace 创建），用于编码 `.fig` 文件。
+
+因为Kiwi是一种基于模式的格式（schema-based format），因此看起来我们如果不知道模式就无法解析这些数据。然而，幸运的是，Evan创建了一个[公共的`.fig`文件解析器](https://github.com/evanw/kiwi/issues/17#issuecomment-1937797254)。让我们尝试将缓冲区插入其中！
+
+为了将缓存转换为一个 `.fig` 文件，我编写了一个小脚本来生成一个Blob URL：
+
+```javascript
+const base64 = "ZmlnL[...]P/Ag==";
+const blob = base64toBlob(base64, "application/octet-stream");
+
+console.log(URL.createObjectURL(blob));
+//=> blob:<origin>/1fdf7c0a-5b56-4cb5-b7c0-fb665122b2ab
+```
+
+然后我将生成的blob文件下载为一个 `.fig` 文件，并将其上传到 `.fig`文件解析器中，然后得到了结果：
+
+![8-figma复制内容的解析结果](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/8-figma-data.png)
+
+现在，我们能够明确了：
+
+在 Figma 中，复制操作是通过创建一个较小的 Figma 文件，而后将其编码为 Base64 格式，将生成的 Base64 字符串放入一个空的 HTML 元素 ` `data-buffer` ` 的 ` `span` ` 属性中，最后将该字符串存储在用户的剪贴板中实现的。
+
+## 以HTML格式复制粘贴的好处
+
+对我来说，一开始我觉得这样的处理有点愚蠢，但理解了它这样做的原因后，我认为采取这种方法确实有不少优点。要理解其中的原因，需要明白基于Web浏览器的剪贴板API是如何与各种操作系统剪贴板API交互的。
+
+Windows、macOS 和 Linux 都提供了不同的格式来将数据写入剪贴板。如果您想将 HTML 写入剪贴板，[Windows 提供了 `CF_HTML`](https://learn.microsoft.com/en-us/windows/win32/dataxchg/html-clipboard-format) ，而 [macOS 提供了 `NSPasteboard.PasteboardType.html`](https://developer.apple.com/documentation/appkit/nspasteboard/pasteboardtype/1529057-html) 。
+
+所有的操作系统都提供了对于标准格式类型（纯文本、HTML和PNG图像）的支持。但是，当用户试图将任意的自定义数据类型（如 `application/foo-bar` ）复制到剪贴板时，浏览器应该使用哪个操作系统的格式呢？
+
+因为没有找到合适的匹配项，所以浏览器不会将该表示形式转换为操作系统剪贴板上的常用格式。相反，该表示形式仅存在于操作系统剪贴板上的自定义浏览器特定剪贴板格式中。这使得我们可以在浏览器的不同标签页之间复制和粘贴任意数据类型，但不能在应用程序之间复制和粘贴。
+
+这就是为什么使用常见的数据类型 `text/plain` 、 `text/html` 和 `image/png` 非常方便的原因。它们与常见的操作系统剪贴板格式相对应，因此可以很容易地被其他应用程序读取，从而使跨应用程序的复制和粘贴操作得以实现。在Figma的例子中，使用 `text/html` 可以将浏览器中的Figma元素从 `figma.com` 复制并粘贴到原生的Figma应用程序中，反之亦然。
+
+## 使用自定义数据类型时，浏览器将什么写入到了系统剪贴板中？
+
+我们已经知道可以在浏览器标签页之间读写自定义数据类型到剪贴板，但不能跨应用程序进行操作。那么，当我们将自定义数据类型写入网页剪贴板时，浏览器实际上在将什么写入本地操作系统的剪贴板呢？
+
+我在我的MacBook上的所有主流浏览器中运行了以下代码：
+
+```javascript
+document.addEventListener("copy", (e) => {
+  e.preventDefault();
+  e.clipboardData.setData("text/plain", "Hello, world");
+  e.clipboardData.setData("text/html", "<em>Hello, world</em>");
+  e.clipboardData.setData("application/json", JSON.stringify({ type: "Hello, world" }));
+  e.clipboardData.setData("foo bar baz", "Hello, world");
+});
+```
+
+然后我使用[剪贴板查看器](https://apps.apple.com/us/app/pasteboard-viewer/id1499215709)检查了剪贴板。
+
+Chrome在剪贴板中添加了四个条目：
+
+- `public.html` 存储了 HTML 格式的数据。
+- `public.utf8-plain-text`储存了纯文本格式的数据。
+- `org.chromium.web-custom-data` 存储了从网页复制的自定义表示数据。
+- `org.chromium.source-url`保存了复制操作对应的的源网页的网址。
+
+![9-org.chromium.web-custom-data 存储了从网页复制的自定义表示数据](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/9-pasteboard-chrome.png)
+
+Firefox也会创建 `public.html` 和 `public.utf8-plain-text` 的条目，但它会将自定义数据写入 `org.mozilla.custom-clipdata` 。并且它不像Chrome那样存储源URL。
+
+Safari的行为正如你所预料的那样，它也创建了 `public.html` 和 `public.utf8-plain-text` 条目。它将自定义数据写入 `com.apple.WebKit.custom-pasteboard-data` ，有趣的是，它还将完整的表示列表（包括纯文本和HTML）和源URL存储在那里。
+
+> 注意：Safari允许在浏览器标签之间复制粘贴自定义数据类型，前提是源URL（域名）相同，但跨域时并不可以。这一限制在Chrome和Firefox中似乎并不存在（尽管Chrome会存储源URL）。
+
+## 关于 Web 直接访问系统剪切板的提案
+
+一项关于[Web 可以直接访问系统剪贴板访问的提案](https://github.com/WICG/raw-clipboard-access/blob/f58f5cedc753d55c77994aa05e75d5d2ad7344a7/explainer.md)于 2019 年提出，该提案提出了一个API，它使Web应用能够直接读取和写入本地操作系统剪贴板。
+
+[chormestatus.com](https://chromestatus.com/feature/5682768497344512) 上言简意赅地阐述了这样做的优点：
+
+> Without Raw Clipboard Access [...] web applications are generally limited to a small subset of formats, and are unable to interoperate with the long tail of formats. For example, Figma and Photopea are unable to interoperate with most image formats.
+>
+> 如果没有原始剪贴板访问权限……大多数网络应用程序通常只能处理一小部分格式，并且无法与大量格式进行互操作。例如，Figma和Photopea无法与大多数图像格式进行互操作。
+
+然而，出于安全考虑，由于担心在原生应用程序中存在远程代码执行之类的漏洞，该提案最终未能进一步推进。
+
+最新的关于向剪贴板写入自定义数据类型的提案是 **Web自定义格式提案（Web Custom Formats，所谓的 Web自定义格式实际上是一种序列化）**。
+
+## Web 自定义格式（序列化）
+
+2022年，[Chromium在异步剪贴板API中实现了对Web自定义格式的支持](https://developer.chrome.com/blog/web-custom-formats-for-the-async-clipboard-api)。
+
+它允许Web应用程序通过在数据类型前添加 `"web "` 前缀来使用异步剪贴板API编写自定义数据类型：
+
+```javascript
+// Create JSON blob
+const json = JSON.stringify({ message: "Hello, world" });
+const jsonBlob = new Blob([json], { type: "application/json" });
+
+// Write JSON blob to clipboard as a Web Custom Format
+const clipboardItem = new ClipboardItem({
+  [`web ${jsonBlob.type}`]: jsonBlob,
+});
+navigator.clipboard.write([clipboardItem]);
+```
+
+这些数据的读取方式与使用异步剪贴板 API的其他数据类型相同：
+
+```javascript
+const items = await navigator.clipboard.read();
+for (const item of items) {
+  if (item.types.includes("web application/json")) {
+    const blob = await item.getType("web application/json");
+    const json = await blob.text();
+    // Do stuff with JSON...
+  }
+}
+```
+
+比较有趣的是，当编写Web自定义格式时，会将以下内容写入本地操作系统剪贴板：
+
+- 数据类型到剪贴板输入名称的映射（mappings）
+- 每种数据类型的剪贴板条目
+
+例如，在 macOS 上，映射会写入到  `org.w3.web-custom-format.map`  中，其内容如下所示：
+
+```json
+{
+  "application/json": "org.w3.web-custom-format.type-0",
+  "application/octet-stream": "org.w3.web-custom-format.type-1"
+}
+```
+
+这些 `org.w3.web-custom-format.type-[index]`  键对应于操作系统剪贴板中的数据块未处理数据项。这使得原生应用程序可以查看映射，以确定是否存在给定的表示形式，然后从相应的剪贴板项中读取未处理的内容。
+
+> 作者注：
+>
+> Windows 和 Linux 对映射和剪贴板条目的[命名约定](https://github.com/dway123/clipboard-pickling/blob/bce5101564d379f48f11839e2c141ee51438e13c/explainer.md#os-interaction-format-naming)有所不同。
+
+这样就可以避免因直接访问剪贴板而带来的安全问题，因为Web应用程序无法将未经处理的数据写入任何操作系统剪贴板格式。这种对于互操作性的折衷（interoperability trade-off ）在[异步剪贴板API序列化规范](https://github.com/dway123/clipboard-pickling/blob/bce5101564d379f48f11839e2c141ee51438e13c/explainer.md#non-goals)中有明确说明：
+
+> #### Non-goals 非目标
+>
+> Allow interoperability with legacy native applications, without update. This was explored in a raw clipboard proposal, and may be explored further in the future, but comes with significant security challenges (remote code execution in system native applications).
+>
+> 允许与遗留的本地原生应用程序在无更新的情况下进行交互操作并非本提案的目标。这一点早在[原始剪贴板提案](https://github.com/WICG/raw-clipboard-access/blob/master/explainer.md)中便以探讨，虽然它可能在未来进一步探讨，但目前它存在显著的的安全挑战问题（可能引发系统原生应用中的远程代码执行问题）。
+
+这意味着当使用自定义数据类型时，原生应用程序需要更新以实现与Web应用程序之间的剪贴板交互。
+
+自2022年起，基于Chromium的浏览器已支持自定义Web格式，但其他浏览器尚未实现此提案。
+
+## 最后的话
+
+目前还没有一种能在所有浏览器中编写自定义数据类型并将其复制到剪贴板的有效方法。 Figma 采用将 base64 字符串放入 HTML 表示法的方法，虽然粗略但有效，因为它绕过了剪贴板 API 的众多限制。如果您需要通过剪贴板传输自定义数据类型，这种方法似乎是一个不错的选择。
+
+我觉得 **Web 自定义格式提案** 很有前途，希望所有主流浏览器都能实现它。这似乎能让我们以安全且实用的方式在剪贴板中创建自定义数据类型。
+
+总之，感谢阅读！我希望我的文章能让你感到它非常有趣。
+
+——Alex Harri
