@@ -50,7 +50,7 @@ export default function Home() {
           目前就职于一家AI创业公司，司职技术总监。
           <br />
           <br />
-          在本站，文章产出存放在 Writings 中，其他产出存放在 Works 里。
+          这里是李问道的博客站点。在本站，文章产出存放在 Writings 中，其他产出存放在 Works 里。
           <br />
           <br />
           其中，<strong>Writings</strong> 里:

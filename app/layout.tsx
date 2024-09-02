@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "李问道 - Blog of Wendaolee",
-  description: "这里是李问道的个人博客站点👏存放了李问道个人的创作产出。 // Here is Wendaolee(or Erika Lee)'s blogs.Lucky to see you.",
+  description: "这里是李问道的个人博客站点👏存放了李问道个人的创作产出。李问道是一个技术人与作家，平常喜欢随便写写东西。 // Here is Wendaolee(or Erika Lee)'s blogs.Lucky to see you.",
   keyword:["李问道","李问道的博客","Wendaolee","Wendaolee's blog","Erika Lee","Erika Lee's blog"],
   authors: ["李问道","Wendao Lee","Erika Lee","Wendaolee"],
   creator: "WendaoLee",

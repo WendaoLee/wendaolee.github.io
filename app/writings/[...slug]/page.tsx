@@ -41,6 +41,7 @@ export async function generateMetadata({
     description: post.description,
     category: postSEOCategory, 
     keywords: postTags,
+    authors:[{name:"李问道",url:"https://leewendao.otterstack.cn"},{name:"Wendaolee",url:"https://leewendao.otterstack.cn"},{name:"Erika Lee",url:"https://leewendao.otterstack.cn"},{name:"leewendao",url:"https://leewendao.otterstack.cn"}],
   }
 }
 
@@ -59,7 +60,7 @@ export default async function PostPage({ params }: PostProps) {
 
   return (
     <article className="min-w-full py-6 prose dark:prose-invert">
-      <h2 className="mb-2">{post.title}</h2>
+      <h1 className="mb-2">{post.title}</h1>
       {/* {post.description && (
         <p className="text-xl mt-0 text-slate-700 dark:text-slate-200">
           {post.description}

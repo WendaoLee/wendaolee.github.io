@@ -35,3 +35,5 @@ yarn-error.log*
 next-env.d.ts
 .contentlayer
 pnpm-lock.yaml
+
+content/writings/notes/show-douban-zhengzu-sept-2024.mdx
