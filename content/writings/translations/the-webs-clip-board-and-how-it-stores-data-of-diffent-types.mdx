@@ -15,31 +15,33 @@ date: 2024-09-02
 
 ## 背景
 
-如果你用过一段时间电脑，那么你可能会知道电脑的剪贴板可以存储多种类型的数据（图片、富文本内容、文件等等）。然而，作为一名软件开发人员，我并不能很好地理解剪贴板是如何存储和组织不同类型的数据的，这让我感到非常沮丧。
+如果你用过一段时间电脑，那么你可能会知道电脑的剪贴板可以存储多种类型的数据（图片、富文本内容、文件等等）。然而，作为一名开发者，我并不能很好地理解剪贴板是如何存储和组织不同类型的数据的，这让我感到难过。
 
-于是，最近我决定揭开剪贴板的神秘面纱，并且基于我的学习成果撰写了本文。我们将主要关注Web浏览器的剪贴板及其API，同时也会稍微提及它是如何与操作系统的剪贴板交互的。
+于是，最近我决定揭开剪贴板的神秘面纱，并且基于我的学习成果撰写了本文。
 
-我们将从研究 Web 剪贴板的 API 及其历史开始。Web 剪贴板 API 对数据类型有一些有趣的限制，我们将看看一些公司是如何绕过这些限制的。同时，我们还将探讨一些旨在解决这些限制的提议（尤其是 Web 自定义格式）。
+在本文，我们将主要关注Web浏览器的剪贴板及其API，同时也会稍微提及它是如何与操作系统的剪贴板交互的。
+
+我们将从研究 Web 剪贴板的 API 及其历史开始。Web 剪贴板的 API 对数据类型有一些有趣的限制，我们可以看到一些公司是如何绕过这些限制的。同时，我们还将探讨一些旨在解决这些限制的提议（尤其是 Web 自定义格式）。
 
 如果你曾经好奇过网络剪贴板的工作原理，那么这篇文章就是为你准备的。
 
 ## 使用浏览器的异步剪切板API `Clipboard`
 
-如果从其他网站上复制了一些内容并粘贴到Google文档中，不难发现其中一些格式会被保留下来，比如链接、字体大小和颜色等：
+当你从其他网站上复制了一些内容并粘贴到Google文档中，不难发现其中一些格式会被保留下来，比如链接、字体大小和颜色等：
 
 ![复制内容时格式保留的示例](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/1-copy-paste-rich-content.png)
 
-但是如果我把内容黏贴到 VSCode 中，那么只会保留原始的文本内容：
+但是如果我们把内容黏贴到 VSCode 中，那么只会保留原始的文本内容：
 
 ![复制内容时格式保留的示例](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/2-copy-paste-into-vscode.png)
 
-剪切板是通过将信息以用MIME类型标记的不同[数据表示形式（representations）](https://www.w3.org/TR/clipboard-apis/#list-of-representations)进行存储来满足这两种使用场景的。W3C关于剪切板相关的[规范](https://www.w3.org/TR/clipboard-apis/#mandatory-data-types-x)要求，向剪切板写入数据或从剪切板读取数据时，这三种数据类型必须要被支持：
+剪切板是通过将信息以用MIME类型标记的不同[数据表示形式（representations）](https://www.w3.org/TR/clipboard-apis/#list-of-representations)进行存储以来满足这两种使用场景的。W3C关于剪切板相关的[规范](https://www.w3.org/TR/clipboard-apis/#mandatory-data-types-x)要求，向剪切板写入数据或从剪切板读取数据时，这三种数据类型必须要被支持：
 
 - `text/plain`：它用于存储纯文本数据。
 - `text/html`：它用于存储 HTML 格式的数据。
 - `image/png`：用于存储 PNG 格式的图像数据。
 
-所以当我黏贴文本到 Google Docs 时，Google Docs 会读取 `text/html` 的表示形式，由于它使用 `HTML` 格式进行保存，因此能够保留相应的富文本格式；而 VSCode 只关心原始文本，因此它只会读取 `text/plain` 的表示形式的数据。这非常合理。
+所以当我黏贴文本到 Google Docs 时，Google Docs 会读取以 `text/html` 为表示形式的数据，由于它使用 `HTML` 格式进行保存，因此能够保留相应的富文本格式；而 VSCode 只关心原始文本，因此它只会读取以 `text/plain` 作为表示形式的数据。这非常合理。
 
 通过浏览器的异步剪切板API `navigator.clipboard` 的 `read` 方法读取相应表示形式的数据是非常简单的：
 
@@ -55,7 +57,7 @@ for (const item of items) {
 }
 ```
 
-通过 `write` 方法向剪切板写入不同表示形式的数据稍微复杂一点，但它依然比较简单。首先，我们为每个想要写入剪贴板的表示形式构造 `Blob` 对象：
+但是通过 `write` 方法向剪切板写入不同表示形式的数据稍微复杂一点，但它依然比较简单。首先，我们为每个想要写入剪贴板的表示形式构造 `Blob` 对象：
 
 ```javascript
 // 创建一个包含文本的Blob对象
@@ -73,7 +75,7 @@ const clipboardItem = new ClipboardItem({
 });
 ```
 
-> 原作者注：我喜欢 `ClipboardItem` 能够接受键值存储的设计。这与在[《解析，而不是验证》](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/#:~:text=Use%20a%20data%20structure%20that%20makes%20illegal%20states%20unrepresentable) 一文中讨论的使用一种使非法状态不可表示的数据结构的想法相吻合。
+> 原作者注：我喜欢 `ClipboardItem` 能够接受键值存储的设计。这与在[《解析，而不是验证》](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/#:~:text=Use%20a%20data%20structure%20that%20makes%20illegal%20states%20unrepresentable) 一文中讨论的使用一种让非法状态不可表示的数据结构的想法相吻合。
 
 最后，我们使用我们新构建的 `ClipboardItem` 对象，在调用 `write` 方法时传入，便可以向用户的剪切板中写入多格式的数据 ：
 
@@ -83,7 +85,7 @@ await navigator.clipboard.write([clipboardItem]);
 
 ## 除此之外，还能有其他数据类型么？
 
-HTML和图片很酷，但是像JSON这样的通用数据交换格式呢？如果我要编写一个支持复制粘贴的应用程序，不难想象存在将JSON或一些二进制数据复制到剪贴板上的需求。
+HTML和图片很酷，但是像JSON这样的通用数据交换格式呢？如果我要编写一个支持复制粘贴的应用程序，不难想象会存在将JSON或一些二进制数据复制到剪贴板上的需求。
 
 让我们尝试将JSON数据写入剪贴板：
 
@@ -107,9 +109,10 @@ Failed to execute 'write' on 'Clipboard':
 嗯？这是咋回事？这是因为对于 `write` 函数的[规范](https://www.w3.org/TR/clipboard-apis/#dom-clipboard-write)规定了，`text/plain` 、 `text/html` 和 `image/png` 之外的所有数据类型都会被拒绝：
 
 > If type is not in the [mandatory data types](https://www.w3.org/TR/clipboard-apis/#mandatory-data-types-x) list, then reject [...] and abort these steps.
+>
 > 如果“type”不在强制性数据类型列表中，则拒绝……并终止这些步骤。
 
-有趣的是， `application/json` 这一MIME类型在2012年至2021年期间是 强制数据类型（mandatory data types） 列表中的一部分，但在 [w3c/clipboard-apis#155](https://github.com/w3c/clipboard-apis/pull/155) 中从规范里删除了。在此之前，强制数据类型的列表要长得多，其中用于从剪贴板中读取的数据类型有16种，用于向剪切板写入的数据类型有8种。更改之后，仅保留了 `text/plain` 、 `text/html` 和 `image/png` 。
+有趣的是， `application/json` 这一MIME类型在 2012年 至 2021年 期间属于 强制数据类型（mandatory data types） ，但这一点在 [w3c/clipboard-apis#155](https://github.com/w3c/clipboard-apis/pull/155) 中从规范里删除了。在此之前，强制数据类型的列表要长得多，其中用于从剪贴板中读取的数据类型有16种，用于向剪切板写入的数据类型有8种。在这次变更之后，仅保留了 `text/plain` 、 `text/html` 和 `image/png` 。
 
 之所以规范做出了如此更改，是因为大部分浏览器出于安全考虑不愿支持许多强制类型。这一点在规范中的 [强制数据类型](https://www.w3.org/TR/clipboard-apis/#mandatory-data-types-x) 部分中有相应的体现：
 
@@ -135,7 +138,7 @@ document.addEventListener("copy", (e) => {
 })
 ```
 
-“由用户代理程序触发”的意思是它由用户触发的，比如由用户按下`Command`键触发的复制事件。这与通过编程方式使用 `dispatchEvent()` 程序触发的合成事件不同，`dispatchEvent` 触发的事件总是不可信的：
+“由用户代理程序触发”的意思是它是由用户触发的，比如由用户按下`Command`键触发的复制事件。这与通过编程方式使用 `dispatchEvent()` 函数触发的合成事件不同，`dispatchEvent` 触发的事件总是不可信的：
 
 ```javascript
 document.addEventListener("copy", (e) => {
@@ -146,11 +149,11 @@ document.dispatchEvent(new ClipboardEvent("copy"));
 //=> "e.isTrusted is false"
 ```
 
-让我们来看看剪贴板相关的浏览器事件(ClipboardEvent)，看看它们是否允许我们将任意数据类型写入剪贴板。
+现在让我们来看看剪贴板相关的浏览器事件(ClipboardEvent)，看看它们是否允许我们将任意数据类型写入剪贴板。
 
 ## Clipboard Event API
 
-一个 `ClipboardEvent` 对象被用于处理复制、剪切和粘贴事件，其中包含一个 `clipboardData` 属性，其类型为 `DataTransfer` 。 `DataTransfer` 对象由剪贴板事件API使用，它用于存储多个数据表示。
+一个 `ClipboardEvent` 对象被用于处理复制事件（copy）、剪切事件（cut）和粘贴事件（paste），它包含一个 `clipboardData` 属性，其类型为 `DataTransfer` 。 `DataTransfer` 对象由 `ClipboardEvent` 使用，它用于存储多种数据表示。
 
 在 `copy` 和 `paste` 事件中将内容复制到剪贴板上是非常简单的：
 
@@ -172,7 +175,7 @@ document.addEventListener("paste", (e) => {
 });
 ```
 
-现在，让我们回答我们前面的问题：我们能否将JSON数据复制到剪贴板中呢？
+现在，让我们回答我们前面的问题：我们能否将JSON数据复制到剪贴板中呢？请看下面的代码：
 
 ```javascript
 document.addEventListener("copy", (e) => {
@@ -207,11 +210,11 @@ document.addEventListener("paste", (e) => {
 
 有效！看起来 `clipboardData.setData` 函数并不像 `write` 函数那样对数据类型进行限制。
 
-但是……为什么呢？为什么我们可以使用 `Clipboard Event` 中的 `clipboardData` 读写任意的数据类型，但在使用 `Clipboard`API时却不能呢？
+但是……为什么呢？为什么我们可以使用 `Clipboard Event` 中的 `clipboardData` 键读写任意的数据类型，但在使用 `Clipboard`API时却不能呢？
 
 ## `clipboardData` 的历史
 
-`Clipboard`API，或者说异步剪切板API是较新的，它是在[2017](https://www.w3.org/TR/2017/WD-clipboard-apis-20170929/)年添加到规范中的，但 `clipboardData` 的出现时间要早得多。
+`Clipboard`API，或者说异步剪切板API是较新的，它是在[2017](https://www.w3.org/TR/2017/WD-clipboard-apis-20170929/)年添加到规范中的，但 `clipboardData` 对象的出现时间要早得多。
 
 2006年的[W3C草案](https://www.w3.org/TR/2006/WD-clipboard-apis-20061115/)便已定义了 `clipboardData` 及其 `setData` 和 `getData` 方法（当时还没有MIME类型）：
 
@@ -223,7 +226,7 @@ document.addEventListener("paste", (e) => {
 >
 > `getData()` 方法只接受一个参数，该参数允许目标请求特定类型的数据。
 
-但事实证明，`clipboardData` 甚至比2006年的草案还要古老。请看下面这段来自草案里“本文档状态”（"Status of this Document"）部分的引述：
+但事实证明，`clipboardData` 甚至比2006年的草案还要古老。请看下面这段来自2006年的W3C草案里“本文档状态”（"Status of this Document"）部分的引述：
 
 > In large part [this document] describes the functionalities as implemented in Internet Explorer...
 >
