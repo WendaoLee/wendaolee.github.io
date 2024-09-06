@@ -26,7 +26,18 @@ export function Mdx({ code }: MdxProps) {
   <Component components={{...components,
     p: (props) => <p {...props} className="text-base md:text-lg leading-7" />,
     // h2: (props) => <h2 {...props} className="text-2xl md:text-3xl font-bold mt-8 mb-4" />,
-  }} >
+    img: (props) => (
+      <figure className="flex flex-col items-center mb-4">
+         {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img {...props} className="max-w-full h-auto" alt={props.alt} />
+        {props.alt && (
+          <figcaption className="text-center text-sm text-gray-600 mt-2">
+            {props.alt}
+          </figcaption>
+        )}
+      </figure>
+    )
+  }}>
   </Component>
   </>
 }
