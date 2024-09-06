@@ -4,6 +4,7 @@ import { allWritings } from "contentlayer/generated"
 import { Metadata } from "next"
 import { Mdx } from "@/components/MdxComponents"
 import { match } from "ts-pattern"
+import { getReadableDate } from "@/lib/date"
 
 interface PostProps {
   params: {
@@ -37,7 +38,7 @@ export async function generateMetadata({
   const postTags = post.tags ?? []
 
   return {
-    title: `post.title - 李问道的博客 / Blog of Wendaolee`,
+    title: `${post.title} - 李问道的博客 / Blog of Wendaolee`,
     description: post.description,
     category: postSEOCategory, 
     keywords: postTags,
@@ -61,6 +62,12 @@ export default async function PostPage({ params }: PostProps) {
   return (
     <article className="min-w-full py-6 prose dark:prose-invert">
       <h1 className="mb-2">{post.title}</h1>
+      {/* <p className="text-lg text-slate-600 dark:text-slate-400">
+        {getReadableDate(post.date)}
+      </p> */}
+      <p className="text-lg text-slate-600 dark:text-slate-400">
+        {`"${post.description}"`}
+      </p>
       {/* {post.description && (
         <p className="text-xl mt-0 text-slate-700 dark:text-slate-200">
           {post.description}
