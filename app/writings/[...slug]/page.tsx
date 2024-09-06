@@ -37,7 +37,7 @@ export async function generateMetadata({
   const postTags = post.tags ?? []
 
   return {
-    title: post.title,
+    title: `post.title - 李问道的博客 / Blog of Wendaolee`,
     description: post.description,
     category: postSEOCategory, 
     keywords: postTags,
