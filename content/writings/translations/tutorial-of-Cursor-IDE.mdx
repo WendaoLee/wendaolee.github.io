@@ -1,0 +1,204 @@
+---
+title: 【Translation】改译 | Cursor 使用教程
+description: 对 Juan Stoppa 的博文 Code Smarter, Not Harder - Developing with Cursor and Claude Sonnet 的改译。本文基于原文的内容框架根据我自己的使用体验进行了大量改写。但因为行文是按照原文的逻辑来的，因此归类到翻译类别。
+tags:
+    - 翻译
+    - cursor
+    - 如何使用 cursor
+category: translation
+date: 2024-09-06
+---
+
+本文是对 Juan Stoppa 的博文 [Code Smarter, Not Harder: Developing with Cursor and Claude Sonnet](https://jstoppa.com/posts/artificial-intelligence/fundamentals/code-smarter-not-harder-developing-with-cursor-and-claude-sonnet/post/) 的改译。之所以叫改译是因为本文大部分内容是根据我自己的使用体验来讲的，但是因为行文的框架是参考他的文章架构来的，因此叫做改译。
+
+本篇教程主要介绍了 Cursor 的基本功能的使用。
+
+## 简单介绍一下 Cursor
+
+Cursor 是由 [Anysphere](https://anysphere.inc/) 这个实验室打造的代码编辑器，它基于 VSCode 修改派生，因此所有你在 VSCode 上的配置都能够导入到 Cursor 里使用，如果你平常使用 VSCode 进行开发，那么你能够非常便捷地迁移过来。
+
+Cursor 和 VSCode 的最大的不同点在于它内置了 AI 进行代码的协作，为此它对 VSCode 进行了诸多修改，这些修改使得它的体验比在 VSCode 上使用诸如 Github Copilot 一类的插件更加舒服。这么说也许很单调，我以 Github Copilot 进行对比说明。
+
+Github Copilot 在 VSCode 中是以一个插件导入的：
+
+![Github Copilot](/img/【Translation】改译-Cursor使用教程/1-GithubCopilot.png)
+
+使用上，Copilot的辅助集中在这几点上：代码补全、和GPT一样的对话窗口与代码的生成重写。
+
+代码补全是我喜欢的 Copilot 的核心功能，它会在你书写代码的时候自动推理出后续的内容，你只需要按一下 `Tab` 键就能接收它的建议：
+
+![Github Copilot的代码补全，以我现在在书写的文档为例](/img/【Translation】改译-Cursor使用教程/2-GithubCopilot的代码补全.png)
+
+它的最大优点是沉浸式的体验：我可以很方便地复写一些样板代码，不需要离开我的编辑器，不需要去复制黏贴原有的代码——这是不讲生成效果而言的，然而事实上它在大部分情况下确实能够生成出我想要的代码。
+
+而后是和 GPT 一样的对话窗口，它的优点是能够便捷地将当前你正在编辑的代码的上下文同时提交给大模型，从而获得更好的生成效果：
+
+![Github Copilot的对话窗口](/img/【Translation】改译-Cursor使用教程/3-GithubCopilot的对话窗.png)
+
+最后是平平无奇的编辑器内的代码生成编辑重写，你可以通过 VSCode 的小灯泡（正式名叫 Code Action，用于对代码做出一些行为）触发：
+
+![Github Copilot的代码生成重写会出现在 Code Action](/img/【Translation】改译-Cursor使用教程/4-生成编辑重写-1.png)
+
+选择使用 Copilot 进行修改后，会弹出相应的 prompt 输入框，你可以输入 `/doc` 之类的命令帮助 Copilot 是进行文档生成或是更好地对你的代码做出修改/重写：
+
+![Github Copilot的代码生成重写](/img/【Translation】改译-Cursor使用教程/4-生成编辑重写-2.png)
+
+虽然看起来很 awesome ，但是我个人的实际体验是不太行的。:( 因为它的重写大多数情况下会重新生成一份代码，然后我又要去删除掉原有的代码......只能说，我用 Copilot 主要就是爱代码补全这个功能。
+
+而 Cursor 的使用体验尤为惊人，Copilot 做得好的，它做得更好;Copilot 做不好的，它做得趋于完美。
+
+代码补全，个人体验下来精度更加高，Copilot 时常会出现不能完好生成封闭的代码块的情况（例如不能正确生成 `()` `{}` 的彼此的配对），但它很少出现这种情况。
+
+对话窗口，我的天哪，Copilot 和它对比真的是个垃圾，因为 Cursor 对话生成的代码是可以直接应用到你的代码上的：
+
+![Cursor对话窗的应用功能，那个apply就是将它修改的代码应用到代码上](/img/【Translation】改译-Cursor使用教程/5-Cursor的对话窗的apply功能.png)
+
+之所以 Cursor 能直接将修改部分的内容应用到你的代码上，是因为它自己微调了一个模型，让 LLM 输出了 Git 那样的 [diff fomat](https://www.cursor.com/blog/instant-apply#diff-models)。借助 diff format 它能够精确地修改相应地代码段。
+
+并且更舒服的是， Cusor 在一次对话里能够方便地传递多个源代码文件或是扫描你整个项目的代码仓（按下 `ctrl + enter`）提取出相关内容作为向大模型询问的上下文，以获得更精确的回答：
+
+![可以通过相关UI快速添加相关文件，按下`ctrl + enter`会基于代码仓的代码进行对话](/img/【Translation】改译-Cursor使用教程/6-Cursor的对话框的加文件功能.png)
+
+生成速度和索引速度非常流畅，因为它会类似于 JetBrains 那样对代码仓建立索引，不过它的索引是做向量化（embeddings，习惯翻译是向量内嵌，但我喜欢叫它向量化），因此在索引的时候可以便捷地做相似性的搜索以获得更好的生成效果。
+
+![Cursor的索引功能](/img/【Translation】改译-Cursor使用教程/7-Cursor的索引功能.png)
+
+除此之外，Cursor 自己内置了比较方便的快捷键，在后文里我会提到这些内容。
+
+总之简单粗暴的一句话：Cursor 真的使用体验爆杀 Copilot。
+
+虽然从我之前写 VSCode 的插件的经验来看，之所以一些东东 Copilot 使用体验一般，最主要还是因为作为 VSCode 插件限制了它，但是 Cursor 是魔改的编辑器，因此很多受限的功能都能大胆自由地去做，也无怪乎 Cursor 能做得那么好。
+
+## Cursor 的基本使用 
+
+### 安装
+
+Cursor 需要去它的官网上下载：[https://www.cursor.com/](https://www.cursor.com/)。下载完后需要注册才能使用，支持 Google 与 Github 账号登录。
+
+Cursor 采取的是订阅制。新用户可以试用两周的 Pro 订阅。而要订阅 Pro 的话，每个月需要支付 20 刀（大约一百四十元上下浮动）。虽然它确实好用，但是有丢丢小贵是真的（
+
+安装完后，Cursor 会在第一次启动时提示你是否要导入你的 VSCode 配置，导入完成后，你基本上就拥有了 AI 增强版的 VSCode 了。
+
+### 快捷键及对应的功能
+
+Cursor 具有以下快捷键使用相应的AI功能。
+
+#### 1. `CTRL/CMD + L` 打开对话框
+
+使用 `CTRL/CMD + L` 键在编辑器的右边打开对话框（这个 `L` 是 vim 键位下的向右，vim 键位下的方向键是 `h,j,k,l` 在键盘上为一行的键位，`h`在左边所以向左，`l` 在右边向右，`j` 向下 `k` 向上。我很喜欢这一点）。
+
+![图源原文，右边打开的便是对话框，引用的其他来源的图片都会在前边说明](/img/【Translation】改译-Cursor使用教程/8-cursor-ctrl-cmd-plus-l.png)
+
+#### 2. `CTRL/CMD + K` 打开生成窗口
+
+使用 `CTRL/CMD + K` 键在光标停留上方（因为 `k` 代表向上！💕）打开生成窗口：
+
+![图源原文，上方打开的是生成代码的对话框](/img/【Translation】改译-Cursor使用教程/9-cursor-ctrl-cmd-plus-k.png)
+
+需要额外说明的是，当你选中一块内容后，按下 `CTRL/CMD + K` 键，也能够打开相应的窗口，此时生成内容依据的上下文会是你选中的内容：
+
+![选中内容生成](/img/【Translation】改译-Cursor使用教程/10-选中内容生成.png)
+
+#### 3. `CTRL/CMD + I` 打开 Composer
+
+使用 `CTRL/CMD + I` 能够打开 Cursor 的特殊功能：Composer。Composer 是 Cursor 的特色功能，它的功能就是在一个对话窗口里同时对多个文件进行修改。
+
+想要使用 Composer ，首先要在 Cursor 的设置里打开它，你需要按这个顺序访问它的设置页面：`File > Prefereces > Cursor Settings > Features > Enable Composer`
+
+![图源原文，Composer设置](/img/【Translation】改译-Cursor使用教程/11-打开Composer.png)
+
+使用 `CTRL + I` 打开的 `Composer` 是这样的一个可以拖动的小面板界面：
+
+![Composer的小面板界面](/img/【Translation】改译-Cursor使用教程/12-Composer的小界面.png)
+
+你可以在这里输入一个分步骤、涉及多文件的复杂修改，而后 Composor 会同时生成涉及到的文件的所有修改。但通常而言，使用 Composer 应该在通过小面板界面的右上角的按钮打开它的完整界面：
+
+![打开Composer的完整界面](/img/【Translation】改译-Cursor使用教程/13-打开Composor的完整界面.png)
+
+它会比较清晰地在左边列出在你累计的对话中，你要修改那些文件的哪些地方，并且你可以直接 apply 相关的修改。
+
+这一点是目前我体验最好的 **AI辅助编程** 的方式：你可以很自然地不断在一个窗口内用自然语言描述你的需求，而不需要在多个窗口和文件里进行切换。我感觉 Cursor 是探索出来了最好的交互形式。
+
+### 便捷提供上下文信息的 `@` 注记
+
+为了更方便地向大语言模型提供上下文信息，Cursor 内设了不同地 `@` 注记，使用 `@` 注记能够方便地注入不同类型的上下文信息到你的对话里。
+
+`@` 注记有一些是通用的，在所有对话窗口中都可以使用；有一些是特殊的，我会在提到时做补充说明。
+
+> 注：事实上 Github Copilot 也有类似的功能，但是没 Cursor 齐全好用。
+
+#### 1. `@Files` 注记，传递指定代码文件的上下文
+
+当你在对话框输入 `@Files` 注记时，Cursor 会自动弹出对你代码仓库的检索列表，你可以输入你想要导入上下文的文件名，而后按下确认键，相应的文件里的内容便会届时自动注入到上下文中：
+
+![`@Files`注记](/img/【Translation】改译-Cursor使用教程/14-Files注记.png)
+
+#### 2. `@Code` 注记，传递指定代码块的上下文
+
+`Code` 注记提供更精确的代码片段，`@` 注记的使用都大同小异，会弹出相应的检索框，你输入关键词后在索引列表中选择相应的代码块即可。
+
+代码块的识别是由你开发环境的 LSP 决定的，大多数情况下都是精确的：
+
+![`@Code`注记](/img/【Translation】改译-Cursor使用教程/15-Code注记.png)
+
+#### 3. `@Docs` 注记，从函数或库的官方文档里获取上下文
+
+`@Docs` 注记能够从函数或库的官方文档里获取上下文。目前，它只能从可访问的在线文档里获取上下文。因此，你自己写的类似于 JSDoc 之类的文档信息除非你能整一个线上地址，否则是没用的~我个人觉得这个功能不是很泛用。
+
+![`@Docs`注记，通常使用需要你手动导入文档](/img/【Translation】改译-Cursor使用教程/16-Docs注记.png)
+
+#### 4. `@Web` 注记，从搜索引擎的搜索内容获取上下文
+
+`@Web` 注记类似于一种方法，它会默认将你的提问先向搜索引擎进行搜索，然后从搜索结果里提取上下文喂给 LLM。但因为 Cursor 官方没公开透明具体的实现法子，它自个也没调好，实际上使用效果忽好忽差的。
+
+如果你遇到问题想偷懒不打开网页搜报错或是大模型自身的回答无法解决问题，你可以直接使用这个注记。
+
+#### 5. `@Folders` 注记，传递文件目录信息的上下文
+
+`@Folders` 注记能够提供文件目录的相关信息，如果你遇到什么路径问题，可以考虑使用这个注记向大模型寻求解决方法。
+
+![`@Folders`注记](/img/【Translation】改译-Cursor使用教程/17-Folders注记.png)
+
+#### 6. `@Chat` 注记，只能在文件内的代码生成窗口里使用的注记
+
+`@Chat` 注记只能在文件内的代码生成窗口（`CTRL + K` 打开的窗口）里使用，它能够将你右边打开的对话窗口里的对话内容作为上下文传递给大模型。
+
+![`@Chat`注记](/img/【Translation】改译-Cursor使用教程/18-Chat注记.png)
+
+#### 7. `@Definitions` 注记，只能在文件内的代码生成窗口里使用的注记
+
+和 `@Chat` 注记一样，`@Definitions` 注记只能在文件内的代码生成窗口里使用。它会将你光标停留的那一行代码里涉及到的变量、类型的相关定义作为上下文传递给大模型，类似于 `@Code` 注记。
+
+![`@Definitions`注记](/img/【Translation】改译-Cursor使用教程/19-Definitions注记.png)
+
+#### 8. `@Git` 注记，只能在对话窗里使用
+
+对话窗指的是通过 `CTRL + L` 与 `CTRL + I` 打开的对话窗口。`@Git` 注记能够将你当前的 Git 仓库的 commit 历史作为上下文传递给大模型。
+
+感觉比较适合在代码协作的时候查战犯清算的时候使用。
+
+#### 8. `@Codebase` 注记，只能在对话窗里使用，用于在代码仓里扫描相应的文件传入
+
+`Codebase` 注记其实不是很好用，与其说它是扫代码仓，不如说是从代码仓里寻找到你想要的文件的上下文传入，也就是 `CodebaseFilter` 。
+
+我感觉平时开发不会用到，因为它要传递过滤条件设置过滤参数：
+
+![`@Codebase`注记需要你传递数量、过滤/排序时使用的模型等信息](/img/【Translation】改译-Cursor使用教程/20-Codebase注记.png)
+
+它和通过 `CTRL + enter` 快捷键的区别估计就在于你能够自定义查询的过滤规则。但我感觉没啥用。
+
+## 最后 
+
+如果你有经济条件的话，可以试试用用 Cursor ，它的使用体验真的很好（即使没有）。你别看我文字稿好像也没讲啥，只要你用一下就能有很深的体会了。开发体验是真的好。
+
+这篇稿子虽然说是改译，但好像基本上都是我把我自己的使用体验写下来了~因此如果你去看原文，估计会发现这里没内容能和它对上。
+
+
+
+
+
+
+
+
+
+
