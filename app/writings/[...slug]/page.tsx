@@ -4,7 +4,6 @@ import { allWritings } from "contentlayer/generated"
 import { Metadata } from "next"
 import { Mdx } from "@/components/MdxComponents"
 import { match } from "ts-pattern"
-import { getReadableDate } from "@/lib/date"
 
 interface PostProps {
   params: {
@@ -73,7 +72,7 @@ export default async function PostPage({ params }: PostProps) {
       {/* <p className="text-lg text-slate-600 dark:text-slate-400">
         {getReadableDate(post.date)}
       </p> */}
-      <p className="text-lg text-slate-600 dark:text-slate-400">
+      <p className="text-base md:text-lg text-slate-600 dark:text-slate-400">
         {`"${post.description}"`}
       </p>
       {/* {post.description && (

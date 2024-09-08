@@ -1,8 +1,9 @@
-"use client"
+/**
+ * @mention 该组件永远不应该作为客户端组件使用
+ */
 import Image from "next/image"
 import { useMDXComponent } from "next-contentlayer2/hooks"
 import WritingsLists from "./WritingsList"
-import { useEffect } from "react"
 
 const components = {
   Image,
@@ -15,10 +16,6 @@ interface MdxProps {
 
 
 export function Mdx({ code }: MdxProps) {
-
-  useEffect(()=>{
-    const chapterTitles = document.querySelectorAll("h2[id]")
-  },[])
   
   const Component = useMDXComponent(code)
 
