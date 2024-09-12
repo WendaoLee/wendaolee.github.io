@@ -1,4 +1,3 @@
-"use client";
 import { allWritings } from "@/.contentlayer/generated";
 import { getReadableDate } from "@/lib/date";
 
