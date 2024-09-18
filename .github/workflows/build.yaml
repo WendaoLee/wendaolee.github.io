@@ -33,3 +33,14 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out  # 静态导出文件夹路径
           force_orphan: true  # 确保 gh-pages 分支不会出现冲突
+
+      - name: Sleep 30s
+        run: sleep 30
+
+      - name: IndexNow Submit
+        uses: bojieyang/indexnow-action@v2
+        with:
+          sitemap-location: https://leewendao.otterstack.cn/sitemap.xml
+          # 后面需要修改
+          since-unit: year
+          key: ${{ secrets.INDEXNOW_KEY }}
