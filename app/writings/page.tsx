@@ -1,12 +1,21 @@
 import WritingsLists from "@/components/WritingsList";
+import { Metadata } from "next";
 
-export async function generateMetadata(){
+export async function generateMetadata():Promise<Metadata>{
     return {
         title: "文章列表 - 李问道的博客 / Blog of Wendaolee",
         description: "李问道的文章索引列表。 // Here is WendaoLee(or Erika Lee)'s blogs' list.You can find something interesting here.",
-        keyword:["李问道","李问道的文章","Wendaolee","Wendaolee's blog","Erika Lee","Erika Lee's blog","Blogs of Wendaolee"],
-        authors: ["李问道","Wendao Lee","Erika Lee","Wendaolee"],
+        keywords:["李问道","李问道的文章","Wendaolee","Wendaolee's blog","Erika Lee","Erika Lee's blog","Blogs of Wendaolee"],
+        authors: [{name:"李问道",url:"https://leewendao.otterstack.cn"},{name:"Wendao Lee",url:"https://leewendao.otterstack.cn"},{name:"Erika Lee",url:"https://leewendao.otterstack.cn"},{name:"Wendaolee",url:"https://leewendao.otterstack.cn"}],
         creator: "WendaoLee",
+        openGraph: {
+            images: ["/wendaolee.jpeg"],
+            type: "website",
+            siteName: "文章列表 - 李问道的博客 / Blog of Wendaolee",
+            url:"https://leewendao.otterstack.cn",
+            title:"文章列表 - 李问道的博客 / Blog of Wendaolee",
+            description:"李问道的文章索引列表。 // Here is WendaoLee(or Erika Lee)'s blogs' list.You can find something interesting here.",
+          },
     }
 }
 

@@ -42,6 +42,14 @@ export async function generateMetadata({
     category: postSEOCategory, 
     keywords: postTags,
     authors:[{name:"李问道",url:"https://leewendao.otterstack.cn"},{name:"Wendaolee",url:"https://leewendao.otterstack.cn"},{name:"Erika Lee",url:"https://leewendao.otterstack.cn"},{name:"leewendao",url:"https://leewendao.otterstack.cn"}],
+    openGraph: {
+        images: ["/wendaolee.jpeg"],
+        type: "website",
+        siteName: `${post.title} - 李问道的博客 / Blog of Wendaolee`,
+        url:"https://leewendao.otterstack.cn",
+        title:`${post.title} - 李问道的博客 / Blog of Wendaolee`,
+        description:post.description,
+      },
   }
 }
 
