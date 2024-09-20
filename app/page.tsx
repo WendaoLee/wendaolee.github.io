@@ -1,6 +1,13 @@
 import { allWritings } from "@/.contentlayer/generated";
 import { getReadableDate } from "@/lib/date";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata:Metadata = {
+  alternates:{
+    canonical:"https://leewendao.otterstack.cn"
+  }
+}
 
 export default function Home() {
   const processedWritings = allWritings
@@ -13,6 +20,7 @@ export default function Home() {
     })
     .slice(0, 8);
   return (
+    <>
     <div className=" w-full">
       <div className="mt-[5%] text-base flex flex-col leading-normal">
         <div className="w-full mb-4 flex items-center justify-between gap-6">
@@ -120,5 +128,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </>
   );
 }

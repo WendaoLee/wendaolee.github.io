@@ -33,7 +33,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head>
         <link rel="sitemap" href="/sitemap.xml" />
         <link rel="robots" href="/robots.txt" />
-        <link rel="canonical" href="https://leewendao.otterstack.cn" />
         <meta name="msvalidate.01" content="57E0CBA3CFE186ABC92C0F15F03951DF" />
       </head>
       <body
