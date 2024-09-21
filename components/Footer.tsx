@@ -23,7 +23,7 @@ export default function Footer() {
             </a> */}
         </div>
       <p className="text-sm text-center underline">
-        <a href="/">
+        <a href="/" aria-label="点击此处返回李问道的博客">
             © 2024 李问道 - Blog of Wendaolee
         </a>
       </p>

@@ -7,7 +7,7 @@ export default function Header(){
 
   const linkFontClass = "text-sm md:text-xl";
     return (
-            <header className="mb-10">
+            <nav className="mb-10">
               <div className="flex items-center justify-between ">
                 <nav className="mr-auto text-sm font-medium space-x-6">
 
@@ -23,6 +23,6 @@ export default function Header(){
                   <ModeToggle />
                 </div>
               </div>
-            </header>
+            </nav>
     )
 }
