@@ -28,12 +28,36 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "李问道的博客 / Blog of Wendaolee||Erika Lee",
+    url: "https://leewendao.otterstack.cn",
+    description: "这里是李问道的个人博客站点👏存放了李问道个人的创作产出。'求取知识是贯穿人一生的主题'——这个站点便是李问道存放自己对知识的求取的地方。",
+    image: "https://leewendao.otterstack.cn/wendaolee.jpeg",
+    author: {
+      "@type": "Person",
+      name: "李问道",
+      url: "https://leewendao.otterstack.cn",
+    },
+    mainEntityOfPage: [
+      {
+        "@type": "WebPage",
+        "@id": "https://leewendao.otterstack.cn/writings",
+        name: "文章列表",
+        description: "李问道的文章索引列表。"
+      },
+    ]
+  };
+
   return (
     <html lang="en">
       <head>
         <link rel="sitemap" href="/sitemap.xml" />
         <link rel="robots" href="/robots.txt" />
         <meta name="msvalidate.01" content="57E0CBA3CFE186ABC92C0F15F03951DF" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body
         className={`font-serif antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${inter.className}`}
