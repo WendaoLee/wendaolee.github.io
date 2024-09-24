@@ -17,7 +17,7 @@ export default function Header(){
                   {/* <IntelligentLInk className={linkFontClass} href="/about"></Link> */}
                 </nav>
                 <div className="flex justify-between gap-3">
-                  <a href="/rss.xml">
+                  <a href="/rss.xml" aria-label="使用rss订阅李问道的博客">
                     <Rss/>
                   </a>
                   <ModeToggle />
