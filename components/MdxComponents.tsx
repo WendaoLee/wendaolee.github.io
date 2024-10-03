@@ -21,7 +21,7 @@ export function Mdx({ code }: MdxProps) {
 
   return <>
   <Component components={{...components,
-    p: (props) => <p {...props} className="text-base md:text-lg leading-7" />,
+    p: (props) => <p {...props} className="text-base leading-7" />,
     // h2: (props) => <h2 {...props} className="text-2xl md:text-3xl font-bold mt-8 mb-4" />,
     img: (props) => (
       <figure className="flex flex-col items-center mb-4">

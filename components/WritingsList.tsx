@@ -15,7 +15,7 @@ export default function WritingsLists() {
             .filter((post) => post.category === "blog")
           .map((post) => (
             <li key={post.slug}>
-              <a className="text-[17px]" aria-label={post.title} href={`${post.slug}`}>
+              <a className="text-[16px] no-underline font-bold" aria-label={post.title} href={`${post.slug}`}>
                 {post.title}
               </a>{" "}
               , {getReadableDate(post.date)}
@@ -32,7 +32,7 @@ export default function WritingsLists() {
             .filter((post) => post.category === "essay")
           .map((post) => (
             <li key={post.slug}>
-              <a className="text-[17px]" href={`${post.slug}`}>
+              <a className="text-[16px] no-underline font-bold" href={`${post.slug}`}>
                 {post.title}
               </a>{" "}
               , {getReadableDate(post.date)}
@@ -49,7 +49,7 @@ export default function WritingsLists() {
           .filter((post) => post.category === "translation")
           .map((post) => (
             <li key={post.slug}>
-              <a className="text-[17px]" href={`${post.slug}`}>
+              <a className="text-[16px] no-underline font-bold" href={`${post.slug}`}>
                 {post.title}
               </a>{" "}
               , {getReadableDate(post.date)}
@@ -66,7 +66,7 @@ export default function WritingsLists() {
           .filter((post) => post.category === "note")
           .map((post) => (
             <li key={post.slug}>
-              <a className="text-[17px]" href={`${post.slug}`}>
+              <a className="text-[16px] no-underline font-bold" href={`${post.slug}`}>
                 {post.title}
               </a>{" "}
               , {getReadableDate(post.date)}
@@ -83,7 +83,7 @@ export default function WritingsLists() {
           .filter((post) => post.category === "story")
           .map((post) => (
             <li key={post.slug}>
-              <a className="text-[17px]" href={`${post.slug}`}>
+              <a className="text-[16px] no-underline font-bold" href={`${post.slug}`}>
                 {post.title}
               </a>{" "}
               , {getReadableDate(post.date)}
