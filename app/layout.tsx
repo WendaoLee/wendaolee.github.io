@@ -14,7 +14,7 @@ export const metadata:Metadata = {
   authors: [{name:"李问道",url:"https://leewendao.otterstack.cn"},{name:"Wendao Lee",url:"https://leewendao.otterstack.cn"},{name:"Erika Lee",url:"https://leewendao.otterstack.cn"},{name:"Wendaolee",url:"https://leewendao.otterstack.cn"}],
   creator: "WendaoLee",
   openGraph: {
-    images: ["/wendaolee.jpeg"],
+    images: ["https://leewendao.otterstack.cn/wendaolee.jpeg"],
     type: "website",
     siteName: "李问道的博客 / Blog of Wendaolee||Erika Lee",
     url:"https://leewendao.otterstack.cn",
