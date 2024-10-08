@@ -6,7 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `https://leewendao.otterstack.cn${ele.slug}`,
     lastModified: ele.date,
     changeFrequency: 'weekly',
-    priority: 0.8,
+    priority: 0.5,
   }))
 
   const essays:MetadataRoute.Sitemap = rankedEssays.map(ele => ({
@@ -50,7 +50,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: 'https://leewendao.otterstack.cn/writings',
       lastModified: new Date(),
       changeFrequency: 'daily',
-      priority: 0.8,
+      priority: 1,
     },
     ...blogs,
     ...essays,

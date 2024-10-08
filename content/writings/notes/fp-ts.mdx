@@ -6,8 +6,42 @@ tags: [fp-ts]
 date: 2024-09-03 
 ---
 
+## 1. `chain = flatMap`
+
+`chain` 做的事情（mapping and then flattening）：
+
+1. 检查是否有值
+2. 如果有值，则将该值传入函数，并返回一个新的被包装的类型
+
 
 ```typescript
 import * as O from 'fp-ts/Option'
-import * as E from 'fp-ts/Either'
+
+pipe(
+    ns,
+    head,
+    O.map(inverse)
+    O.flatten
+)
+
+// 等价于
+pipe(
+    ns,
+    head,
+    O.chain(inverse)
+)
+```
+
+## 2. `fromPredicate`
+
+```typescript
+const isEven = (n: number) => n % 2 === 0
+
+const getEven = O.fromPredicate(isEven) // Option<number>
+
+type Shape = Circle | Square
+
+const isCircle = (shape: Shape): shape is Circle => shape.kind === 'circle'
+
+const getCircle = O.fromPredicate(isCircle) // Option<Shape>
 ```

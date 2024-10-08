@@ -42,6 +42,14 @@ export async function generateMetadata({
     category: postSEOCategory, 
     keywords: postTags,
     authors:[{name:"李问道",url:"https://leewendao.otterstack.cn"},{name:"Wendaolee",url:"https://leewendao.otterstack.cn"},{name:"Erika Lee",url:"https://leewendao.otterstack.cn"},{name:"leewendao",url:"https://leewendao.otterstack.cn"}],
+    openGraph: {
+        images: ["/wendaolee.jpeg"],
+        type: "website",
+        siteName: `${post.title} - 李问道的博客 / Blog of Wendaolee`,
+        url:"https://leewendao.otterstack.cn",
+        title:`${post.title} - 李问道的博客 / Blog of Wendaolee`,
+        description:post.description,
+      },
   }
 }
 
@@ -72,7 +80,7 @@ export default async function PostPage({ params }: PostProps) {
       {/* <p className="text-lg text-slate-600 dark:text-slate-400">
         {getReadableDate(post.date)}
       </p> */}
-      <p className="text-base md:text-lg text-slate-600 dark:text-slate-400">
+      <p className="text-base md:text-lg text-slate-600 dark:text-slate-400" id="post-description" aria-label="文章描述" >
         {`"${post.description}"`}
       </p>
       {/* {post.description && (
@@ -82,6 +90,7 @@ export default async function PostPage({ params }: PostProps) {
       )} */}
       <hr className="my-4" />
       <Mdx code={post.body.code} />
+      <p className="text-right">【END】</p>
     </article>
   )
 }
