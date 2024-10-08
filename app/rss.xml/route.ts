@@ -15,7 +15,7 @@ export async function GET() {
         feed.item({
             title: post.title,
             description: post.description as string,
-            url: `https://leewendao.otterstack.cn/${post.slug}`,
+            url: `https://leewendao.otterstack.cn${post.slug}`,
             date: post.date,
         })
     })
