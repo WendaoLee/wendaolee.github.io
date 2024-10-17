@@ -112,7 +112,7 @@ export default function BlogSearch() {
   return (
     <>
       <button
-        className="w-[24px] h-[24px] flex items-center justify-center rounded-full bg-gray-200 dark:bg-slate-950 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        className="w-[24px] h-[24px] flex items-center justify-center rounded-full bg-white dark:bg-slate-950 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
         onClick={() => setOpen(true)}
       >
         <Search className="w-[23px] h-[23px] text-gray-600 dark:text-gray-300" />
