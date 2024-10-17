@@ -1,6 +1,7 @@
 import { ModeToggle } from "./ModeToggle";
 import { IntelligentLink } from "./IntelligentLink";
 import { Rss } from "lucide-react";
+import BlogSearch from "./BlogSearch";
 
 export default function Header(){
 
@@ -20,6 +21,7 @@ export default function Header(){
                   <a href="/rss.xml" aria-label="使用rss订阅李问道的博客">
                     <Rss/>
                   </a>
+                  <BlogSearch />
                   <ModeToggle />
                 </div>
               </div>

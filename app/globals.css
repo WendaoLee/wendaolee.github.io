@@ -22,3 +22,20 @@ body{
 .prose :where(blockquote):not(:where([class~="not-prose"],[class~="not-prose"] *)){
     font-style: normal;
 }
+:root {
+  --search-bg: #f3f4f6;
+  --search-text: #1f2937;
+  --search-border: #e5e7eb;
+  --search-placeholder: #9ca3af;
+  --search-hover-bg: #e5e7eb;
+  
+}
+
+.dark {
+  --search-bg: #374151;
+  --search-text: #f3f4f6;
+  --search-border: #4b5563;
+  --search-placeholder: #9ca3af;
+  --search-hover-bg: #4b5563;
+}
+
