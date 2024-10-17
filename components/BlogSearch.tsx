@@ -37,7 +37,7 @@ export const HighlightedText: React.FC<HighlightedTextProps> = ({ text, highligh
     <p>
       {prefix}
       {beforeContext}
-      <span className="bg-blue-600 font-bold">{highlightedText}</span>
+      <span className="bg-blue-400 dark:bg-blue-600 font-bold">{highlightedText}</span>
       {afterContext}
       {suffix}
     </p>
@@ -46,29 +46,6 @@ export const HighlightedText: React.FC<HighlightedTextProps> = ({ text, highligh
 
 
 // 新增的搜索结果组件
-function SearchResults({ searchQuery, filteredPosts, onSelect }: { searchQuery: string, filteredPosts: Writings[], onSelect: (slug: string) => void }) {
-  return (
-    <CommandList className="max-h-[300px] overflow-y-auto">
-      <CommandEmpty className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
-        没有找到相关文章
-      </CommandEmpty>
-      <CommandGroup heading="文章">
-        {filteredPosts.map((post) => (
-          <CommandItem
-            key={`${post._raw.sourceFileName}-${searchQuery}`}
-            onSelect={() => onSelect(post.slug)}
-            className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer dark:data-[selected=true]:bg-accent-dark"
-          >
-            <div>
-              {post.title}
-              {/* <HighlightWithTarget target={searchQuery} source={post.body.raw} /> */}
-            </div>
-          </CommandItem>
-        ))}
-      </CommandGroup>
-    </CommandList>
-  )
-}
 
 export default function BlogSearch() {
   const router = useRouter()
@@ -112,11 +89,10 @@ export default function BlogSearch() {
     }).sort((pre,next) => {
       return mapping[next.title] - mapping[pre.title]
     }).slice(0, 20)
-    console.log(result,mapping)
+    // console.log(result,mapping)
     setFilteredPosts(result)
     setLoading(false)
   }
-
 
   const debouncedSearch = debounce({ delay: 1000 }, handleSearchAsync)
 
@@ -126,7 +102,7 @@ export default function BlogSearch() {
     if(searchQuery != ''){
       debouncedSearch(searchQuery)
     }
-  }, [searchQuery,debouncedSearch])
+  }, [searchQuery])
 
   const handleSelect = useCallback((slug: string) => {
     setOpen(false)
@@ -136,10 +112,10 @@ export default function BlogSearch() {
   return (
     <>
       <button
-        className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        className="w-[24px] h-[24px] flex items-center justify-center rounded-full bg-gray-200 dark:bg-slate-950 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
         onClick={() => setOpen(true)}
       >
-        <Search className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+        <Search className="w-[23px] h-[23px] text-gray-600 dark:text-gray-300" />
       </button>
       <CommandDialog
         open={open}
