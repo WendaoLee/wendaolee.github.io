@@ -9,6 +9,14 @@ export async function GET() {
         site_url: 'https://leewendao.otterstack.cn',
         feed_url: 'https://leewendao.otterstack.cn/rss.xml',
         image_url: 'https://leewendao.otterstack.cn/wendaolee.jpeg',
+        custom_elements: [
+            {
+                'follow_challenge': [
+                    { feedId: '66483857348895744' },
+                    { userId: '66482764915559424' }
+                ]
+            }
+        ]
     })
 
     rankedWritings.slice(0, 10).forEach(post => {
