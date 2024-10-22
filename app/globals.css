@@ -39,3 +39,20 @@ body{
   --search-hover-bg: #4b5563;
 }
 
+.theAfter {
+  position: relative;
+  width: fit-content;
+}
+
+@layer components{
+  .theAfter::after{
+    @apply absolute left-0 bottom-[-11px] w-full h-[13px] bg-gradient-to-br from-indigo-500 via-indigo-700 to-purple-600;
+    content: "";
+    background-image: linear-gradient(45deg, #6366f1, #4f46e5, #7e22ce);
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M0 10 Q 50 20, 100 10 T 200 10" stroke="white" stroke-width="2" fill="none"/></svg>');
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 20" preserveAspectRatio="none"><path d="M0 10 Q 50 20, 100 10 T 200 10" stroke="white" stroke-width="2" fill="none"/></svg>');
+    mask-size: cover;
+    -webkit-mask-size: cover;
+    position: absolute;
+  }
+}

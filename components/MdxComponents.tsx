@@ -33,7 +33,9 @@ export function Mdx({ code }: MdxProps) {
           </figcaption>
         )}
       </figure>
-    )
+    ),
+    h2: (props) => <h2 {...props}  className="theAfter"/>,
+
   }}>
   </Component>
   </>
