@@ -1,0 +1,115 @@
+---
+title: 【Blog】小记一下似乎是 Chormium 在 scrollbar 样式上的 Bug 引发的开发者工具崩溃问题 
+description: 一句话总结：Chormium存在bug，如果您在设置了多个 scrollbar 样式的情况下在生产环境下打开开发者工具，开发者工具及网页会发生崩溃，抛出错误码 STATUS_BREAKPOINT。
+category: blog
+date: 2024-10-29 
+---
+
+## 问题演示
+
+这个问题非常有趣。简单来讲，就是当你在 **生产环境** 下，在 Chormium 系的浏览器中（例如 Edge,Chorme）在目标网页打开开发者工具时，网页以及开发者工具会迅速崩溃，并且抛出错误码：STATUS_BREAKPOINT。
+
+![基于久远的版本的错误演示](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192508432.gif)
+
+问题巧妙的地方在于：
+1. **它不影响正常使用**。网页的所有功能都是正常的。这一点是最神奇的。
+2. 只有在打开开发者工具时才会出现这个问题。
+3. 只在 Edge，Chorme 这类内核是 Chormium 的浏览器上发生该问题，在 Firefox 上不会出现。
+
+比较糟糕的点在于：开发者工具也随之崩溃了，控制台里没有任何信息。于是我们只能对着错误代码 STATUS_BREAKPOINT 去排查问题。但是很可惜，这个错误码太宽泛了，你也无法找到对于该错误码的描述（也许有，不过很抱歉我没找到）。你能找到的帮助信息，大都指向这两个原因：
+
+1. [浏览器插件问题](https://support.google.com/chrome/answer/95669?hl=en&co=GENIE.Platform%3DiOS&sjid=16686637412538947674-NC)。
+2. [浏览器版本问题或是硬件加速引发的渲染问题](https://answers.microsoft.com/zh-hans/microsoftedge/forum/all/%E6%9C%80%E6%96%B0%E7%89%88edge%E6%98%BE%E7%A4%BA/f7007f81-f9fe-4d74-896a-010ebc37fa88)。
+3. 网络问题。
+
+但是这显然不是环境的问题。**因为我们只会在打开开发者工具时出现这个问题** 。
+
+受限于训练数据，即使如 GPT 大神这样的LLM也只能给出几个不符合我们情况的方向参考：
+
+![GPT大神给出的代码排查建议](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192508701.png)
+
+即使我用 repopack 将整个代码仓打包问 GPT ，它也没能找到问题所在。
+
+不过好消息是，凭借着在没有 GPT 的年代，饱受乱七八糟的问题折磨的我磨练出了比较好的信息检索能力，我很快寻找到了可能的诱因。
+
+1. [chrome因为样式而导致网页崩溃问题-fb0cdf8e3ca2](https://medium.com/@alanhe421/chrome%E5%9B%A0%E4%B8%BA%E6%A0%B7%E5%BC%8F%E8%80%8C%E5%AF%BC%E8%87%B4%E7%BD%91%E9%A1%B5%E5%B4%A9%E6%BA%83%E9%97%AE%E9%A2%98-fb0cdf8e3ca2)
+2. [自定义滚动条额外样式导致浏览器崩溃](https://calefy.github.io/2013/01/07/css-make-the-browser-crash.html)
+
+事实上，该问题的原因也便是这样的样式代码引发的问题：
+
+```css
+	.hide-scrollbar {
+		.hide-scrollbar {
+		/* 对于 WebKit 浏览器 */
+		-webkit-scrollbar {
+			display: none;
+		}
+
+		/* 对于 Firefox */
+		scrollbar-width: none;
+	}
+	}
+```
+
+只是说来尴尬，当时的我并没有排查到这上。因为看到原文，我印象里是没引入过这些样式的，我记忆里对于我自己写过的 scrollbar 样式的代码只有 [MDN 文档里的 scrollbar-width](https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-width) ，但我注释了后发现问题并不来源于此。然后因为我觉得我没有写过这些代码——实际上也并不是我写的——于是，我开始怀疑是其他原因引发的问题，忘了先用 IDE 的搜索功能看看项目里有没有谁引入了这些代码，开始拜托我的兄弟去排查一下是哪次的 commit 引入的该问题。
+
+![唉，现在想想有点小后悔，感觉浪费了一点时间](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192508864.png)
+
+## 我们定位到该问题的过程
+
+刚开始，我的兄弟比较乐观，以为是最近几条 commit 引入的问题。建议我逐步 checkout 到附近的 commit 上构建排查。但在我追溯了前几条 commit 时，发现这个问题都存在时，我沉默了。
+
+前面说到过，该问题不会在生产环境中发生，因此我们已经**很久没有在生产环境下在我们的网页上打开开发者工具了**——这也意味着，这个问题可能在古早的版本里便被引入了。只是我们一直没发现——毕竟如果没发生问题的话，我们一般也没那么闲在生产环境下打开开发者工具玩。
+
+不过好消息是，我很快在项目的早期提交中找到了没有这个问题的 commit （仅仅是快速在早期提交随机挑着构建排查，找到第一个没有问题的 commit）。然后，我就让我兄弟利用 `git` 自带的 `bisect` 通过二分查找的方法，逐个进行构建排查。
+
+哦，至于为啥是让我兄弟来做，是因为这个项目主要由他来维护，并且我还有其他的工作要做。于是我偷懒了。
+
+只能说二分法还是好用，`git bisect` 用起来比较方便，两百多条 commit 我兄弟很快找到了引入错误的提交。但这个 commit 极其普通，只是稍微改了页面布局与代码结构。我兄弟有些纳闷问题出在哪儿，对这个问题好奇的我也要来 commit 的 hash 看看我的兄弟整了啥活。
+
+![我兄弟的 commit ](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192509098.png)
+
+那时的我以为会是什么 service worker 或是 indexDB 相关的操作（跟随GPT大神的思路）引发的问题，正在在不同文件的变更中切着查看，突然眼前飘过一片绿色的 diff，眼熟且让人郁郁的颜色让我直接出声：”哦，我知道是哪里的问题了——原来还是这个问题。“
+
+![问题所在](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192509215.png)
+
+注释掉了 `-webkit-scrollbar` 的 CSS 选择器及其值或注释掉 `scrollbar-width: none;` 后，问题便消失了。
+
+
+## 对这个问题的概括
+
+简单来讲便是：Chormium 似乎在同时使用了 `-webkit-scrollbar` 的 CSS 属性与 [`scrollbar-width`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-width)  的样式时会出现问题，该问题可能会引发页面崩溃或是开发者工具崩溃的问题，这些崩溃会抛出错误状态码 `STATUS_BREAKPOINT` 。
+
+对于这个问题，前边我搜索到的资料中，[chrome因为样式而导致网页崩溃问题-fb0cdf8e3ca2](https://medium.com/@alanhe421/chrome%E5%9B%A0%E4%B8%BA%E6%A0%B7%E5%BC%8F%E8%80%8C%E5%AF%BC%E8%87%B4%E7%BD%91%E9%A1%B5%E5%B4%A9%E6%BA%83%E9%97%AE%E9%A2%98-fb0cdf8e3ca2) 的作者提供了一个简单复现的 playground : [https://alanhe421.github.io/test-page/web-crash.html?source=post_page-----fb0cdf8e3ca2--------------------------------
+](https://alanhe421.github.io/test-page/web-crash.html?source=post_page-----fb0cdf8e3ca2--------------------------------)
+
+![复现playground](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029193152095.png)
+
+而原作者的 playground 和我们一样，同时存在 `-webkit-scrollbar` 与 `scrollbar-width` 属性：
+
+![同时存在 --webkit-scrollbar 和 scrollbar-width](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029194243907.png)
+
+感觉这个问题是 Chromium 的 Bug。我在 Chromium 的 Issues Tracker 中搜索了最近的相关 Issue，但是我不太清除具体的原因。我个人倾向于这个 Issue 里的反馈：
+
+-  [Tab with invalid CSS crashes with STATUS_BREAKPOINT when F12 tools are opened](https://issues.chromium.org/issues/376084069) 
+
+这个 Issue 是今天下午六点提交的，大概就是：如果 css 中存在无效的属性值（`-webkit-scrollbar` 也许会被认为是无效的？）,那么打开开发者工具便会崩溃。
+
+但感觉 chorme 现在对 `-webkit-scrollbar` 的支持并不好，我也找到了一个于今年7月24号发布的已被解决的 issue ：
+
+-   [changing CSS right prop on -webkit-scrollbar with position:absolute causes page crash](https://issues.chromium.org/issues/355016913)
+
+这个问题似乎是因为滚动条自身没有父级，而原先的代码会无条件尝试访问它们的父级块造成 null-deref 引发的问题。
+
+就挺微妙的。
+
+只是挺可惜的，其实我应该很早就能定位到这个问题，只是当时没有想到这一点。所以额外花了大概半个多小时的时间。有一点点的可惜。
+
+## 那么，在问题之外呢？
+
+问题在使用上是解决了，但我们好像有了更多问题，例如：
+
+1. 为什么在开发环境下该问题不会出现，但是在生产环境下会出现呢？
+2. 为什么仅仅只有打开开发者工具才会引发该问题？
+
+对于第一个问题，我个人怀疑跟前端在构建时对于样式文件的打包有关；对于第二个问题，我倾向于上面的 css 中无效属性值引发开发者工具崩溃的 issue 。不过我毕竟不是浏览器开发者，这个问题显然也是 Chormium 自身的 Bug 引发的。所以只能在这里草草写篇 Blog 记录一下。希望有看到的大能在看到这篇 Blog 时，能够为我解答这个问题；也希望有被这个问题困扰的朋友，能够从我这篇 Blog 里寻找到解决该问题的法子。
