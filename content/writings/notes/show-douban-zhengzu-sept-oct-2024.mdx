@@ -4,7 +4,7 @@ description: 李问道看到的项目的九月合辑，命名为：SHOW 正组 |
 tags:
   - SHOW 正组
 category: note
-date: 2024-09-01 
+date: 2024-11-01 
 ---
 
 
@@ -72,6 +72,12 @@ Website:[https://how-i-experience-web-today.com/](https://how-i-experience-web-t
 这个整活网站整合了所有网站的糟糕用户体验，能够让你体验到如今的互联网网站有多让人感到恶心。
 
 谁点进去谁知道。
+
+## 6. [常见的3D电子游戏阴影技术 | 英文](https://30fps.net/pages/videogame-shadows/)
+
+Website: [https://30fps.net/pages/videogame-shadows/](https://30fps.net/pages/videogame-shadows/)
+
+这篇文章综合介绍了所有你能在 3D 电子游戏中见到的阴影技术。
 
 
 ***
@@ -306,9 +312,31 @@ epublifier 是一个能够将网页转为 epub 保存的浏览器插件:
 
 ![epublifier 插件效果](/img/SHOW正组九月合辑/10-epublifier.gif)
 
+## 11. [我们如何将 Javascript 通过 monorepo 进行管理的 git 仓库的大小缩小 94%](https://www.jonathancreamer.com/how-we-shrunk-our-git-repo-size-by-94-percent/)
+
+Website: [https://www.jonathancreamer.com/how-we-shrunk-our-git-repo-size-by-94-percent/](https://www.jonathancreamer.com/how-we-shrunk-our-git-repo-size-by-94-percent/)
+
+这篇技术博客挺有趣的。
+
+monerepo 是一种项目代理管理方式，它在单个仓库中管理多个项目。但是这种方式管理代码在使用 Git 时会带来额外的仓库占用空间大小。
+
+我个人总结一下，大概是以下这两点需要注意：
+
+1. *不要将数千个文件保存在一个文件夹中* ，因为在 Git 中往文件夹中添加新文件时，会以树的结构记录相应信息。于是当文件数量很多的时候，会创建贼多的树对象（tree object）。
+2. 由于 Linus 在早期 Git 开发中引入的文件压缩的代码，改代码会在 `git push` 前检查文件名的后 16 个字符，因此Git 在一些情况下不仅仅会对比单个文件的前后变化差异，还会将来自不同包的文件进行检查。例如对 `repo/packages/foo/CHANGELOG.json` 的修改，Git 还会生成和 `repo/packages/bar/CHANGELOG.json` 的diff对比。
+
+
 ***
 
-# 个人翻译博客
+# 个人博客
+
+## 翻译
 
 1. [上下文检索技术 Contextual Retriecal - By Anthropic Team](/writings/translations/introducing-contextual-retrieval-anthropic)
 2. [沟通中的明托金字塔原则 Minto Pyramid](/writings/translations/minto-pyramid-of-communication)
+3. [daemon 这个词在计算机领域中是怎么被解释为"守护进程/系统进程"的?](/writings/notes/where-the-word-daemon-come-from)
+
+## Blog
+
+1. [【Blog】小记一下似乎是 Chormium 在 scrollbar 样式上的 Bug 引发的开发者工具崩溃问题](/writings/blog/chormium-bug-for-scrollbar)
+2. [【Essay】一些零碎的胡思乱想 I](/writings/essay/some-thoungts-part-one)
