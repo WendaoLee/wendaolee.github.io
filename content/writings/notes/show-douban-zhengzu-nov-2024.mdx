@@ -1,0 +1,191 @@
+---
+title: SHOW 正组 | 2024年11月内容合辑
+description: 李问道个人看到的一些项目的随手记录，这是2024年11月的合辑，因此命名为：SHOW 正组 | 2024年11月内容合辑 
+tags:
+  - SHOW 正组
+category: note
+date: 2024-11-30 
+---
+
+# 简介
+
+现在的互联网越发无聊，原先的我喜欢在一些论坛常驻，但这些论坛或社群都慢慢消失了。现在在网上我常去的一个社群是豆瓣上的一个生活小组（其实它前身不是什么好地方，但现在变成生活组了）。为了防止我看到一些项目会忘掉，于是我会把一些我觉得有意思的项目都发帖分享到那个组里。
+
+由于许多内容都来自于 Hacker News ，而 Hacker News 有一个版块叫做 SHOW HN ，于是我把这一系列的帖子都归类到 “SHOW 正组” 中。
+
+这些帖子的内容大多聚焦在技术上，但也有一些其他的内容。
+
+以下是我在2024年11月期间看到的内容在筛选（将一些不够实用或不够有趣的过滤）后的汇总。
+
+***
+
+# 人文或其他领域相关
+
+## 1. Netlify 为了庆祝开发者人数达到 500w 定做的 WebGL 小游戏
+
+体验地址: [https://5-million-devs.netlify.com/](https://5-million-devs.netlify.com/)
+
+这个是 Netlify 为了庆祝开发者人数达到 500w 找到的一家名为 [Little Workshop](https://www.littleworkshop.fr/) 的 3D 视觉工作室定做的 WebGL 小游戏。
+
+这个游戏的操作是你控制一个小球，通过上下左右键盘控制移动，当滚动到旅程光点时，便会弹出类似于发展节点的介绍文字：
+
+![节点介绍](/img/SHOW正组十一月合辑2024/1-2-netlify.png)
+
+我只能说这个小游戏做得非常 amazing 啊，建议点进该链接去体验一下。
+
+![点击 Start Journey 按钮开始游戏](/img/SHOW正组十一月合辑2024/1-1-netlify.png)
+
+## 2. 公益项目：向你欣赏的人发送一篇鼓励他的信函
+
+项目地址：[https://continueandpersist.org/](https://continueandpersist.org/)
+
+这个项目只在美国运作。简单来讲，便是你在项目网站上提交发信申请，项目的负责人便会帮你写一封信，信件内容是以鼓励与激励对方为基调，以官方的措辞为形式，然后帮你寄给对方。
+
+![是的，是真实信函](/img/SHOW正组十一月合辑2024/1-2-Appreciate-Others.png)
+
+## 3. 欧洲电网的可视化
+
+一个个人项目，在 Web 地图上可视化了欧洲电网的情况。我觉得作者的图例设计得挺好的。
+
+![因为很好看，所以我把它mark下来了](/img/SHOW正组十一月合辑2024/1-3-European-Electronic-Visualizer.png)
+
+## 4. 二十七年来为每次和父母的告别的拍一张照
+
+网站：[https://deannadikeman.com/leaving-and-waving](https://deannadikeman.com/leaving-and-waving)
+
+作者在过去的二十七年里，在每一次从父母家离开时，都会为和自己告别的父母和亲戚拍一张照。这个网站汇总了这所有的照片。
+
+作者的最后一段话让我心碎：
+
+”2009 年，有一张照片显示我父亲已经不在了。他在 91 岁生日后几天去世了。我妈妈继续向我挥手告别。我的离开使她的脸色变得更加凄凉。2017 年，我妈妈不得不搬到辅助生活。几个月来，我从她的公寓门口拍摄了告别。2017 年 10 月，她去世了。当我在她的葬礼后离开时，我又拍了一张空荡荡的车道的照片。我有生以来第一次没有人向我挥手。“
+
+![时间啊时间](/img/SHOW正组十一月合辑2024/1-4-27years-photos.png)
+
+***
+
+# 重技术内容相关
+
+## 1. VSCode/Cursor 的 TypeScript 插件推荐
+
+这是我的个人安利。
+
+以我的开发经验来讲，在构建比较大的程序时，最好能够对程序比较细的粒度的代码进行即刻的运行测试。尽管我们都说测试驱动开发（Test-Driven Development,TDD）是好的，但是在业务更迭速度快的场景下，或者说早期的产品迭代上，TDD只会带来额外的成本与开发上的心智负担。
+
+针对此，最简单的做法是 run 一下程序验证程序是否按预期运行；遇到问题时尝试打断点，进行debug——当然现在也能问LLM。然而随着程序逐渐复杂起来，当你要和复杂的外部系统打交道（e.g. 数据库、Web Server）时，run 一次的成本显然越来越高。这个问题和传统的、在软件工程还不成熟时候的 C++ 开发类似：工作时先倒一杯茶，然后 compile 程序一整天。
+
+因此，我非常希望能够在我做出细粒度的代码划分与封装后，可以直接运行进行测试。当初在学 Haskell 的时候，Haskell 的 VSCode 插件就给我非常惊艳地体验：在编写完一个函数后，你可以在注释中直接输入一些值运行该函数，得到对应的结果值，这个功能叫做 Code Evaluate：
+
+![我喜欢的Haskell VSCode 插件的特性：直接在注释里 evaluate 一个函数，当你通过 >>> 书写代码后，上方会出现 Evaluate 按键直接估值](/img/SHOW正组十一月合辑2024/Haskell-Evaulate.png)
+
+然而，在 Typescript 的开发上比较令人头疼。因为 Typescript 仅仅只是 Javascript 的超集，并没有一个可以直接运行 Typescript 的运行时。虽然有如 [tsx](https://tsx.is/) 之流的基于 NodeJS 的 Typescript Executor，但开发时终归还是不方便。
+
+> NOTE:  尽管在今年七月，NodeJS 在 [#53726](https://github.com/nodejs/node/pull/53725) 添加了直接执行 TS 的特性，但它并不是完全的 TS 支持，且是实验特性，所以我不是很敢在生产环境使用。
+
+然后好消息是，在问了 GPT 之后，我找到了 [Quokka.js](https://quokkajs.com/) 这个插件。它的特性很简单，便是直接为你执行代码，并且打印每一行代码的输出：
+
+![以某个爬虫代码为例](/img/SHOW正组十一月合辑2024/Quokkajs.png)
+*** 
+
+你可以查看每个表达式的值：
+
+![查看单个表达式的值](/img/SHOW正组十一月合辑2024/查看表达式的值.png)
+
+除此之外还有个 Time Machine 的功能，你可以理解为带回退最追溯的 Debug 。
+
+![time machine](/img/SHOW正组十一月合辑2024/TImeMachine.png)
+
+如果你有 Typescript 的频繁开发需求，可以考虑一下这个插件。
+
+比较可惜的是，这个插件大部分功能要购买 PRO 版（建议先试用后购买，届时会有折扣，折后大概一百多）才有，不过你可以先申请14天的试用看看符不符合自己的需求。
+
+## 2. HN讨论：对于软件工程师（SWE）来讲，我该如何快速了解 AI 领域的最新动态？
+
+这个只是 HN 上的讨论：[https://news.ycombinator.com/item?id=42256093](https://news.ycombinator.com/item?id=42256093)。POST该讨论的人向 HN 询问我该如何追踪 AI 领域的最新动态。评论区里给出了不少有价值的反馈，因此我在这里 Mark 一下。
+
+从评论区里，我个人发现的一个不错的信息源是国外的一个RSS源：[https://buttondown.com/ainews/rss](https://buttondown.com/ainews/rss)
+
+## 3. Bluesky 的 AT 协议
+
+文档：[https://docs.bsky.app/docs/advanced-guides/atproto](https://docs.bsky.app/docs/advanced-guides/atproto)。
+
+Bluesky 是国外的一个去中心化的社交媒体平台，它基于他们自己设计的 AT 协议进行构建。具体内容我没了解，主要是我看到了好多讨论它的文章，于是记录一下。
+
+## 4. OpenID-Connect 协议现在已变为 ISO 标准
+
+OpenID-Connect 协议是基于 OAuth2.0 框架规范的认证协议。现在它已经变成了 ISO 标准，官方很高兴地发了篇博文通告了这一点：[https://self-issued.info/?p=2573](https://self-issued.info/?p=2573)。
+
+![官方POST](/img/SHOW正组十一月合辑2024/IMG-20241130155603441.png)
+
+## 5. mergiraf:为你自动处理 git 合并冲突的工具
+
+Website:[https://mergiraf.org/introduction.html](https://mergiraf.org/introduction.html)
+
+这个工具似乎是基于传统的 PL 方法做的，基于语法感知进行处理，可以自动化帮你解决 Git 合并时的冲突。不过我没用过，不敢确认这样到底好不好。
+
+![](/img/SHOW正组十一月合辑2024/2-5-Architecture-of-mergiraf.png)
+
+不过可惜的是，它目前只支持这几门语言：
+
+- Java (\*.java)
+- Rust (\*.rs)
+- Go (\*.go)
+- Javascript (\*.js, \*.jsx)
+- C/C++ (\*.c, \*.h, \*.cc, \*.cpp, \*.hpp)
+- C# (\*.cs)
+- Dart (\*.dart)
+- JSON (\*.json)
+- HTML (\*.html, \*.htm)
+- XML (\*.xml, \*.xhtml)
+- YAML (\*.yml, \*.yaml)
+
+作者说是你可以写声明式的文件添加更多语言支持。但我没试过~在这里单纯 mark 一下。
+
+## 6. WechatBot，微信机器人，可接入 LLM
+
+Github: [https://github.com/HK-Artificial-Intelligence-Association/WechatBot](https://www.douban.com/link2/?url=https%3A%2F%2Fgithub.com%2FHK-Artificial-Intelligence-Association%2FWechatBot&link2key=474fd04dea)
+
+这是基于 wechatferry 以及原版 wechatbot 改的项目，原理是注入劫持，需要 Windows 以及电脑版微信部署。具备和 LLM 对话的功能。
+
+![](/img/SHOW正组十一月合辑2024/项目主页.png)
+
+这版 Bot 相较于原本 Bot 添加了以下功能：
+
+1. 群聊统计
+
+![](/img/SHOW正组十一月合辑2024/群聊统计.png)
+
+2. 定时聊天总结，并支持主动调用
+
+![](/img/SHOW正组十一月合辑2024/定时聊天总结.png)
+
+总结也可以带有一点攻击性：
+
+![](/img/SHOW正组十一月合辑2024/攻击他人.png)
+
+3.转发内容总结
+
+![](/img/SHOW正组十一月合辑2024/IMG-20241130161809722.png)
+
+如果有兴趣捣鼓的朋友可以试试这个 Bot 。部署文档还算齐全，搭起来也很方便，我自己也整了一个：
+
+![](/img/SHOW正组十一月合辑2024/我自己的Bot.png)
+
+这个项目主要由公司隔壁学校的研究生维护的，我帮他们推广一下，欢迎大家试一试。
+
+# 他人博客Mark
+
+1. [Frosted Glass from Games to the Web](https://www.tyleo.com/html-glass.html),这篇文章讲述了毛玻璃效果如何通过 CSS 在 Web 实现。我印象里其他可以参考的文章有 Chokcoco 姐姐的文章：[https://juejin.cn/post/6979391400844460068?searchId=202411251706419F00896B4E911D106454](https://juejin.cn/post/6979391400844460068?searchId=202411251706419F00896B4E911D106454)
+2. [This Website is Hosted on Bluesky](https://danielmangum.com/posts/this-website-is-hosted-on-bluesky/)，通过 BlueSky（一个去中心化平台）的AT协议的Blob部署个人网站。
+3. [不要小看打印调试](https://blog.startifact.com/posts/print-debugging/)，作者关于打印调试相关的观点。
+4. [了解BM25全文搜索算法](https://emschwartz.me/understanding-the-bm25-full-text-search-algorithm/)
+5. [OpenStreetMap 开始使用 Mapbox 的 MVT 格式了](https://tech.marksblogg.com/osm-mvt-vector-tiles.html)，仅仅作 mark ，唉，我已经不是地信行业的人了。
+6. [乐高的面板积木的用户体验](https://interactionmagic.com/UX-LEGO-Interfaces/)，这篇文章以乐高积木中的那种面板积木（例如，宇宙飞船乐高积木块中会有一种上面涂漆了面板的积木）为例，讲了在设计面板界面时应该遵循的设计原则。
+7. [处理 Cookies 的雷区](https://grayduck.mn/2024/11/21/handling-cookies-is-a-minefield/)，一篇博文主要讲了由于 Cookies 的设计规范、不同浏览器与语言标准库的实现不同，从而造成的 Cookies 在使用时会发生的雷区。
+   我个人从中学到的是 [Postel 定律](https://datatracker.ietf.org/doc/html/draft-thomson-postel-was-wrong-03)，一个虽然我不知道这个规律叫啥但是实践时会遵循的规律：发送消息时应该严格，但是接收消息时可以宽容一些，例如接收消息时可以选择部分数据、抛弃其他数据。这让我想起了罗塞塔石碑——”信息冗余是信息安全的保障“。此处的安全指的是避免信息丢失。
+8. [在软件现代化项目中，将估算视为指导方针而不是截止日期](https://domainanalysis.io/p/architecture-modernization-execution)，非常有意思的博文，作者以自己的车被撞了后送到维修店中进行理赔估计为例，阐述了对于软件复杂性的个人看法。
+9. [好的软件开发习惯](https://zarar.dev/good-software-development-habits/)，
+   喜欢的两句话：
+   - ”设计变得陈旧。您可以通过重构来减慢它们过时的速度，但最终您需要改变事情的工作方式。不要因为离开你前段时间所珍视的东西和你当时感到自豪的东西而感到太难过。你当时做了正确的事情，不应该因为没有把它做得足够正确而不需要改变任何东西而自责。大多数时候，编写软件就是在改变软件。接受它并继续前进。没有完美的设计，而变更是软件开发的核心。你改变事物的水平就是你软件开发的水平。“
+   - ”技术债务可以分为三种主要类型：1） 阻止你现在做事的事情，2） 会阻止你以后做事的事情，以及 3） _可能_ 阻止你以后做事的事情。所有其他分类都是这三个分类的子集。尽量减少 #1 中有很多东西，并尝试专注于 #2 。忽略 #3 。“
+10. [交互式 Web 应用程序开发的神话祛魅](https://htmx.org/essays/you-cant/)，竟然是发表在 HTMX（一个有趣的、为HTML添加交互性的项目，曾经我打算不用框架纯粹使用 HTML + Haskell 编译我的博客的时候考虑过它） 上的 Blog。里面的观点值得注意的是如何优化你的 Web 程序。
+11. [拖延症和对”不够好“的恐惧](https://swapnilchauhan.com/blog/procrastination-and-the-fear-of-not-being-good-enough)。
