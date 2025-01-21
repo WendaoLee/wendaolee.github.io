@@ -1,0 +1,185 @@
+---
+title: SHOW 正组 | 2024年12月内容合辑
+description: 李问道个人看到的一些项目的随手记录，这是2024年12月的合辑，因此命名为：SHOW 正组 | 2024年12月内容合辑 
+tags:
+  - SHOW 正组
+category: note
+date: 2025-01-21
+---
+
+# 简介
+
+现在的互联网越发无聊，原先的我喜欢在一些论坛常驻，但这些论坛或社群都慢慢消失了。现在在网上我常去的一个社群是豆瓣上的一个生活小组（其实它前身不是什么好地方，但现在变成生活组了）。为了防止我看到一些项目会忘掉，于是我会把一些我觉得有意思的项目都发帖分享到那个组里。
+
+由于许多内容都来自于 Hacker News ，而 Hacker News 有一个版块叫做 SHOW HN ，于是我把这一系列的帖子都归类到 “SHOW 正组” 中。
+
+这些帖子的内容大多聚焦在技术上，但也有一些其他的内容。
+
+以下是我在2024年12月期间看到的内容在筛选（将一些不够实用或不够有趣的过滤）后的汇总。
+
+***
+
+# 人文或其他领域相关
+
+## 1. brain rot 被评为2024年牛津年度词汇
+
+官方通告：[https://corp.oup.com/news/brain-rot-named-oxford-word-of-the-year-2024/](https://corp.oup.com/news/brain-rot-named-oxford-word-of-the-year-2024/)
+
+"Brain rot" 是一个非正式的术语，通常用来形容长时间暴露于无意义、重复或低质量内容时，人的思维、注意力或认知能力逐渐变得迟钝或混乱。它常被用来调侃过度沉迷于社交媒体、无聊的电视节目、恶搞视频等内容，可能导致注意力不集中、记忆力下降，甚至对更复杂、深度的思考失去兴趣。
+
+可将它翻译为：“脑腐病”。
+
+牛津官方的一段我很喜欢的话是：
+
+> 回顾过去二十年的牛津年度词汇，你可以看到社会越来越关注我们的虚拟生活如何演变，互联网文化如何渗透到我们是谁和我们谈论什么中。去年的获奖词 'rizz' 是一个有趣的例子，说明了语言是如何在在线社区中越来越多地形成、塑造和共享的。“脑腐烂”说明了虚拟生活的感知危险之一，以及我们如何利用空闲时间。这感觉就像是关于人性和技术的文化对话的理所当然的下一章。毫不奇怪，有这么多选民接受了这个词，支持它作为我们今年的选择。
+
+## 2. 西方交互式历史地图
+
+Website:[https://www.oldmapsonline.org/en/history/regions#position=2.6972/-0.39/126.88&year=1862](https://www.oldmapsonline.org/en/history/regions#position=2.6972/-0.39/126.88&year=1862)
+
+你可以在通过更改下方的时间轴查看在某个时间点上，各个国家的领土情况。
+
+![](/img/SHOW正组十二月合辑2024/1-2-OldMaps.png)
+
+## 3. Moon: 通过交互式的网页理解月球的运动
+
+Website:[https://ciechanow.ski/moon/](https://ciechanow.ski/moon/)
+
+一个很酷的网页博文，值得称道的是在博文内部嵌入的交互组件，你可以通过与组件的交互去理解月球和我们之间的运动关系。
+
+![](/img/SHOW正组十二月合辑2024/1-3-Moon.png)
+
+## 4. Github 网站地图
+
+Website:[https://anvaka.github.io/map-of-github/#10.79/-18.3159/-33.6116](https://anvaka.github.io/map-of-github/#10.79/-18.3159/-33.6116)
+
+作者使用的是  Google BigQuery 在2020年1月-2023年3月的 Github 的公开活跃仓库的数据集，大概包括了 40w + 的仓库。而后通过聚类将它们整合成了一张地图：
+
+![其中，按照语言/运行时的不同，划分成了不同的“国家”](/img/SHOW正组十二月合辑2024/1-4-GithubMap-1.png)
+
+你也能找到当年的枝江遗迹：
+
+![](/img/SHOW正组十二月合辑2024/1-4-GithubMap-2.png)
+
+# 重技术内容相关
+
+## 1. JavaScript 不可用的几个原因
+
+Website:[https://piccalil.li/blog/a-handful-of-reasons-javascript-wont-be-available/](https://piccalil.li/blog/a-handful-of-reasons-javascript-wont-be-available/)。
+
+作者在这篇博文中简单地列举了他能想到的 JavaScript 在用户的浏览器中不会运作的原因，
+
+1. 浏览器扩展干扰了网站
+2. 不稳定的网络连接导致浏览器未正确加载依赖项
+3. 用户的网络环境中，一些内部 IT 策略（例如某些公司的内网会阻止其他来源的JS加载）阻止依赖项
+4. WIFI 网络已阻止某些 CDN
+5. 用户在刚刚驶入隧道的火车上查看您的网站
+6. 设备没有足够的可用内存
+7.  您的 JavaScript 中有错误
+8. `async` 的 fetch 请求未在 `try` `catch` 中被隔离，并且已失败
+9. 用户意外关闭了浏览器加载 JavaScript 的选项。 
+10. 用户通过关闭浏览器加载 JavaScript 来阻止广告加载
+11. 广告拦截器阻止了您的 JavaScript 加载
+12. 用户正在使用 [Opera Mini](https://en.wikipedia.org/wiki/Opera_Mini) 这一类的古早微浏览器。
+13. 用户开启了[数据保存](https://support.google.com/pixelphone/answer/7055392?hl=en-GB)
+14. Google 跟踪代码管理器添加了恶意、干扰脚本
+15. 浏览器在尝试解析 JS 捆绑包时已被锁定
+
+让我个人比较喜欢的是作者提到的 [渐进式增强（progressive enhancement](https://piccalil.li/blog/its-about-time-i-tried-to-explain-what-progressive-enhancement-actually-is/)） 概念，简单来讲便是开 Web 开发时，应当基于 HTML 和 CSS 构建用户可以看到的基础内容层，而后再考虑 JS 进行增强。
+
+关于渐进式增强的其他参考资料：
+1. 英国政府的前端工程标准：[https://www.gov.uk/service-manual/technology/using-progressive-enhancement](https://www.gov.uk/service-manual/technology/using-progressive-enhancement)
+
+## 2. Markwhen: 类似于 Markdown 的日志语言，用于可视化基于时序的信息
+
+Website: [https://markwhen.com/](https://markwhen.com/)
+
+简单概括便是它会把按照符合它们语法的文本转化为一段 JSON 描述，你可以根据这种 JSON 使用它提供的工具快速实现时序信息的可视化。
+
+![](/img/SHOW正组十二月合辑2024/markwhen.png)
+
+但它的缺点也很明显：并不能方便将主流的日志格式进行转化。例如下面这种格式的日志：
+
+```text
+[2024-12-02T12:26:21.888] [INFO] default - Message content: Other
+[2024-12-02T12:26:21.888] [INFO] default - Tags: Other
+[2024-12-02T12:26:21.897] [INFO] default - Twitter crawler finished.
+[2024-12-02T12:26:21.897] [INFO] default - 添加标签结束
+[2024-12-02T12:26:21.897] [INFO] default - Twitter add tags process finished.
+[2024-12-02T12:35:26.597] [INFO] default - 开始同步飞书表格中未入库记录到数据库 :: syncFeishuNonSyncedTableRecordToDatabase
+[2024-12-02T12:35:27.369] [INFO] default - 同步飞书表格中未入库记录到数据库成功 :: syncFeishuNonSyncedTableRecordToDatabase { updateNums: 0, createNums: 0 }
+```
+
+## 3. Just: 一个类似于 CMake 的命令运行器
+
+Website：[https://just.systems/man/zh/%E8%AF%B4%E6%98%8E.html](https://just.systems/man/zh/%E8%AF%B4%E6%98%8E.html)
+
+Just 是一个通过你在项目中以类似于 cmake 的语法撰写你要运行的命令的配置文件、而后帮助你逐条运行对应命令的命令运行器。
+
+![](/img/SHOW正组十二月合辑2024/JUST_1.png)
+
+这个东西的使用场景，我个人觉得是配合语言自身没有成熟的构建 or 部署系统的项目使用。
+
+例如说，我有一个使用 Typescript 编写的 Node 项目，如果我希望它能够直接通过 Node.js 使用 JS 执行，我需要对它先进行类型检查、编译为JS后再执行，那么我便可以书写这样的 `.JUSTFILE` 脚本：
+
+```justfile
+# 设置运行的 shell
+set shell := ["powershell.exe", "-c"]
+
+# 一个名为 build 的命令组
+build:
+    # 是的，我可以预先配置代理,因为 Just 只是一个命令运行器
+    $Env:http_proxy="http://127.0.0.1:7890";$Env:https_proxy="http://127.0.0.1:7890"
+    npm install
+    npm run type-check
+    npm run build
+    npm run start
+```
+
+而后运行 `just build` 即可按序运行一连串的命令：
+
+![这里之所以命令是 rust-just 是因为我是通过 npm 安装的](/img/SHOW正组十二月合辑2024/Just_2.png)
+
+这个项目除此之外的优点就是对不同的语言以及平台具有比较好的支持。
+
+## 4. Postgres for everything
+
+一个很奇怪的项目，这个项目搜罗了使用 Postgres 做各种乱七八糟的事情（比如将博客的博文的处理逻辑都放在 Postgres 的数据库函数中）的仓库：[https://github.com/Olshansk/postgres_for_everything?tab=readme-ov-file#postgres-for-everything-epostgres](https://github.com/Olshansk/postgres_for_everything?tab=readme-ov-file#postgres-for-everything-epostgres)。
+
+## 5. 微软官方出了一个将文档转为 Markdown 的 Python 工具
+
+Github:https://github.com/microsoft/markitdown
+
+目前支持的格式有：
+
+![](/img/SHOW正组十二月合辑2024/2-5-markitdown.png)
+
+## 6.FakeEmail：创建一个临时收件邮箱
+
+Website： https://mail.fakeact.fun/
+Github： https://github.com/CH563/fakemail 
+
+这个网站可以通过  Cloudflare 创建一个临时收件邮箱，它将在 2 小时后删除。
+
+## 7.aya:adb 图形界面
+
+Github： https://github.com/liriliri/aya
+
+![](/img/SHOW正组十二月合辑2024/2-7-aya.png)
+# 他人博客Mark
+
+1. [如果不是 React，那又如何？](https://infrequently.org/2024/11/if-not-react-then-what/)，这篇博客要参考着看。我比较喜欢它里面的一些观点：
+   - 框架主义（frameworkism）没有带来好处。答案不是不同的工具，而是做工程的勇气。
+   - 技术主管和管理者需要打破这种魔咒，强制对影响客户的决策负责。在实践中，这意味着禁止在所有新工作中使用 React。—— *Note:我个人喜欢前半段话。后半段对于现在的我们来讲几乎是不可行的。只有在业务稳定的情况下可以考虑这么用。对于复杂的项目，不使用框架会带来极大的前期开发成本开销。*
+   - 现实主义者不会沉溺于抽象引起的关于用户体验的幻觉中；他们衡量它们。现实主义需要正视世界的本来面目，而不是我们希望它成为的样子，从这个意义上说，它与框架主义相反。
+2. [无我工程，egoless engineering](https://egoless.engineering/)。这篇 slide 主要讲述的是在软件工程中，最好不要把参与成员隔离得太开，应该多多保持沟通，让所有人都能参与到工作中来。
+3. [领英的 AI Agent 开发](https://www.linkedin.com/blog/engineering/generative-ai/musings-on-building-a-generative-ai-product)，其实讲了更多关于团队协作的工作流上的事情。
+4. [70% 问题：关于AI辅助编码的残酷真相](https://addyo.substack.com/p/the-70-problem-hard-truths-about)，我比较喜欢里面提到的知识悖论（The Knowledge paradox） 概念：老手使用 AI 来加速他们已经知道如何做的事情；新手尝试使用 AI 来学习该怎么做。AI 工具比初学者更能帮助有经验的开发人员。
+   ”使用 AI 进行编码的非工程师发现自己遇到了令人沮丧的墙。他们可以出人意料地迅速地完成 70% 的工作，但最后的 30% 变成了收益递减的练习。“
+5. [我是如何使用线性代数去构建交互式图表编辑器的](https://itnext.io/how-i-used-linear-algebra-to-build-an-interactive-diagramming-editor-and-why-matrix-math-is-d5bd552f2e8d)。一篇有趣的关于如何应用线性代数在自己工作中的博文。
+6. [每秒解析数百万的URL](https://onlinelibrary.wiley.com/doi/10.1002/spe.3296)，一篇论文，讲述在 Node.js 20+ 版本上，他们是如何提升对应的URL解析效率的。
+7. [基于选择的游戏中的标准模式](https://heterogenoustasks.wordpress.com/2015/01/26/standard-patterns-in-choice-based-games/)，讲述了那些基于选择的游戏（例如 fiction novel）的常见模式。
+
+# 一些对我有启发的 Paper
+
+- Clio: A system for privacy-preserving insights into real-world AI use.Anthropic.[https://arxiv.org/html/2412.13678v1#S1](https://arxiv.org/html/2412.13678v1#S1). 它对我的最大价值在于“Enabling exploratory search for unknown unknowns”，提供了一些关于基准并不能预先明确的任务的测试构建方法
