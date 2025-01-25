@@ -1,9 +1,11 @@
 /**
  * @mention 该组件永远不应该作为客户端组件使用
  */
+"use server"
 import Image from "next/image"
 import { useMDXComponent } from "next-contentlayer2/hooks"
 import WritingsLists from "./WritingsList"
+import { AutoToc } from "./AutoToc"
 
 const components = {
   Image,
@@ -15,11 +17,12 @@ interface MdxProps {
 }
 
 
-export function Mdx({ code }: MdxProps) {
+export async function Mdx({ code }: MdxProps) {
   
   const Component = useMDXComponent(code)
 
   return <>
+  <AutoToc></AutoToc>
   <Component components={{...components,
     p: (props) => <p {...props} className="text-base leading-7" />,
     // h2: (props) => <h2 {...props} className="text-2xl md:text-3xl font-bold mt-8 mb-4" />,
@@ -34,8 +37,10 @@ export function Mdx({ code }: MdxProps) {
         )}
       </figure>
     ),
-    // h2: (props) => <h2 {...props}  className="theAfter"/>,
-
+    // h1: (props) => <h1 {...props}  id={typeof props.children === 'string' ? props.children.toLowerCase().replace(/\s+/g, '-') : undefined}/>,
+    // h2: (props) => <h2 {...props}  id={typeof props.children === 'string' ? props.children.toLowerCase().replace(/\s+/g, '-') : undefined}/>,
+    // h3: (props) => <h3 {...props}  id={typeof props.children === 'string' ? props.children.toLowerCase().replace(/\s+/g, '-') : undefined}/>,
+    // h4: (props) => <h4 {...props}  id={typeof props.children === 'string' ? props.children.toLowerCase().replace(/\s+/g, '-') : undefined}/>,
   }}>
   </Component>
   </>
