@@ -1,7 +1,6 @@
 /**
  * @mention 该组件永远不应该作为客户端组件使用
  */
-"use server"
 import Image from "next/image"
 import { useMDXComponent } from "next-contentlayer2/hooks"
 import WritingsLists from "./WritingsList"
@@ -17,7 +16,7 @@ interface MdxProps {
 }
 
 
-export async function Mdx({ code }: MdxProps) {
+export function Mdx({ code }: MdxProps) {
   
   const Component = useMDXComponent(code)
 

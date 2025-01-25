@@ -17,5 +17,9 @@ export default function WorksPage(){
             <h3>Slides</h3>
             <p className="mt-0">一些 PPT。</p>
         </div>
+        <div>
+            <h3>WIP(Work In Progress)</h3>
+            <p>🚧 施工中的项目。</p>
+        </div>
     </div>
 }
