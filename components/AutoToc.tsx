@@ -42,7 +42,7 @@ export function AutoToc() {
       >
         <div className="flex flex-row items-center gap-2">
           <Triangle className={`w-3 h-3 ${isCollapsed ? 'rotate-180' : ''}`} fill="currentColor" />
-          <span className="text-lg font-semibold" style={{letterSpacing: '1px'}}>目录</span>
+          <span className="text-base font-semibold md:text-base" style={{letterSpacing: '1px'}}>目录</span>
         </div>
       </div>
       {!isCollapsed && (
