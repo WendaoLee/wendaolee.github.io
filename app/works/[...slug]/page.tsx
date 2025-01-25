@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { allWritings } from "contentlayer/generated"
+import { allWorks as allWorks } from "contentlayer/generated"
 
 import { Metadata } from "next"
 import { Mdx } from "@/components/MdxComponents"
@@ -13,7 +13,7 @@ interface PostProps {
 
 async function getPostFromParams(params: PostProps["params"]) {
   const slug = params?.slug?.join("/")
-  const post = allWritings.find((post) => post.slugAsParams === slug)
+  const post = allWorks.find((post) => post.slugAsParams === slug)
 
   if (!post) {
     null
@@ -45,16 +45,16 @@ export async function generateMetadata({
     openGraph: {
         images: ["/wendaolee.jpeg"],
         type: "website",
-        siteName: `${post.title} - 李问道的博客 / Blog of Wendaolee`,
+        siteName: `${post.title} - 李问道的博客 / Works of Wendaolee`,
         url:"https://leewendao.otterstack.cn",
-        title:`${post.title} - 李问道的博客 / Blog of Wendaolee`,
+        title:`${post.title} - 李问道的博客 / Works of Wendaolee`,
         description:post.description,
       },
   }
 }
 
 export async function generateStaticParams(): Promise<PostProps["params"][]> {
-  return allWritings.map((post) => ({
+  return allWorks.map((post) => ({
     slug: post.slugAsParams.split("/"),
   }))
 }
