@@ -54,10 +54,12 @@ export async function generateMetadata({
 }
 
 export function generateStaticParams(): PostProps["params"][] {
+  console.log('allWorks length: ',allWorks.length)
   return allWorks.map((post) => ({
     slug: post.slugAsParams.split("/"),
   }))
 }
+
 
 export default async function PostPage({ params }: PostProps) {
   const post = await getPostFromParams(params)
