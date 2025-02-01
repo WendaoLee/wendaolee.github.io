@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "ci": "tsx --tsconfig ./tsconfig.json ./ci/index.ts",
     "preview": "next build && next start",
     "start": "next start",
     "lint": "next lint",
@@ -24,6 +25,8 @@
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
     "contentlayer2": "^0.4.6",
+    "dotenv": "^16.4.5",
+    "effect": "^3.10.13",
     "eslint": "8.39.0",
     "eslint-config-next": "^14.2.5",
     "katex": "^0.16.11",
@@ -31,6 +34,7 @@
     "next": "^14.2.5",
     "next-contentlayer2": "^0.4.6",
     "next-themes": "^0.2.1",
+    "ofetch": "^1.4.1",
     "postcss": "8.4.23",
     "radash": "^12.1.0",
     "react": "^18.3.1",
@@ -48,11 +52,13 @@
     "tailwindcss-animate": "^1.0.7",
     "text-search-engine": "^1.4.2",
     "ts-pattern": "^5.2.0",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "undici": "^6.20.1"
   },
   "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e",
   "devDependencies": {
     "@types/rss": "^0.0.32",
-    "daisyui": "^4.12.10"
+    "daisyui": "^4.12.10",
+    "tsx": "^4.19.2"
   }
 }
