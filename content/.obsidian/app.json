@@ -1,0 +1,12 @@
+{
+  "vimMode": true,
+  "useMarkdownLinks": true,
+  "strictLineBreaks": false,
+  "showLineNumber": true,
+  "newFileLocation": "current",
+  "newLinkFormat": "relative",
+  "attachmentFolderPath": "./img",
+  "alwaysUpdateLinks": true,
+  "showUnsupportedFiles": true,
+  "promptDelete": false
+}

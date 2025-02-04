@@ -1,0 +1,16 @@
+{
+  "Components@@tab-autohide": false,
+  "Components@@Ribbon-autohide": true,
+  "Components@@status-bar-autohide": false,
+  "Components@@outline-enhanced": false,
+  "Components@@immersive-canvas": false,
+  "Appearance-dark@@card-layout-open-dark": true,
+  "Components@@nav-header-autohide": false,
+  "Components@@tab-title-bar-autohide": false,
+  "Editor@@border-focus-mode": false,
+  "Editor@@line-hover-indicator": false,
+  "Appearance-dark@@card-highlight-dark": false,
+  "Editor@@file-line-width": "1400px",
+  "Components@@setting-item-title-icon-remove": false,
+  "Components@@scrollbar-hide": false
+}
