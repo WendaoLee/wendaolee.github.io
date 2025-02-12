@@ -4,6 +4,7 @@ import { allWorks as allWorks } from "contentlayer/generated"
 import { Metadata } from "next"
 import { Mdx } from "@/components/MdxComponents"
 import { match } from "ts-pattern"
+import Utterances from "@/components/Comments"
 
 interface PostProps {
   params: {
@@ -69,6 +70,7 @@ export default async function PostPage({ params }: PostProps) {
   }
 
   return (
+    <>
     <article className="min-w-full py-6 prose dark:prose-invert">
       <h1 className="mb-2">{post.title}</h1>
       {/* <div className="flex justify-between h-fit">
@@ -94,5 +96,7 @@ export default async function PostPage({ params }: PostProps) {
       <Mdx code={post.body.code} />
       <p className="text-right">【END】</p>
     </article>
+    <Utterances></Utterances>
+    </>
   )
 }
