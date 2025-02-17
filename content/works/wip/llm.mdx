@@ -2,28 +2,32 @@
 title: 【WIP】个人梳理的 LLM 阅读材料和文献 - 2025
 description: 个人梳理的 LLM 阅读材料和文献，也许它能够帮助到你？
 category: wip
-date: 2025-01-24 
+date: 2025-02-17 
 ---
 
 🚧🚧🚧 施工中 🚧🚧🚧
 
+> 最后更新于 2025-02-17
+
+这一篇是我个人梳理的感觉具有阅读价值的 LLm 领域的阅读材料和文件，还在不断更新中。
+如果你是抱有理解基本概念与学习的想法来找阅读材料，请不要看在文章尾部的 MARKS 相关文档 
+
 ## Prompt Engineering
 
-- 【✨重点推荐，基本把Prompt Engineering 梳理完了】翁荔的博客：Weng, Lilian. (Mar 2023). Prompt Engineering. Lil’Log. https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/.
-- 
+- 【✨重点推荐，基本把Prompt Engineering 梳理完了，感觉 prompt 没什么好说的，读完这篇文章就完事了】翁荔的博客：Weng, Lilian. (Mar 2023). Prompt Engineering. Lil’Log. [https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/](https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/)
 
 ## LLM 测试
 
-- 【Claude】如何开发LLM的测试用例：https://docs.anthropic.com/zh-CN/docs/build-with-claude/develop-tests
+- 【Claude】如何开发LLM的测试用例：[https://docs.anthropic.com/zh-CN/docs/build-with-claude/develop-tests](https://docs.anthropic.com/zh-CN/docs/build-with-claude/develop-tests)
 
   所谓测试，本质是 build evals ，构建评估。
 
-- 【Anthropic 的 Building Evals Cookbook 示例】https://github.com/anthropics/anthropic-cookbook/blob/main/misc/building%5Fevals.ipynb
+- 【Anthropic 的 Building Evals Cookbook 示例】[https://github.com/anthropics/anthropic-cookbook/blob/main/misc/building%5Fevals.ipynb](https://github.com/anthropics/anthropic-cookbook/blob/main/misc/building%5Fevals.ipynb)
 
 
 ## Agent
 
-- 【✨重点推荐】翁荔的博客：Weng, Lilian. (Jun 2023). “LLM-powered Autonomous Agents”. Lil’Log. https://lilianweng.github.io/posts/2023-06-23-agent/. 
+- 【✨重点推荐】翁荔的博客：Weng, Lilian. (Jun 2023). “LLM-powered Autonomous Agents”. Lil’Log. [https://lilianweng.github.io/posts/2023-06-23-agent/](https://lilianweng.github.io/posts/2023-06-23-agent/)
 
   > We can roughly consider the following mappings:
   > 我们可以大致考虑以下映射：
@@ -35,12 +39,56 @@ date: 2025-01-24
   > - Long-term memory as the external vector store that the agent can attend to at query time, accessible via fast retrieval.
   >   长期记忆作为外部向量存储，代理在查询时可通过快速检索访问。
 
-- 【Anthropic 总结的代理系统的模式】https://leewendao.otterstack.cn/writings/translations/building-effective-agents-zh
-- 
+- 【Anthropic 总结的代理系统的模式】[https://leewendao.otterstack.cn/writings/translations/building-effective-agents-zh](https://leewendao.otterstack.cn/writings/translations/building-effective-agents-zh)
 
+## RAG
 
-  ## 一些通用结论
+- 【✨关于 RAG 的综述论文，读完这篇你就大概懂了】https://arxiv.org/abs/2312.10997
+- 【✨Anthropic 的上下文检索介绍】这一篇讲述了如何增强 RAG 的检索性能 [https://www.anthropic.com/news/contextual-retrieval](https://www.anthropic.com/news/contextual-retrieval)，我的个人翻译：[https://leewendao.otterstack.cn/writings/translations/introducing-contextual-retrieval-anthropic](/writings/translations/introducing-contextual-retrieval-anthropic)
+
+ ## 一些通用结论，有实践意义
   
-- 【大模型知道自身会在什么时候感到困惑】https://arxiv.org/abs/2410.02707
-- 【大模型并不在做推理，仅仅只是复制了在训练数据中观察到的推理步骤，添加一个似乎与问题相关的子句会导致所有最先进的模型的性能显著下降（高达 65%）】https://arxiv.org/abs/2410.05229
-- 【test-time scaling，测试时间缩放】给LLM更多的思考时间，它能够得到更好的结果。
+- 【大模型知道自身会在什么时候感到困惑】[https://arxiv.org/abs/2410.02707](https://arxiv.org/abs/2410.02707)
+- 【大模型并不在做推理，仅仅只是复制了在训练数据中观察到的推理步骤，添加一个似乎与问题相关的子句会导致所有最先进的模型的性能显著下降（高达 65%）】[https://arxiv.org/abs/2410.05229](https://arxiv.org/abs/2410.05229)
+- 【test-time scaling，测试时间缩放】对于推理模而言，给LLM更多的思考时间，它能够得到更好的结果。
+- 【嵌入的使用技巧】[https://timkellogg.me/blog/2024/07/10/spheres](https://timkellogg.me/blog/2024/07/10/spheres)
+> 总结来讲：
+> 1. 目前大多数 LLM 厂商会做嵌入的归一化，因此，最好使用点积。
+> 2. 将嵌入视为球体
+> 3. 使用逻辑回归（logistic regression）
+
+## 一些有理论意义的文章
+
+- 【大模型安全相关：基于对数概率信息的自适应越狱攻击/预填充攻击/转移攻击】[https://arxiv.org/abs/2404.02151](https://arxiv.org/abs/2404.02151)
+
+> 对于 【基于对数概率信息的自适应越狱攻击】，简单来讲就是由于 LLM 底层是基于概率去预测下个 token 的，因此用户可以通过设计一个对抗性提示模板，然后通过随机搜索或其他优化策略，在后缀中寻找能够使目标 token 的对数概率最大化的内容，从而诱导模型输出越过其安全对齐限制的内容。
+>
+> 【预填充攻击】，模型如果不提供对数概率信息，那么可以在 prompt 中特地添加那些模型认为不安全的信息（e.g. 特朗普白宫黑幕，假设这一段内容会触发审查，那么便故意在 prompt 中添加“特朗普白宫黑幕”的关键词,例如对于推理模型可以通过 `<think>` 标签进行攻击）越过限制。
+>
+> 【转移攻击】当你构建了一个越狱的 prompt 后，可以试着将它应用到其他模型上进行攻击，由于不同模型往往存在相似的脆弱性或漏洞，当在一个模型上成功构造出“越狱”提示后，这个提示很可能也能在其他模型上生效，从而实现跨模型的攻击。
+>
+> 除此之外，基于上述内容，可以引出针对推理模型的 thought token forcecing 攻击，但原文是外国人写的，恶毒地用了我们的一些敏感事件作为例子，所以在这里不贴参考链接了。
+
+- 【大模型的审查是可以被擦除的】[https://huggingface.co/blog/mlabonne/abliteration](https://huggingface.co/blog/mlabonne/abliteration)
+
+## 一些你可能要知道，但是不一定好用的概念
+
+- 【ReAct，将推理和行动结合起来的 Agent 设计思路范式，但伴随推理模型和LLM本身能力的增强，这个范式不一定好用了】[ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
+
+
+## 有意思的其他研究方向
+
+> 仅记录了我觉得有意思的
+
+- 【基于熵的编码/解码器构筑的 LLM,enthropix】[https://timkellogg.me/blog/2024/10/10/entropix](https://timkellogg.me/blog/2024/10/10/entropix)
+> 有趣的地方在于，似乎这种法子可以通过熵值诱导 LLM 做出不同的选择：正常行为，去思考，采用多条路径，重采样。
+
+
+## MARKS
+
+> 此处记载了一些我觉得 Ok 的框架的文档。
+> 仅作 mark 用。
+
+### 【LangGraph】
+
+- 【tools】如何创建工具：[https://python.langchain.com/docs/how_to/custom_tools/#creating-tools-from-functions](https://python.langchain.com/docs/how_to/custom_tools/#creating-tools-from-functions)

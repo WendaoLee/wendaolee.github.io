@@ -1,4 +1,4 @@
-import { allWritings } from "@/.contentlayer/generated";
+import { allWorks, allWritings } from "@/.contentlayer/generated";
 import { getReadableDate } from "@/lib/date";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
-  const processedWritings = allWritings
+  const listedUpdateds = [...allWritings,...allWorks]
+  const processedWritings = listedUpdateds
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .map((post) => {
       return {

@@ -125,7 +125,7 @@ export default function BlogSearch() {
       >
         <Command shouldFilter={false}>
           <CommandInput
-            placeholder="搜索文章..."
+            placeholder="输入关键词搜索文章，仅支持 Wrtings 相关的内容搜索。"
             value={searchQuery}
             onValueChange={setSearchQuery}
             className="p-4 text-base focus:outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"

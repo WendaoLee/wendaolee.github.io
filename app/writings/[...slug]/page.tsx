@@ -70,7 +70,7 @@ export default async function PostPage({ params }: PostProps) {
   return (
     <>
     <article className="min-w-full py-6 prose dark:prose-invert">
-      <h1 className="mb-2">{post.title}</h1>
+      <h1 className="text-xl mb-2 md:text-2xl">{post.title}</h1>
       {/* <div className="flex justify-between h-fit">
         <p className="text-lg text-slate-600 dark:text-slate-400 my-0">
           {getReadableDate(post.date)}

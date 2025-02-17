@@ -1,3 +1,4 @@
+import WorksLists from "@/components/WorksLIst";
 import { Metadata } from "next";
 
 export async function generateMetadata():Promise<Metadata>{
@@ -16,10 +17,19 @@ export default function WorksPage(){
         <div>
             <h3>Slides</h3>
             <p className="mt-0">一些 PPT。</p>
+            <ul>
+                <li>
+                    <a href="https://1drv.ms/p/c/21572062c88e2c1a/ERosjshiIFcggCGvBQAAAAABShUoIvLb-1X8JPc4roG2eQ?e=jW4193">RAG 懵懂指南</a>，去年夏天的公司内部分享内容
+                </li>
+                <li>
+                    <a href="https://1drv.ms/p/c/21572062c88e2c1a/ERosjshiIFcggCG7BQAAAAABIx3gmY4BD6wF9sOuqKmisQ?e=SVjdyL">开源社区 Github 的使用以及如何评估一个开源项目</a>,去年夏天给实验室的同学分享的浅显内容
+                </li>
+            </ul>
         </div>
         <div>
             <h3>WIP(Work In Progress)</h3>
             <p>🚧 施工中的项目。</p>
+            <WorksLists></WorksLists>
         </div>
     </div>
 }
