@@ -1,0 +1,97 @@
+---
+title: 【Note】微信小程序中使用 crypto-js 遇到 Native crypto module could not be used to get secure random number 的解决方案
+date: 2025-02-16
+category: note
+tags: ["微信小程序", "crypto-js", "加密"]
+description: 微信小程序中使用 crypto-js 遇到 Native crypto module could not be used to get secure random number 的解决方案
+---
+# 问题描述
+
+在微信小程序中，使用 crypto-js 的加密函数会得到报错：`Native crypto module could not be used to get secure random number.`。
+
+这个问题的原因在于微信并没有按照 Nodejs/Browser 的规范去实现 `crypto` 加密相关的函数。在基础库 2.15.0 开始之前没有是现货密码学的安全随机数，直到 2.15.0 之后才在基础库  `wx` 中添加了对应方法 `wx.getRandomValues`。
+
+而 `crypto-js` 的实现是从浏览器规范下的 `window` 对象/NodeJs 规范下的 `global/globalThis` 对象中去取对应的随机加密函数：
+
+```javascript
+// see https://github.com/brix/crypto-js/blob/ac34a5a584337b33a2e567f50d96819a96ac44bf/src/core.js#L47    
+
+var crypto;
+
+    // Native crypto from window (Browser)
+    if (typeof window !== 'undefined' && window.crypto) {
+        crypto = window.crypto;
+    }
+
+    // Native crypto in web worker (Browser)
+    if (typeof self !== 'undefined' && self.crypto) {
+        crypto = self.crypto;
+    }
+
+    // Native crypto from worker
+    if (typeof globalThis !== 'undefined' && globalThis.crypto) {
+        crypto = globalThis.crypto;
+    }
+
+    // Native (experimental IE 11) crypto from window (Browser)
+    if (!crypto && typeof window !== 'undefined' && window.msCrypto) {
+        crypto = window.msCrypto;
+    }
+
+    // Native crypto from global (NodeJS)
+    if (!crypto && typeof global !== 'undefined' && global.crypto) {
+        crypto = global.crypto;
+    }
+
+    // Native crypto import via require (NodeJS)
+    if (!crypto && typeof require === 'function') {
+        try {
+            crypto = require('crypto');
+        } catch (err) {}
+    }
+
+// .... 下面是获取随机数的代码
+
+ var cryptoSecureRandomInt = function () {
+        if (crypto) {
+            // Use getRandomValues method (Browser)
+            if (typeof crypto.getRandomValues === 'function') {
+                try {
+                    return crypto.getRandomValues(new Uint32Array(1))[0];
+                } catch (err) {}
+            }
+
+            // Use randomBytes method (NodeJS)
+            if (typeof crypto.randomBytes === 'function') {
+                try {
+                    return crypto.randomBytes(4).readInt32LE();
+                } catch (err) {}
+            }
+        }
+```
+
+ 
+
+但是微信小程序内部并没有在这些对象中内置 crypto 模块，因此需要手动在 `app.ts` 之类的文件中，通过 `global` 对象 pollyfill 加载：
+
+```typescript
+// @note: 官方没有说过 global 对象不可以这么用，但不排除以后会发生变化。
+// @ts-ignore
+global['crypto'] = {
+  getRandomValues:wx.getRandomValues
+}
+```
+
+# 解决方式
+
+在微信小程序的全局对象 `global` 中添加对应的 pollyfill 代码：
+
+```typescript
+// @note: 官方没有说过 global 对象不可以这么用，但不排除以后会发生变化。
+// @ts-ignore
+global['crypto'] = {
+  getRandomValues:wx.getRandomValues
+}
+```
+
+如此便可以正常使用 crypto-js 了。
