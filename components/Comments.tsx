@@ -29,7 +29,7 @@ const Utterances: React.FC = () => {
   }, []);
 
   return <div ref={containerRef} id="utterances-comments-container">
-    {isLoaded.current === false && <p>Comments loaded</p>}
+    {isLoaded.current === false && <p>Comments is loading... / 评论区正在加载中...</p>}
   </div>;
 };
 

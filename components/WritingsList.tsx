@@ -59,7 +59,7 @@ export default function WritingsLists() {
       </nav>
 
       <h3>Note</h3>
-      <p className="mt-0">Note 为我自己的学习笔记。</p>
+      <p className="mt-0">Note 为我自己的学习笔记。同样的，我会把一些随手记的、或者是内容比较杂乱的文章放在这里。希望它能够帮到你。</p>
       <nav id='note-list-nav' aria-label="note列表">
         <ul>
         {sortedWritings
@@ -76,7 +76,7 @@ export default function WritingsLists() {
       </nav>
 
       <h3>Story</h3>
-      <p className="mt-0">Story 为我自己的小说。</p>
+      <p className="mt-0">Story 为我自己写的小说。</p>
       <nav id='story-list-nav' aria-label="story列表">
         <ul>
         {sortedWritings

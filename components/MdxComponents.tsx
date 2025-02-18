@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useMDXComponent } from "next-contentlayer2/hooks"
 import WritingsLists from "./WritingsList"
 import { AutoToc } from "./AutoToc"
+import { StickyToc } from "./StickyToc"
 
 const components = {
   Image,
@@ -22,6 +23,7 @@ export function Mdx({ code }: MdxProps) {
 
   return <>
   <AutoToc></AutoToc>
+  <StickyToc></StickyToc>
   <Component components={{...components,
     p: (props) => <p {...props} className="text-base leading-7" />,
     // h2: (props) => <h2 {...props} className="text-2xl md:text-3xl font-bold mt-8 mb-4" />,

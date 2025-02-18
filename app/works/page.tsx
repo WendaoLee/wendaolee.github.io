@@ -7,6 +7,19 @@ export async function generateMetadata():Promise<Metadata>{
     }
 }
 
+const slides = [
+    {
+        title: "RAG 懵懂指南",
+        link: "https://1drv.ms/p/c/21572062c88e2c1a/ERosjshiIFcggCGvBQAAAAABShUoIvLb-1X8JPc4roG2eQ?e=jW4193",
+        additional: "去年夏天在公司内部分享的内容",
+    },
+    {
+        title: "开源社区 Github 的使用以及如何评估一个开源项目",
+        link: "https://1drv.ms/p/c/21572062c88e2c1a/ERosjshiIFcggCG7BQAAAAABIx3gmY4BD6wF9sOuqKmisQ?e=SVjdyL",
+        additional: "去年夏天给实验室的同学分享的浅显内容",
+    }
+]
+
 export default function WorksPage(){
     return <div className="mt-5">
         <header>
@@ -18,12 +31,12 @@ export default function WorksPage(){
             <h3>Slides</h3>
             <p className="mt-0">一些 PPT。</p>
             <ul>
-                <li>
-                    <a href="https://1drv.ms/p/c/21572062c88e2c1a/ERosjshiIFcggCGvBQAAAAABShUoIvLb-1X8JPc4roG2eQ?e=jW4193">RAG 懵懂指南</a>，去年夏天的公司内部分享内容
-                </li>
-                <li>
-                    <a href="https://1drv.ms/p/c/21572062c88e2c1a/ERosjshiIFcggCG7BQAAAAABIx3gmY4BD6wF9sOuqKmisQ?e=SVjdyL">开源社区 Github 的使用以及如何评估一个开源项目</a>,去年夏天给实验室的同学分享的浅显内容
-                </li>
+                {slides.map((slide,index)=>{
+                    return <li key={index}>
+                        <a href={slide.link}>{slide.title}</a>, 
+                        <span>{slide.additional}</span>
+                    </li>
+                })}
             </ul>
         </div>
         <div>
