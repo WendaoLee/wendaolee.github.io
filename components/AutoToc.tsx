@@ -42,7 +42,7 @@ export function AutoToc() {
       >
         <div className="flex flex-row items-center gap-2">
           <Triangle className={`w-3 h-3 ${isCollapsed ? 'rotate-180' : ''}`} fill="currentColor" />
-          <span className="text-base font-semibold md:text-base" style={{letterSpacing: '1px'}}>目录</span>
+          <span className="text-base font-semibold md:text-base" style={{ letterSpacing: '1px' }}>目录</span>
         </div>
       </div>
       {!isCollapsed && (
@@ -51,18 +51,31 @@ export function AutoToc() {
             {headings.map((heading) => (
               <>
                 {heading.level === 1 && (
-                  <li key={heading.id} style={{color:'black'}}>
+                  <li key={heading.id} style={{ color: 'black' }}>
                     {renderHeadingLevel1(heading)}
                   </li>
                 )}
                 {heading.level === 2 && (
-                    <ul className="pl-4">
-                      <li style={{listStyle:'circle'}}>
-                        <a href={`#${heading.id}`} className="block no-underline text-gray-700 hover:text-gray-900 dark:text-white">
-                          {heading.text}
-                        </a>
-                      </li>
-                    </ul>
+                  <ul className="pl-4">
+                    <li style={{ listStyle: 'circle' }}>
+                      <a href={`#${heading.id}`} className="block no-underline text-gray-700 hover:text-gray-900 dark:text-white">
+                        {heading.text}
+                      </a>
+                    </li>
+                  </ul>
+                )}
+                {heading.level === 3 && (
+                  <ul className="pl-4">
+                    <li style={{listStyle:'none'}}>
+                      <ul>
+                        <li>
+                          <a href={`#${heading.id}`} className="block no-underline text-gray-700 hover:text-gray-900 dark:text-white">
+                            {heading.text}
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 )}
               </>
             ))}

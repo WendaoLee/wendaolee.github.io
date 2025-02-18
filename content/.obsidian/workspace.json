@@ -15,8 +15,8 @@
               "state": {
                 "file": "works/wip/llm.mdx",
                 "mode": "source",
-                "backlinks": false,
-                "source": false
+                "source": false,
+                "backlinks": false
               },
               "icon": "lucide-file",
               "title": "llm"
@@ -41,7 +41,8 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical"
+                "sortOrder": "alphabetical",
+                "autoReveal": false
               },
               "icon": "lucide-folder-closed",
               "title": "文件列表"
@@ -78,7 +79,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 474.5
   },
   "right": {
     "id": "0c27023778a3bfee",
@@ -145,7 +146,7 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "442c2da69698810b",
+  "active": "97166d9d73036bbf",
   "lastOpenFiles": [
     "works/wip/AI 项目.md",
     "img/AI 项目/IMG-20250206123924264.png",
