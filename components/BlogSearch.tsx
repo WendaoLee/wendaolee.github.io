@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, Command } from "@/components/ui/command"
 import { Search } from "lucide-react"
-import { allWritings, type Writings } from '@/.contentlayer/generated'
+import { allWorks, allWritings, type Work, type Writings } from '@/.contentlayer/generated'
 import { Matrix, search } from 'text-search-engine'
 import { HighlightWithTarget } from 'text-search-engine/react'
 import { CommandLoading } from 'cmdk'
@@ -51,7 +51,7 @@ export default function BlogSearch() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [filteredPosts, setFilteredPosts] = useState<Writings[]>([])
+  const [filteredPosts, setFilteredPosts] = useState<Array<Writings | Work>>([])
 
   const [loading, setLoading] = useState(false)
   const matrixContentMappingRef = useRef<Record<string,Matrix>>({})
@@ -74,7 +74,7 @@ export default function BlogSearch() {
   const handleSearchAsync = async (query: string) => {
 
     const mapping:Record<string,number> = {}
-    const result = allWritings.filter(post => {
+    const result = [...allWritings,...allWorks].filter(post => {
       const searchBodyPower = search(post.body.raw, query) 
       const searchTitlePower = search(post.title,query)
       if(searchBodyPower === undefined && searchTitlePower === undefined){
@@ -125,7 +125,7 @@ export default function BlogSearch() {
       >
         <Command shouldFilter={false}>
           <CommandInput
-            placeholder="输入关键词搜索文章，仅支持 Wrtings 相关的内容搜索。"
+            placeholder="输入关键词搜索文章..."
             value={searchQuery}
             onValueChange={setSearchQuery}
             className="p-4 text-base focus:outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
