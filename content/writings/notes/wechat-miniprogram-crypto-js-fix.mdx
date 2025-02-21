@@ -5,11 +5,16 @@ category: note
 tags: ["微信小程序", "crypto-js", "加密"]
 description: 微信小程序中使用 crypto-js 遇到 Native crypto module could not be used to get secure random number 的解决方案
 ---
-# 问题描述
+import UpdatedSpan from "@/components/UpdatedSpan";
+
+<UpdatedSpan text="[2025-02-21 updated] 删去了误打的冗余字词。" />
+<br/>
+
+## 问题描述
 
 在微信小程序中，使用 crypto-js 的加密函数会得到报错：`Native crypto module could not be used to get secure random number.`。
 
-这个问题的原因在于微信并没有按照 Nodejs/Browser 的规范去实现 `crypto` 加密相关的函数。在基础库 2.15.0 开始之前没有是现货密码学的安全随机数，直到 2.15.0 之后才在基础库  `wx` 中添加了对应方法 `wx.getRandomValues`。
+这个问题的原因在于微信并没有按照 Nodejs/Browser 的规范去实现 `crypto` 加密相关的函数。在基础库 2.15.0 开始之前没有是密码学的安全随机数，直到 2.15.0 之后才在基础库  `wx` 中添加了对应方法 `wx.getRandomValues`。
 
 而 `crypto-js` 的实现是从浏览器规范下的 `window` 对象/NodeJs 规范下的 `global/globalThis` 对象中去取对应的随机加密函数：
 
@@ -82,9 +87,9 @@ global['crypto'] = {
 }
 ```
 
-# 解决方式
+## 解决方式
 
-在微信小程序的全局对象 `global` 中添加对应的 pollyfill 代码：
+在 `app.ts` 之类的文件中，在微信小程序的全局对象 `global` 中添加对应的 pollyfill 代码：
 
 ```typescript
 // @note: 官方没有说过 global 对象不可以这么用，但不排除以后会发生变化。
