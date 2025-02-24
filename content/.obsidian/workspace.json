@@ -21,8 +21,21 @@
               "icon": "lucide-file",
               "title": "llm"
             }
+          },
+          {
+            "id": "3d9252d26531cf68",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.8.7"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.8.7"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -146,8 +159,11 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "97166d9d73036bbf",
+  "active": "3d9252d26531cf68",
   "lastOpenFiles": [
+    "writings/notes/some-pieces.mdx",
+    "works/wip/note.mdx",
+    "writings/notes/langgraphjs-detail.md",
     "works/wip/AI 项目.md",
     "img/AI 项目/IMG-20250206123924264.png",
     "img/AI 项目/IMG-20250206123648896.png",

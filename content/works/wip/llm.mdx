@@ -2,11 +2,11 @@
 title: 【WIP】个人梳理的 LLM 阅读材料和文献 - 2025
 description: 个人梳理的 LLM 阅读材料和文献，也许它能够帮助到你？
 category: wip
-date: 2025-02-18 
+date: 2025-02-24 
 ---
 import UpdatedSpan from "@/components/UpdatedSpan";
 
-<UpdatedSpan text="[updated] 最后更新于 2025-02-18" />
+<UpdatedSpan text="[updated] 最后更新于 2025-02-24" />
 
 这一篇是我个人梳理的感觉具有阅读价值的 LLm 领域的阅读材料和文件，还在不断更新中。
 如果你是抱有理解基本概念与学习的想法来找阅读材料，请不要看在文章尾部的 MARKS 相关文档 
@@ -67,6 +67,13 @@ import UpdatedSpan from "@/components/UpdatedSpan";
   
 - 【大模型知道自身会在什么时候感到困惑】[https://arxiv.org/abs/2410.02707](https://arxiv.org/abs/2410.02707)
 
+### 大模型是自回归的，意味着初始步骤的错误会导致错误的累积
+
+- 【传统自回归模型 autoregressive langauage model】[https://deepgenerativemodels.github.io/notes/autoregressive/](https://deepgenerativemodels.github.io/notes/autoregressive/)
+
+> 自回归 =  self + regressive，上一步的输出会是下一步的输入，而后进行预测。
+> 由于训练 LLM 的方式是自回归的，所有输入是真实值，因此 LLM 会信任自己的输入。这是 LLM 的根本缺陷之一。
+
 ### LLM并不会推理，添加某些子句会导致性能极大下降
 
 - 【大模型并不在做推理，仅仅只是复制了在训练数据中观察到的推理步骤，添加一个似乎与问题相关的子句会导致所有最先进的模型的性能显著下降（高达 65%）】[https://arxiv.org/abs/2410.05229](https://arxiv.org/abs/2410.05229)
@@ -101,7 +108,7 @@ import UpdatedSpan from "@/components/UpdatedSpan";
 
 ### ReAct
 
-- 【ReAct，将推理和行动结合起来的 Agent 设计思路范式，但伴随推理模型和LLM本身能力的增强，这个范式不一定好用了】[ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
+- 【ReAct，将推理和行动结合起来的 Agent 设计思路范式，但伴随推理模型和LLM本身能力的增强，原文的范式不一定好用了】[ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
 
 
 ## 有意思的其他研究方向
@@ -111,7 +118,16 @@ import UpdatedSpan from "@/components/UpdatedSpan";
 ### 基于熵的编码/解码器构建的LLM
 
 - 【基于熵的编码/解码器构筑的 LLM,enthropix】[https://timkellogg.me/blog/2024/10/10/entropix](https://timkellogg.me/blog/2024/10/10/entropix)
-> 有趣的地方在于，似乎这种法子可以通过熵值诱导 LLM 做出不同的选择：正常行为，去思考，采用多条路径，重采样。
+
+有趣的地方在于，似乎这种法子可以通过熵值诱导 LLM 做出不同的选择：正常行为，去思考，采用多条路径，重采样。
+
+### LLaDA，扩散大语言模型
+
+- 【LLaDA，扩散大语言模型】[https://arxiv.org/abs/2502.09992](https://arxiv.org/abs/2502.09992)
+
+我个人觉得这是一个有趣的研究方向，因为传统的基于自回归的 LLM 没有全局性的回顾概念，它是 self-regressive 的，基于上一步的输入进行预测。但 LLaDA 是扩散性地生成，不是一个个按序地 token 吐出生成。
+
+![来源 timkellogg.me/blog/2025/02/17/diffusion,它给出了 LLaDA 的生成可视化示例](/public/img/assets2025/diff_normal_150ms.gif)
 
 
 ## MARKS
