@@ -2,11 +2,23 @@
 title: 一些随手记的灵感与发现片段
 description: 一些随手记的灵感与发现片段
 category: wip
-date: 2025-02-20 
+date: 2025-02-25 
 ---
 import UpdatedSpan from "@/components/UpdatedSpan";
 
-<UpdatedSpan text="[updated] 最后更新于 2025-02-20" />
+<UpdatedSpan text="[updated] 最后更新于 2025-02-25" />
+
+## Web
+
+[2025-02-25] 在 Web 开发时，对于 token 的 URL 传递，需要注意特殊字符的转义（token特别容易触发这一点）。
+
+例如 token:
+```text
+U2FsdGVkX1/32F2qX7p3faHYPLPjhpJccxgD1JzkupT43s872Ea1BnV7iWKMETES3Xl+ICLBPkamABfmHU7Eww==
+```
+其中的 `+` 号，在 URL 中会被转义为空格，所以需要进行 URL 编码。
+
+对于 URL 的编码转义规则在 [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986.html) 中定义。
 
 ## DeepseekR1
 
