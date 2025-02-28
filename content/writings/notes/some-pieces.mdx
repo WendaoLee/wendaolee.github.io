@@ -8,7 +8,53 @@ import UpdatedSpan from "@/components/UpdatedSpan";
 
 <UpdatedSpan text="[updated] 最后更新于 2025-02-26" />
 
+## Next.js
+
+[2025-02-26] Next.js 的 server action 在返回时，只能返回普通的、可以序列化的对象
+
+考虑该 action:
+
+```typescript
+/**
+ * serverAction:发送信息渠道的邮箱验证邮件
+ * @param userId 
+ * @param email 
+ */
+export async function sendInfoChannelEmailValidation(userId: string, email: string) {
+    try {
+        const token = getMagicLinkToken({ email, userId, timestamp: Date.now() })
+        const encodeToken = encodeURIComponent(token)
+        const url = `${BASE_URL}/api/auth/email-verify?token=${encodeToken}&type=infoChannelEmailValidation`
+        const sendEmail = await sendVerificationEmail({
+            identifier: email,
+            url,
+            token,
+            from: "Memenews <no-reply@newsdiy.cn>",
+            theme: {
+                colorScheme: 'auto'
+            },
+        }, "infoChannelEmailValidation")
+        return {
+            success: sendEmail.success,
+            message: sendEmail.message,
+        }
+    } catch (error) {
+        console.error(`在 serverAction:sendInfoChannelEmailValidation 中发生错误: ${error instanceof Error ? error.message : '未知错误'}`)
+        return {
+            success: false,
+            message: `发送信息渠道的邮箱验证邮件失败: ${error instanceof Error ? error.message : '未知错误'}`,
+        }
+    }
+}
+```
+
+其中，我没注意到 sendVerificationEmail 的返回值的 data 字段可能会是 SMTPTransport 类型，因此在早版本的代码里，直接返回 sendEmail ，导致在生产环境里我无法调通该 action。
+
+开发环境下 next.js 比较宽松，因此没在开发环境发现这个问题。
+
+
 ## Web
+
 
 [2025-02-26] `fetch` 的 `POST` 方法发起请求时，需要注意 `Content-Type` 的设置。
 
