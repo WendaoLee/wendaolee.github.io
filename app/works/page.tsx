@@ -27,6 +27,20 @@ export default function WorksPage(){
             <h4 className="mt-0">Slides & Publications</h4>
             <p>此处存放的是一些可能能够帮助你的产出。</p>
         </header>
+        <div className="mt-5">
+            <h3>Websites</h3>
+            <ul>
+                <li>
+                    <a href="https://leewendao.otterstack.cn/AxRythem/">
+                    【MIDI】
+                    </a>
+
+                        <p>
+                            基于 <a href="https://github.com/Acgnu/AxRythem">https://github.com/Acgnu/AxRythem</a>这个项目进行一定更改的MIDI Website，放在这里主要是我个人导航用。
+                        </p>
+                </li>
+            </ul>
+        </div>
         <div>
             <h3>Slides</h3>
             <p className="mt-0">一些 PPT。</p>
