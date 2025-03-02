@@ -1,0 +1,170 @@
+---
+title: 关于OpenTelemetry的Traces、Metrics与Logs
+description: 个人关于建立线上服务监控与量测的概念Traces、Metrics与Logs的学习笔记。
+keywords: [OpenTelemetry]
+category: note
+date: 2025-03-02
+--- 
+
+这只是一篇学习笔记，通过目录可以快速定位到对应的备忘信息上。
+
+# Trace (span)
+
+Trace 用于追踪应用的运行痕迹，虽然说它们大多用于监控用户发起的请求在应用程序间的流转的时序顺序。
+
+Trace 通过名为 `span` （可译为“跨度”）作为这一量测的数据结构。而 `span` 的身份标识来源于结构中的以下字段：
+
+- `trace_id` ，指代本次的追踪 Id ，即用来标志一次追踪。全局唯一。
+- `span_id` ，指代该 **跨度（注意不是 trace）** 。
+
+这两者可以归并为 `SpanContext` （可译为“跨度上下文”）。即用于指示 `span`  所需要的上下文信息、
+
+`span` 的特点在于，它支持嵌套子级的 `span` ，用于提供更细节的追踪。例如用户发起请求，会走经 `验证用户身份 -> 查询数据库 -> 调用其他服务 -> 响应` 的步骤，其中囊括整个流程的 `span` 名为 `root span` （根 `span`），下面各个流程（或者说各个任务）的跨度嵌套在子级的 `span` 下，因此会存在标识 `span` 之间的父子关系的字段：
+
+- `parent_id` ，其父级 `span` 的 `span_id` 。 
+
+![时序上的，某用户的一次API请求的 span 示例](/img/【Note】关于%20OpenTelemetry%20的%20Traces、Metrics与Logs/IMG-20250228145534723.png)
+
+除此之外， `span` 还会具有标识时间信息的字段：
+
+- `start_time` ，开始时间。
+- `end_time` ，结束时间，
+
+以及其他的属性信息、事件信息等（即上下文数据）。Claude 帮我绘制了这样的概览图梳理 `span` 到底带有啥东西：
+
+![](/img/【Note】关于%20OpenTelemetry%20的%20Traces、Metrics与Logs/IMG-20250302141413399.png)
+
+## Atttributes，属性
+
+属性是包含元数据的 **键值对**，用于携带你认为应该 **追踪** 的信息。
+
+例如，对于将商品添加到购物车中的动作的追踪，便可以通过 Attributes 携带用户ID、商品ID、购物车ID等信息。
+
+### 语义约定，Semantic Attributes
+
+可以认为语义约定是一种约定好命名与值规范的 attributes，例如：
+
+```json
+  "attributes": {
+    "net.transport": "IP.TCP",
+    "net.peer.ip": "172.17.0.1",
+    "net.peer.port": "51820",
+    "net.host.ip": "10.177.2.152",
+    "net.host.port": "26040",
+    "http.method": "GET",
+    "http.target": "/v1/sys/health",
+    "http.server_name": "mortar-gateway",
+    "http.route": "/v1/sys/health",
+    "http.user_agent": "Consul Health Check",
+    "http.scheme": "http",
+    "http.host": "10.177.2.152:26040",
+    "http.flavor": "1.1"
+  },
+```
+
+此处的 `http.*` 便是预先的语义约定。
+
+`OpenTelemetry` 预先定好的资源语义约定可见：[https://opentelemetry.io/docs/specs/semconv/resource/](https://opentelemetry.io/docs/specs/semconv/resource/)。
+
+## Events，事件
+
+事件是 `span` 上的结构化日志消息（也可以作为注释使用），通常用于表示 `Span` 持续时间内有意义的时间点。
+
+例如，在 Web 浏览器内部的两个场景：
+
+1. 跟踪页面的加载。
+2. 表示页面何时变为交互式（interactive）。
+
+纯粹依靠 `span` 适合监控第一种情况。`span + event` 适合追踪第二种情况，因为它表示有意义的 `单个时间点` 。
+
+事件也可以包括属性，例如：
+
+```json
+  "events": [
+    {
+      "name": "",
+      "message": "OK",
+      "timestamp": "2021-10-22 16:04:01.209512872 +0000 UTC"
+    }
+  ]
+```
+
+## 何时使用 events，何时使用 attributes
+
+按照我个人理解，便是：
+
+- 如果**对应的追踪指标的完成情况的时间戳**有重要意义，那么将这部分指标数据附加到 `events` 上
+- 如果没有，那么作为 `attributes` 即可。
+
+> OpenTelemetry 关于 trace 的使用规范：[https://opentelemetry.io/docs/specs/otel/overview/#tracing-signal](https://opentelemetry.io/docs/specs/otel/overview/#tracing-signal)
+
+## Link，span 之间的链接
+
+`span` 之间可以相互链接关联，以表示 `span` 之间的因果关系。
+
+我拜托 Claude 为我绘制了这么一张图说明：
+
+![](/img/【Note】关于%20OpenTelemetry%20的%20Traces、Metrics与Logs/IMG-20250302144340699.png)
+
+Link 最主要用于不同 `Trace` 上的 `Span` 的关联。
+
+## Span Status
+
+`span` 本身存在以下三种可能的状态：
+
+- `Unset` ，`Unset` 表示它追踪的操作以及完成，没有错误。
+- Error
+- `Ok` 。开发人员手动将 `Span` 标记为成功。一般不需要显示将它标记为 `Ok` 。
+
+## Span Kind
+
+> 需要更多的实践摸清楚这个东东。我会在后面更新这篇 NOTE。
+
+`span` 具有类别，它的值可能为：
+
+- `Client` ，表示 `span` 用于描述 `Client` 侧等待远程服务响应的请求操作。
+- `Server`， 表示 `span` 用于描述服务端处理传入请求的操作。
+- `Internal`，表示应用程序的内部操作，不涉及远程调用的操作。
+- `Producer` ，表示外部的延迟操作。
+- `Consumer`，表示内部的延迟操作。
+
+# Metrics ,指标
+
+`metrics` 是对运行服务的一种**度量（measurement）**。捕获到测量值的时刻被称为**指标事件（metric event）**。
+
+对服务的度量主要通过 metric instruments 捕获，对此，官方统一称之为 `meter` （计量器）。
+
+## Metric Exporter，度量导出器
+
+`OpenTelemetry` 通过度量器将指标数据发送给其他人。
+## Meter，计量器
+
+计量器可译为以下类型，或者说，对服务的度量可以存在以下几种类别的指标：
+
+- `Counter` ，计数器。随时间累积的值 ，它只会增加，例如汽车的里程表。
+- `Asynchronous Counter`，异步的计数器，仅在每次导出时收集一次。
+- `UpDownCounter`，随时间累积的值，但可能下降。
+- `Asynchronous UpDownCounter`，异步的可能下降的值的异步计数器。同上。
+- `Gauge`，仪表，仅在读取时对值进行测量。
+- `Asynchronous`，同上。
+- `Histogram`，直方图，值得客户端聚合。对值统计采用的指标，例如”有多少请求花费的时间少于1秒“。
+
+官方提供了补充指南的文档，用于说明同步与异步的计量器的区别：[https://opentelemetry.io/docs/specs/otel/metrics/supplementary-guidelines/](https://opentelemetry.io/docs/specs/otel/metrics/supplementary-guidelines/)。
+
+## Aggregation，聚合
+
+用于获取测量指标的统计信息。
+
+## Views 视图
+
+类似数据库那样，指定特定的数据视图。
+
+# Log，日志
+
+感觉应该尝试将我们的日志结构化。
+
+OpenTelemetry 本身并没有对它做出严格的约束要求，只是建议使用结构化日志。
+
+# Baggage ，上下文
+
+`Baggage` 是上下文信息，用于跨服务和流程传递数据。
