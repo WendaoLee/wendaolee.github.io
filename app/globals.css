@@ -44,6 +44,14 @@ body{
   width: fit-content;
 }
 
+.prose :where(ul > li):not(:where([class~="not-prose"],[class~="not-prose"] *))::marker {
+  color: black;
+}
+
+.dark .prose :where(ul > li):not(:where([class~="not-prose"],[class~="not-prose"] *))::marker {
+  color: white;
+}
+
 @layer components{
   .theAfter::after{
     @apply absolute left-0 bottom-[-11px] w-full h-[13px] bg-gradient-to-br from-indigo-500 via-indigo-700 to-purple-600;

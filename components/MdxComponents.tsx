@@ -26,6 +26,7 @@ export function Mdx({ code }: MdxProps) {
   <StickyToc></StickyToc>
   <Component components={{...components,
     p: (props) => <p {...props} className="text-base leading-7" />,
+    li: (props) => <li {...props} className="not-prose marker:text-black dark:marker:text-gray-500" />,
     // h2: (props) => <h2 {...props} className="text-2xl md:text-3xl font-bold mt-8 mb-4" />,
     img: (props) => (
       <figure className="flex flex-col items-center mb-4">
