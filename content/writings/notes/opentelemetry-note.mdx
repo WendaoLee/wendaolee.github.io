@@ -3,8 +3,11 @@ title: 【Note】关于OpenTelemetry的Traces、Metrics与Logs
 description: 个人关于建立线上服务监控与量测的概念Traces、Metrics与Logs的学习笔记。
 keywords: [OpenTelemetry]
 category: note
-date: 2025-03-02
+date: 2025-03-04
 --- 
+import UpdatedSpan from "@/components/UpdatedSpan";
+
+<UpdatedSpan text="[updated 2025-03-04] 添加了关于 Span 在某些情况下需要符合资源语义约定的说明" />
 
 这只是一篇学习笔记，通过目录可以快速定位到对应的备忘信息上。
 
@@ -65,6 +68,8 @@ Trace 通过名为 `span` （可译为“跨度”）作为这一量测的数据
 此处的 `http.*` 便是预先的语义约定。
 
 `OpenTelemetry` 预先定好的资源语义约定可见：[https://opentelemetry.io/docs/specs/semconv/resource/](https://opentelemetry.io/docs/specs/semconv/resource/)。
+
+一些可视化客户端，例如 `grafana` 是基于资源语义约定去可视化 `trace` 的，因此需要遵循相应的语义约定，例如 [HTTP 的语义约定](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/http/http-spans.md)。
 
 ## Events，事件
 
