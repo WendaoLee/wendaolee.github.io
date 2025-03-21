@@ -3,13 +3,18 @@ title: 【Note】关于OpenTelemetry的Traces、Metrics与Logs
 description: 个人关于建立线上服务监控与量测的概念Traces、Metrics与Logs的学习笔记。
 keywords: [OpenTelemetry]
 category: note
-date: 2025-03-04
+date: 2025-03-21
 --- 
 import UpdatedSpan from "@/components/UpdatedSpan";
 
+<UpdatedSpan text="[updated 2025-03-21] 添加了一些资料以及个人思考。" />
 <UpdatedSpan text="[updated 2025-03-04] 添加了关于 Span 在某些情况下需要符合资源语义约定的说明" />
 
 这只是一篇学习笔记，通过目录可以快速定位到对应的备忘信息上。
+
+# 一些个人思考
+
+- 对于服务是否要做“可观测性”，应该从这样的角度去思考：我们希望能够便捷地排查什么？ 
 
 # Trace (span)
 
@@ -71,6 +76,8 @@ Trace 通过名为 `span` （可译为“跨度”）作为这一量测的数据
 
 一些可视化客户端，例如 `grafana` 是基于资源语义约定去可视化 `trace` 的，因此需要遵循相应的语义约定，例如 [HTTP 的语义约定](https://github.com/open-telemetry/semantic-conventions/blob/main/docs/http/http-spans.md)。
 
+关于 OpenAI 的 API 的语义约定，可见[https://opentelemetry.io/docs/specs/semconv/gen-ai/openai/](https://opentelemetry.io/docs/specs/semconv/gen-ai/openai/)。
+
 ## Events，事件
 
 事件是 `span` 上的结构化日志消息（也可以作为注释使用），通常用于表示 `Span` 持续时间内有意义的时间点。
@@ -98,7 +105,7 @@ Trace 通过名为 `span` （可译为“跨度”）作为这一量测的数据
 
 按照我个人理解，便是：
 
-- 如果**对应的追踪指标的完成情况的时间戳**有重要意义，那么将这部分指标数据附加到 `events` 上
+- 如果 **对应的追踪指标的完成情况的时间戳** 有重要意义，那么将这部分指标数据附加到 `events` 上
 - 如果没有，那么作为 `attributes` 即可。
 
 > OpenTelemetry 关于 trace 的使用规范：[https://opentelemetry.io/docs/specs/otel/overview/#tracing-signal](https://opentelemetry.io/docs/specs/otel/overview/#tracing-signal)
@@ -142,6 +149,8 @@ Link 最主要用于不同 `Trace` 上的 `Span` 的关联。
 ## Metric Exporter，度量导出器
 
 `OpenTelemetry` 通过度量器将指标数据发送给其他人。
+
+需要注意的是，虽然大部分语言 SDK 的 Exporter 都是主动式的——主动传输度量数据到对应的监控端，但是个别 Exporter，例如 `Prometheus` 在 Typescript 生态中由 `OpenTelemetry` 官方维护的 [expoter](https://github.com/open-telemetry/opentelemetry-js/tree/main/experimental/packages/opentelemetry-exporter-prometheus) 便不是主动式的，而是被动打开一个服务端口让 `Prometheus` 去获取。
 ## Meter，计量器
 
 计量器可译为以下类型，或者说，对服务的度量可以存在以下几种类别的指标：
