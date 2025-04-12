@@ -26,12 +26,15 @@
             "id": "3d9252d26531cf68",
             "type": "leaf",
             "state": {
-              "type": "release-notes",
+              "type": "markdown",
               "state": {
-                "currentVersion": "1.8.7"
+                "file": "writings/story/what-you-smile.md",
+                "mode": "source",
+                "source": true,
+                "backlinks": false
               },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.8.7"
+              "icon": "lucide-file",
+              "title": "what-you-smile"
             }
           }
         ],
@@ -161,6 +164,10 @@
   },
   "active": "3d9252d26531cf68",
   "lastOpenFiles": [
+    "writings/story/something-you-know.mdx",
+    "writings/story/what-you-smile.md",
+    "writings/notes/opentelemetry-note.mdx",
+    "writings/essay/3-12-my-dream.mdx",
     "writings/notes/some-pieces.mdx",
     "works/wip/note.mdx",
     "writings/notes/langgraphjs-detail.md",
@@ -178,8 +185,6 @@
     "temp-pic/20220801220738_1.jpg",
     "temp-pic",
     "img/20220801220738_1.jpg",
-    "works/wip/temp-pic/20220801220738_1.jpg",
-    "works/wip/temp-pic",
-    "works/wip/category-theory.mdx"
+    "works/wip/temp-pic/20220801220738_1.jpg"
   ]
 }
