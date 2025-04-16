@@ -21,21 +21,8 @@
               "icon": "lucide-file",
               "title": "llm"
             }
-          },
-          {
-            "id": "3d9252d26531cf68",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.8.7"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.8.7"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -159,8 +146,13 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "3d9252d26531cf68",
+  "active": "442c2da69698810b",
   "lastOpenFiles": [
+    "writings/story/what-you-smile.md",
+    "writings/story/what-you-smile.mdx",
+    "writings/story/something-you-know.mdx",
+    "writings/notes/opentelemetry-note.mdx",
+    "writings/essay/3-12-my-dream.mdx",
     "writings/notes/some-pieces.mdx",
     "works/wip/note.mdx",
     "writings/notes/langgraphjs-detail.md",
@@ -176,10 +168,7 @@
     "works/wip/img/20220801220738_1.jpg",
     "temp-pic/20220801220738_1 1.jpg",
     "temp-pic/20220801220738_1.jpg",
-    "temp-pic",
     "img/20220801220738_1.jpg",
-    "works/wip/temp-pic/20220801220738_1.jpg",
-    "works/wip/temp-pic",
-    "works/wip/category-theory.mdx"
+    "works/wip/temp-pic/20220801220738_1.jpg"
   ]
 }
