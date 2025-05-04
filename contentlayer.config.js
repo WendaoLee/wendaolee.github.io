@@ -1,6 +1,7 @@
 import { defineDocumentType, makeSource } from "contentlayer2/source-files"
 import rehypeKatex from "rehype-katex"
 import remarkMath from "remark-math"
+import remarkGfm from "remark-gfm"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import rehypeSlug from "rehype-slug"
 import rehypePrettyCode from "rehype-pretty-code"
@@ -99,7 +100,7 @@ export default makeSource({
   contentDirPath: "./content",
   documentTypes: [Post, Page, Work],
   mdx: {
-    remarkPlugins: [remarkMath],
+    remarkPlugins: [remarkMath, remarkGfm],
     rehypePlugins: [
       rehypeSlug,
       rehypeKatex,
