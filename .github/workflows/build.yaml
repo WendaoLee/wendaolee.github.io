@@ -17,12 +17,13 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'  # 确保使用与项目相同的 Node.js 版本
+          cache: 'pnpm' # 添加 pnpm 缓存
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Build project
-        run: npm run build
+        run: pnpm run build
 
       - name: Move CNAME file
         run: mv CNAME ./out/CNAME
