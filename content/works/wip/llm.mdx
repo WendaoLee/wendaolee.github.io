@@ -2,11 +2,11 @@
 title: 【WIP】个人梳理的 LLM 阅读材料和文献 - 2025
 description: 个人梳理的 LLM 阅读材料和文献，也许它能够帮助到你？
 category: wip
-date: 2025-05-04 
+date: 2025-07-01 
 ---
 import UpdatedSpan from "@/components/UpdatedSpan";
 
-<UpdatedSpan text="[updated] 最后更新于 2025-05-04" />
+<UpdatedSpan text="[updated] 最后更新于 2025-07-01" />
 
 这一篇是我个人梳理的感觉具有阅读价值的 LLm 领域的阅读材料和文件，还在不断更新中。
 如果你是抱有理解基本概念与学习的想法来找阅读材料，请不要看在文章尾部的 MARKS 相关文档 
@@ -50,6 +50,28 @@ import UpdatedSpan from "@/components/UpdatedSpan";
 - 【Anthropic 总结的代理系统的模式】[https://leewendao.otterstack.cn/writings/translations/building-effective-agents-zh](https://leewendao.otterstack.cn/writings/translations/building-effective-agents-zh)
 
 其中，LangChain 团队在他们的 LangGraph 文档中给出了这些模式的具体实现：[https://langchain-ai.github.io/langgraphjs/tutorials/workflows/](https://langchain-ai.github.io/langgraphjs/tutorials/workflows/)
+
+### Agent 是一个 loop
+
+- 【philz.dev 的博客】[https://philz.dev/blog/agent-loop/](https://philz.dev/blog/agent-loop/)。我非常喜欢他在开头放出的几行代码，非常简洁且具备概括性：
+
+```python
+def loop(llm):
+    msg = user_input()
+    while True:
+        output, tool_calls = llm(msg)
+        print("Agent: ", output)
+        if tool_calls:
+            msg = [ handle_tool_call(tc) for tc in tool_calls ]
+        else:
+            msg = user_input()
+```
+
+- 【simon willisons 的博客】[https://simonwillison.net/search/?q=agent+loop](https://simonwillison.net/search/?q=agent+loop)。西蒙·威尔逊的博客有很多关于 AI 的比较深入且富有见解的讨论。建议多多阅读他的内容。
+
+### 12-factors-agents：关于构建 agent 的 12 个要素
+
+- 【12-factors-agents】[https://github.com/humanlayer/12-factor-agents/blob/main/content/factor-01-natural-language-to-tool-calls.md](https://github.com/humanlayer/12-factor-agents/blob/main/content/factor-01-natural-language-to-tool-calls.md)。言简意赅的好项目。 
 
 ## RAG
 
