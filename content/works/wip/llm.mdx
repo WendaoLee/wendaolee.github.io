@@ -82,11 +82,28 @@ def loop(llm):
 ### Anthropic,Contextual-Retrieval
 - 【✨Anthropic 的上下文检索介绍】这一篇讲述了如何增强 RAG 的检索性能 [https://www.anthropic.com/news/contextual-retrieval](https://www.anthropic.com/news/contextual-retrieval)，我的个人翻译：[https://leewendao.otterstack.cn/writings/translations/introducing-contextual-retrieval-anthropic](/writings/translations/introducing-contextual-retrieval-anthropic)
 
+## 结构化输出
+
+> LLM 如今依然是一个蛮荒生长的领域。关于如何让大模型能够按照我们期望的格式输出至今没有一个统一的、最优的、可以说是在绝大多数应用场景下99%可靠的方案。
+>
+> 我比较喜欢 BAML 团队的这篇博文：[提示词 vs JSON Mode vs Function Calling vs 受限生成 vs 模式对齐解析（SAP）](https://www.boundaryml.com/blog/schema-aligned-parsing#prompt-engineering--parsing)，总结来讲，为了结构化输出相应的内容，我们能做的东西有：
+>
+> 1. 纯粹通过提示词工程+JSON Schema实现（最差的方法）
+> 2. 借助受限生成（Constrained Generation），然而这个方法只适用于提供语法解析接口的开源模型，对主流的LLM并不友好。比较大模型LLM会存在一个底层调用的硬编码模板。
+> 3. 借助模型层面的工具/函数调用（function calling/tool use） API。这也许是当下最主流的做法，但它不适用于所有模型，要看模型厂商或者说模型本身是否支持。**这一点也可以扩展到 OpenAI 的结构化输出API（structure output）上**，你懂的，我们还没有一个统一的方案。**LLM还是一个新兴行业，我们都在荒蛮前行中**。
+> 4. 解析大模型产出的结果失败时则进行重试。这是 LangChain 等主流框架的方案。
+> 5. 生成时不直接输出JSON而是输出代码的的AST，借助相应语言的AST解析器解析得到数据。非常有趣的方向，因为模型输出的代码在长度上较小，更易于 LLM 理解。但它依然跟 LLM 自身的输出能力存在关系，且依赖于语法解析器。
+> 6. BAML 团队的模式对齐解析技术（SAP）。它的思路和我之前的想法如出一辙：  与其依赖模型严格理解我们期望的格式，不如编写一个解析器，它能宽容地读取输出文本，并运用对原始模式的理解进行纠错处理。它也是在得到结果的解析上做文章，我觉得这个比较靠谱。
+>
+> 除此之外，这一块我还比较喜欢他们的 [你的提示词在使用比你预期多出4倍的token量](https://www.boundaryml.com/blog/type-definition-prompting-baml) 。这篇博文给出了他们对于为什么不应该在提示词中使用 `JSON Schema` 定义内容的理解（对于 OpenAI 这类存在通过 JSON Schema 实现结构化输出API厂商，我觉得你传入 JSON Schema 本身也会在模型调用时硬编码对应的定义进入提示词空间中，只是他们微调做得太好了）。说服我的核心观点是：LLM底层的 Transformer 架构决定了，对于 JSON Schema 这种存在大量冗余字符的格式内容来说，相关标记之间的平均距离过长会带来注意力理解上的困难，从而造成生成效果不佳。
+
+- 清华团队的论文，提供了关于模型结构化输出的测试集：[Learning to Generate Structured Output with Schema Reinforcement Learning](https://arxiv.org/abs/2502.18878)。
+
 
  ## 一些通用结论，有实践意义
 
 ### 大模型知道自身会在什么时候感到困惑
-  
+
 - 【大模型知道自身会在什么时候感到困惑】[https://arxiv.org/abs/2410.02707](https://arxiv.org/abs/2410.02707)
 
 ### 大模型是自回归的，意味着初始步骤的错误会导致错误的累积
