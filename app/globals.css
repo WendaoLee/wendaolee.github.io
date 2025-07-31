@@ -2,10 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Merriweather";
+  src: url("/fonts/Merriweather-Light.woff2");
+}
+
+@font-face {
+  font-family: "OPPO Sans";
+  src: url("https://openfs.oppomobile.com/ssi/font/OPlusSans3-Regular.woff2") format("woff2");
+}
 
 body{
-    font-family: 'Times New Roman', Times, serif;
+    font-family: "Merriweather","OPPO Sans","Source Han Sans" !important;
     line-height: 1.6;
+}
+
+.text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-family: "Merriweather","OPPO Sans","Source Han Sans" !important;
 }
 
 :root .prose{
@@ -15,9 +30,10 @@ body{
     --tw-prose-links:black;
     --tw-prose-quotes:black;
     --tw-prose-bold:black;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: "Merriweather","OPPO Sans","Source Han Sans" !important;
     line-height: 1.6;
 }
+
 
 .prose :where(blockquote):not(:where([class~="not-prose"],[class~="not-prose"] *)){
     font-style: normal;

@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/ThemeProvider"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
 import { Metadata } from "next"
+import { EN_Merriweather } from "@/components/Font"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -60,7 +61,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body
-        className={`font-serif antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${inter.className}`}
+        className={`antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${EN_Merriweather}`}
+        style={{
+          fontFamily:"Merriweather,Source Han Sans"
+        }}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="max-w-4xl mx-auto py-10 px-4">
