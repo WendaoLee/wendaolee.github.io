@@ -8,10 +8,14 @@ import WritingsLists from "./WritingsList"
 import { AutoToc } from "./AutoToc"
 import { StickyToc } from "./StickyToc"
 import { EN_Merriweather } from "./Font"
+import dynamic from "next/dynamic"
+
+const FontPreviewExample = dynamic(() => import("./FontPreviewExample"), { ssr: false })
 
 const components = {
   Image,
-  BlogLists: WritingsLists
+  BlogLists: WritingsLists,
+  FontPreviewExample:FontPreviewExample
 }
 
 interface MdxProps {
