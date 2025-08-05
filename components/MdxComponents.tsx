@@ -51,7 +51,7 @@ export function Mdx({ code }: MdxProps) {
     tr: (props) => <tr {...props} className="border-b border-gray-200 dark:border-gray-700" />,
     th: (props) => <th {...props} className="px-4 py-2 font-bold text-left border border-gray-300 dark:border-gray-700" />,
     td: (props) => <td {...props} className="px-4 py-2 border border-gray-300 dark:border-gray-700" />,
-    // h1: (props) => <h1 {...props}  id={typeof props.children === 'string' ? props.children.toLowerCase().replace(/\s+/g, '-') : undefined}/>,
+    h1: (props) => <h1 {...props} className="my-8 font-bold" style={{fontSize:"1.5rem"}} id={typeof props.children === 'string' ? props.children.toLowerCase().replace(/\s+/g, '-') : undefined}/>,
     // h2: (props) => <h2 {...props}  id={typeof props.children === 'string' ? props.children.toLowerCase().replace(/\s+/g, '-') : undefined}/>,
     // h3: (props) => <h3 {...props}  id={typeof props.children === 'string' ? props.children.toLowerCase().replace(/\s+/g, '-') : undefined}/>,
     // h4: (props) => <h4 {...props}  id={typeof props.children === 'string' ? props.children.toLowerCase().replace(/\s+/g, '-') : undefined}/>,

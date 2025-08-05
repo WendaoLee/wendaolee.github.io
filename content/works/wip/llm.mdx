@@ -2,7 +2,7 @@
 title: 【WIP】个人梳理的 LLM 阅读材料和文献 - 2025
 description: 个人梳理的 LLM 阅读材料和文献，也许它能够帮助到你？
 category: wip
-date: 2025-07-01 
+date: 2025-07-31
 ---
 import UpdatedSpan from "@/components/UpdatedSpan";
 
@@ -100,7 +100,16 @@ def loop(llm):
 - 清华团队的论文，提供了关于模型结构化输出的测试集：[Learning to Generate Structured Output with Schema Reinforcement Learning](https://arxiv.org/abs/2502.18878)。
 
 
- ## 一些通用结论，有实践意义
+## 一些通用结论，有实践意义
+
+### 推理模型并非总能表达它的思考过程
+
+- 【Reasoning Models Don't Always Say What They Think】[https://arxiv.org/abs/2505.05410](https://arxiv.org/abs/2505.05410)
+
+总结便是：**对于未在模型训练时对齐的范式的任务，推理模型相应的思考可能并不靠谱。** 这个比例大概在 20% 。
+对于不正确的推理，往往相应的推理思考过程更加冗长且复杂，往往包含针对事实的不正确答案。即错误推理具备这样的特征。
+
+
 
 ### 大模型知道自身会在什么时候感到困惑
 
