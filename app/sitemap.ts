@@ -59,9 +59,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...story,
   ]
 
+  // @ts-ignore
   return allItems.sort((a, b) => {
-    const dateA = new Date(a.lastModified)
-    const dateB = new Date(b.lastModified)
+    const dateA = new Date(a.lastModified ?? new Date())
+    const dateB = new Date(b.lastModified ?? new Date())
     return dateB.getTime() - dateA.getTime()
   })
 }
