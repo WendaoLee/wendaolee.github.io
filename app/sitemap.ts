@@ -34,12 +34,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `https://leewendao.otterstack.cn${ele.slug}`,
     lastModified: ele.date,
     changeFrequency: 'weekly',
-    priority: 0.3,
+    priority: 0.5,
   }))
   
   
   
-  return [
+  const allItems = [
     {
       url: 'https://leewendao.otterstack.cn/',
       lastModified: new Date(),
@@ -58,4 +58,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...notes,
     ...story,
   ]
+
+  return allItems.sort((a, b) => {
+    const dateA = new Date(a.lastModified)
+    const dateB = new Date(b.lastModified)
+    return dateB.getTime() - dateA.getTime()
+  })
 }
