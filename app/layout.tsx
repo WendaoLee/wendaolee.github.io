@@ -58,6 +58,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="sitemap" href="/sitemap.xml" />
         <link rel="robots" href="/robots.txt" />
         <meta name="msvalidate.01" content="57E0CBA3CFE186ABC92C0F15F03951DF" />
+         <meta name="shenma-site-verification" content="d1e7d0f64af9cc04a9afdacec2718144_1755497879"/>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body
