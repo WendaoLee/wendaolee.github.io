@@ -1,0 +1,166 @@
+---
+title: SHOW 正组 | 2025年7月~8月内容合辑
+description: 李问道个人看到的一些项目的随手记录，这是2025年7月~8月的内容合辑。让我觉得有趣的东西是网站大小控制在14kb比15kb快612ms、SoundSlice网站发现用户频繁上传ChatGPT生成的ASCII指法谱，而他们根本不支持此功能。原来ChatGPT错误推荐用户去SoundSlice上传。最后他们真的添加了这个功能。
+tags:
+  - SHOW 正组
+category: note
+date: 2025-09-10
+---
+
+# 简介
+
+现在的互联网越发无聊，原先的我喜欢在一些论坛常驻，但这些论坛或社群都慢慢消失了。现在在网上我常去的一个社群是豆瓣上的一个生活小组（其实它前身不是什么好地方，但现在变成生活组了）。为了防止我看到一些项目会忘掉，于是我会把一些我觉得有意思的项目都发帖分享到那个组里。
+
+由于许多内容都来自于 Hacker News ，而 Hacker News 有一个版块叫做 SHOW HN ，于是我把这一系列的帖子都归类到 “SHOW 正组” 中。
+
+这些帖子的内容大多聚焦在技术上，但也有一些其他的内容。
+
+以下是我在七月到八月期间看到的内容在筛选（将一些不够实用或不够有趣的过滤）后的汇总。
+
+但是感觉内容看多了后，能引起人兴趣的越来越少了——当然，也可能是因为工作很忙的原因。
+
+***
+
+# 人文或其他领域相关
+
+## 1. 因为 ChatGPT 错误认为我们网站有该功能，于是我们做了该功能
+
+Blog：[https://www.holovaty.com/writing/chatgpt-fake-feature/](https://www.holovaty.com/writing/chatgpt-fake-feature/)。
+
+作者是 [Soudslice](https://www.soundslice.com/) 这个网站的开发人员， 在过去几个月里，他发现错误日志里频繁出现了用户上传明显是通过 ChatGPT 生成的 ASCII 指法谱 的情况，而实际上 Soudslice 支支持上传普通的乐谱截图。这让他百思不得其解，直到他自己尝试用了GPT：
+![ChatGPT在生成 ASCII 指法谱后会推荐用户去 SoudSlice 网站](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250708134124978.png)
+
+最后，因为有许多人通过这样的功能使用 SoundSlice ，于是他们最后添加了这个功能。这是预期外的行为，同样透露出来让我觉得有意思的一点：**现在大模型也是非常重要的流量入口**。只不过这个入口比较难从零开始做。
+
+## 2. 字节的 Trae 因为隐私问题引发争议
+
+字节的 Trae （一个类似于 Cursor 的 AI IDE）因为隐私问题被挂到了 Hacker News 热榜上。对此在 Github 上有一个详细的报告：[https://github.com/segmentationf4u1t/trae_telemetry_research](https://github.com/segmentationf4u1t/trae_telemetry_research)。
+
+简单来讲，问题主要在这几个方面：
+
+1. Trae 的性能令人担忧，同样是基于 VSCode 开发的 IDE ，在后台原版 VScode 会启动 9 个进程，Cursor 会启动 11 个进程，但是 Trae 会**启动 33 个进程**。
+2. 字节习惯收集用户使用数据去做数据驱动的分析，对此他们使用的是自己构建的一套可观测性的遥测基础设施（遥测的术语是叫 Telemetry，字节收集的数据可以归属到 Metric 上）。然后比较难绷的是，即使你在后台关闭了对应的 Telemetry ，它并不会关闭原本周期性地发送数据的活动，反而会大量增加发送遥测数据的活动。
+3. 然后，最难绷的是， Trae 的官方 Discord 上，做这个 research 的 Bro 反馈问题后，被字节拉到黑名单禁言了：
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250728154728184.png)
+
+虽然说收集的其实算是无关痛痒的设备使用信息等数据，但主打一个难评。
+
+
+## 3. 与陌生人的三十分钟
+
+Website：[https://pudding.cool/2025/06/hello-stranger/](https://pudding.cool/2025/06/hello-stranger/)。
+
+这是一个视觉交互网页。主要用于呈现似乎是作者组织的一个社会实验：让两个人陌生人对话30分钟。这个网页的使用方式是不断往下滑，右侧会显示相应的对话时间，屏幕正中则会显示两个人的对话记录。我个人非常喜欢这种有点近似于 fiction story 的网页，在我眼里这是讲故事的一种方式。
+
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250907184148109.png)
+
+## 4. 阴阳交争、生生不息的太极图界面
+
+Website: [https://yoavg.github.io/eternal/#](https://yoavg.github.io/eternal/#)。
+
+一个有趣的网页。网页上是一个太极图，然后太极图原本的阴阳圆点会在相应的区域里随机碰撞。阳点触碰到阴阳交界的边缘会增加阴区，阴点碰撞到边缘会增加阳区。你会发现两者之间不断碰撞的阴阳变化非常有趣。
+
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250907185118160.png)
+
+## 5. MacOS 可用的 ASCII 图绘制软件
+
+Website: [https://monodraw.helftone.com/](https://monodraw.helftone.com/)。
+
+这个编辑器可以帮助你绘制 ASCII 图：
+
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250910112722654.png)
+
+不过现在我都是用大模型帮我生成😾大部分情况下大模型生成得还挺好的。
+
+## 6. 显示您当前位置头顶天空在晴天下的状态的网站
+
+Website：[https://sky.dlazaro.ca/](https://sky.dlazaro.ca/)。
+
+原理大概是通过获取你当前的地理位置（这一块上我猜是 IP 定位），而后得知时区，知晓你当前时间后用CSS模拟这个时间点大概的天空颜色、而后渲染在网页上。
+
+例如，这是大概中午时打开这个网站的内容显示：
+
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250910113916912.png)
+
+这是晚上时打开这个网站的内容显示：
+
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250910113953683.png)
+
+# 技术相关
+
+## 1.jsdate.wtf：测试你对 Javascript 的 Date 的了解程度
+
+Website: [https://jsdate.wtf/](https://jsdate.wtf/)。
+
+这是一连串的测试题：
+
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250714134348341.png)
+
+里面会给出 JavaScript 的 Date 表达式，而后给出四个选项让你选择对应的表达式的结果。说实话这个图一乐就行，毕竟 JS 的这些特性在正式写生产代码的情况下你不会遇到。
+
+## 2. Visual Effect:Effect TS 这个库的API的可视化
+
+Website：[https://effect.kitlangton.com/](https://effect.kitlangton.com/)。
+
+大概在去年我便推荐在 typescript + node.js 项目中使用 `Effect` 这个[库](https://effect.website/)去组织代码。现在有人为 `Effect` 的常用 API 的执行效果做了相应的可视化：
+
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250716134652049.png)
+
+推荐在学习使用这个库的朋友可以借助这个可视化网站去理解其中一些 API 的效果。
+
+## 3. 为什么将网站大小控制在 14kb 时访问速度远远快于 15kb
+
+Blog: [https://endtimes.dev/why-your-website-should-be-under-14kb-in-size/](https://endtimes.dev/why-your-website-should-be-under-14kb-in-size/)。
+
+尽管网站可能就相差 1kb 的大小，但是 14kb 大小的网站加载速度足足比 15kb 大小的网站快了 612ms —— 这一点的原因是 TCP 协议的慢启动算法的作用。言简意赅地讲，便是 TCP 协议在首次在两个设备上建立连接时，服务器不知道两者之间的带宽大小（因此不知道应当传输多少数据量），此时会发送用于 ACK 的数据包，而大部分 TCP 慢启动算法的数据包会存留 14kb 大小。因此如果你的网站只有 14kb ，那么在第一次传输时便能拿到网站的全部数据，从而提升网站的加载速率。
+
+## 4. LLM 嵌入详解：视觉化直观指南
+
+Blog: [https://huggingface.co/spaces/hesamation/primer-llm-embedding?section=what_are_embeddings?](https://huggingface.co/spaces/hesamation/primer-llm-embedding?section=what_are_embeddings?)。
+
+这是 Hugging Face 上的一篇博文，让我比较喜欢的是它把主流的嵌入技术进行了比较详细的讲解，同时提供了相应的直观可视化。
+
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250729091542651.png)
+
+## 5. copyparty：一个基于Python的可快速部署的文件服务器
+
+Github：[https://github.com/9001/copyparty?tab=readme-ov-file](https://github.com/9001/copyparty?tab=readme-ov-file)。
+
+这个项目可圈可点的地方在于：
+
+1. 没有使用其他额外需要安装的依赖，相关依赖已经放在了项目中，因此不需要 `pip install`。除非你需要额外开启自媒体索引之类的功能。
+2. 给了绝大多数渠道的安装方法（包括 android、没有OS的情况）
+3. 文档巨长也巨详细
+4. 支持多种文件传输协议（ftp、webdav等）
+5. 同时支持 Python2、Python3，这意味在一些老的 Linux 发行版上也可以直接使用
+
+![](/img/SHOW%20正组%20-%202025年7月合辑/IMG-20250729092055134.png)
+
+## 6. overtype: textarea 实现的 markdown 语法高亮输入区域
+
+Github：[https://github.com/panphora/overtype](https://github.com/panphora/overtype)。
+
+HackerNews：[https://news.ycombinator.com/item?id=44932651](https://news.ycombinator.com/item?id=44932651)。
+
+仅作收录。简单来讲就是作者通过设置一个透明的textarea区域覆盖在渲染效果之上，便可以实现一个能够利用浏览器的 textarea 所具备的特性的文本编辑区域（支持语法高亮）。虽然作者说它是所见即所得（WYSIWYG）的，但我觉得它并不算。
+
+但这个思路比较有意思，因此我在这里记录一下。
+
+## 7. Obsidian Base: Obsidian 官方推出的将笔记转为数据库的插件
+
+Website: [https://help.obsidian.md/bases](https://help.obsidian.md/bases)。
+
+这是由 Obsidian 官方推出的插件，你可以通过它将你的 Obsidian 笔记转化为 `.base` 数据库。并且支持在笔记里展现相应的数据。
+
+`.base` 数据库存在视图（Views）以及类似于数据库的功能函数的功能。
+
+# 他人博客 Mark
+
+1. 大多数 RESTful API 并非真正的 RESTful：[https://florian-kraemer.net//software-architecture/2025/07/07/Most-RESTful-APIs-are-not-really-RESTful.html](https://florian-kraemer.net//software-architecture/2025/07/07/Most-RESTful-APIs-are-not-really-RESTful.html)。
+2. 要成为一名更优秀的程序员，不妨在脑海中构思些小证明：[https://the-nerve-blog.ghost.io/to-be-a-better-programmer-write-little-proofs-in-your-head/](https://the-nerve-blog.ghost.io/to-be-a-better-programmer-write-little-proofs-in-your-head/)。
+3. 按时间记录日志，而非按次数记录：[https://johnscolaro.xyz/blog/log-by-time-not-by-count](https://johnscolaro.xyz/blog/log-by-time-not-by-count)。“在处理大量事件时，最佳做法是每隔 X 秒记录一次日志，而非每处理 X 条消息就记录一次。”因为每X条消息记录在高峰期可能会添加系统负载拖慢运行速度。
+4. # 几乎任何你持续关注的事物，都会开始自我循环并绽放:[ https://www.henrikkarlsson.xyz/p/attention](https://www.henrikkarlsson.xyz/p/attention)。
+5. VIM作者（现在已经去世了）以前写的使用 VIM 的七个高效编辑习惯，Mark 一下 ：[https://www.moolenaar.net/habits.html](https://www.moolenaar.net/habits.html)。
+6. Uncertain\<T\>：[https://nshipster.com/uncertainty/](https://nshipster.com/uncertainty/) 。一篇用于讲述 `Uncertain<T>` 这个类型系统的博文，与概率编程有关。
+7. Google 的液冷系统：[https://chipsandcheese.com/p/googles-liquid-cooling-at-hot-chips](https://chipsandcheese.com/p/googles-liquid-cooling-at-hot-chips)。一篇有意思的博文，主要用于介绍 Google 的数据中心的水冷系统的运作的许多细节。
+8. Valve 在 2012 年的新员工入职手册：[https://cdn.akamai.steamstatic.com/apps/valve/Valve_NewEmployeeHandbook.pdf](https://cdn.akamai.steamstatic.com/apps/valve/Valve_NewEmployeeHandbook.pdf)。
