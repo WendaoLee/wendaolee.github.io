@@ -6,7 +6,8 @@
       "Bash(rm:*)",
       "Bash(mv:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []
