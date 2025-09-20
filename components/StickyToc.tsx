@@ -42,7 +42,7 @@ export function StickyToc() {
           <span className="text-base font-semibold" style={{ letterSpacing: '1px' }}>目录</span>
         </div>
         <ul className="space-y-2">
-          {headings.map((heading) => (
+          {headings.filter((heading) => heading.level < 4).map((heading) => (
             <li 
               key={heading.id}
               className={`
