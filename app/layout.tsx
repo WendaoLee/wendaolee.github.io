@@ -49,7 +49,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         name: "文章列表",
         description: "李问道的文章索引列表。"
       },
-    ]
+    ],
+    sitemap: "https://leewendao.otterstack.cn/sitemap.xml",
   };
 
   return (

@@ -23,6 +23,7 @@ export default function Header(){
                   </a>
                   <BlogSearch />
                   <ModeToggle />
+                  <a href="/sitemap.xml" aria-label="使用sitemap订阅李问道的博客" className="hidden"></a>
                 </div>
               </div>
             </nav>
