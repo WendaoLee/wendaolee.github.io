@@ -46,5 +46,6 @@ jobs:
         uses: bojieyang/indexnow-action@v2
         with:
           sitemap-location: https://leewendao.otterstack.cn/sitemap.xml
+          since: 1
           since-unit: month
           key: ${{ secrets.INDEXNOW_KEY }}
