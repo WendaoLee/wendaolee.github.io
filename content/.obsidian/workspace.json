@@ -13,13 +13,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "works/wip/llm.mdx",
+                "file": "writings/story/mygo-collection.mdx.md",
                 "mode": "source",
-                "source": false,
+                "source": true,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "llm"
+              "title": "mygo-collection.mdx"
             }
           }
         ]
@@ -137,6 +137,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:创建新数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
@@ -146,8 +147,13 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "442c2da69698810b",
+  "active": "97166d9d73036bbf",
   "lastOpenFiles": [
+    "writings/story/the-cucumber-of-happiness.mdx",
+    "writings/story/mygo-collection.mdx.md",
+    "writings/story/mygo-Much-Ado-About-Nothing.mdx",
+    "writings/story/so-i-become-majo.mdx",
+    "works/wip/llm.mdx",
     "writings/story/what-you-smile.md",
     "writings/story/what-you-smile.mdx",
     "writings/story/something-you-know.mdx",
@@ -160,10 +166,7 @@
     "img/AI 项目/IMG-20250206123924264.png",
     "img/AI 项目/IMG-20250206123648896.png",
     "img/AI 项目",
-    "img",
     "img/AI 项目/IMG-20250206123632662.png",
-    "works/wip/img",
-    "works/wip/llm.mdx",
     "works/wip/img/20220801220738_1 1.jpg",
     "works/wip/img/20220801220738_1.jpg",
     "temp-pic/20220801220738_1 1.jpg",
