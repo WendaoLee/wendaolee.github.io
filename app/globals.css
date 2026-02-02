@@ -1,26 +1,17 @@
+@import url("https://selfhost.memene.cn/assets/font/OPPO_Sans_4/result.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Merriweather";
-  src: url("/fonts/Merriweather-Light.woff2");
-}
-
-@font-face {
-  font-family: "OPPO Sans";
-  src: url("https://openfs.oppomobile.com/ssi/font/OPlusSans3-Regular.woff2") format("woff2");
-}
-
 body{
-    font-family: "Merriweather","OPPO Sans","Source Han Sans" !important;
+    font-family: "OPPO Sans 4.0","Source Han Sans" !important;
     line-height: 1.6;
 }
 
 .text-base {
     font-size: 1rem;
     line-height: 1.5rem;
-    font-family: "Merriweather","OPPO Sans","Source Han Sans" !important;
+    font-family: "OPPO Sans 4.0","Source Han Sans" !important;
 }
 
 :root .prose{
@@ -30,7 +21,7 @@ body{
     --tw-prose-links:black;
     --tw-prose-quotes:black;
     --tw-prose-bold:black;
-    font-family: "Merriweather","OPPO Sans","Source Han Sans" !important;
+    font-family: "OPPO Sans 4.0","Source Han Sans" !important;
     line-height: 1.6;
 }
 

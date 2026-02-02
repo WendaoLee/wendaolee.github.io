@@ -7,7 +7,6 @@ import { useMDXComponent } from "next-contentlayer2/hooks"
 import WritingsLists from "./WritingsList"
 import { AutoToc } from "./AutoToc"
 import { StickyToc } from "./StickyToc"
-import { EN_Merriweather } from "./Font"
 import dynamic from "next/dynamic"
 
 const FontPreviewExample = dynamic(() => import("./FontPreviewExample"), { ssr: false })
@@ -31,7 +30,7 @@ export function Mdx({ code }: MdxProps) {
   <AutoToc></AutoToc>
   <StickyToc></StickyToc>
   <Component components={{...components,
-    p: (props) => <p {...props} className={"text-base leading-7 " + `${EN_Merriweather}`} />,
+    p: (props) => <p {...props} className={"text-base leading-7 "} />,
     li: (props) => <li {...props} className="not-prose marker:text-black dark:marker:text-gray-500" />,
     // h2: (props) => <h2 {...props} className="text-2xl md:text-3xl font-bold mt-8 mb-4" />,
     img: (props) => (

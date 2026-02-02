@@ -12,7 +12,7 @@ module.exports = {
         DEFAULT: {
           css: {
             maxWidth: 'none', // 去除最大宽度限制
-            fontFamily:" Cantarell, 'Source Han Serif CN VF' !important;",
+            fontFamily:" 'OPPO Sans 4.0', 'Source Han Serif CN VF' !important;",
             h1:{
               fontWeight:700,
               fontSize:"2em",
