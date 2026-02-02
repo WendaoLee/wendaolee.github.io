@@ -62,7 +62,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body
-        className={`antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50`}
+        className={`antialiased min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-50`}
         style={{
           fontFamily:"'OPPO Sans 4.0', 'Source Han Sans'"
         }}

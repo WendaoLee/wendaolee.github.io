@@ -15,12 +15,12 @@ body{
 }
 
 :root .prose{
-    --tw-prose-body:black;
-    --tw-prose-headings:black;
-    --tw-prose-code:black;
-    --tw-prose-links:black;
-    --tw-prose-quotes:black;
-    --tw-prose-bold:black;
+    --tw-prose-body:#334155;
+    --tw-prose-headings:#1e293b;
+    --tw-prose-code:#1e293b;
+    --tw-prose-links:#1e293b;
+    --tw-prose-quotes:#1e293b;
+    --tw-prose-bold:#1e293b;
     font-family: "OPPO Sans 4.0","Source Han Sans" !important;
     line-height: 1.6;
 }
