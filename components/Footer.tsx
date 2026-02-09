@@ -7,7 +7,7 @@ export default function Footer() {
     const {theme,setTheme} = useTheme()
 
   return (
-    <footer className="flex flex-col mt-6 gap-5 justify-center items-center w-full h-24 border-t bg-white dark:bg-slate-950 dark:border-slate-900">
+    <footer className="flex flex-col mt-6 gap-5 justify-center items-center w-full h-24 border-t bg-slate-50 dark:bg-slate-950 dark:border-slate-900">
         <div className="flex gap-3">
             <a href="/rss.xml">
                 <Rss></Rss>
