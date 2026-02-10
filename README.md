@@ -1,7 +1,7 @@
-# 👏
+# 👏 这里是李问道
 
 这里是我的个人博客站点的源代码。仅包括 SSG 静态生成内容的部分。
 
-Flow:
+工作流：
 
-npm run build ---> .contentLayer generated ---> the Next.js Building
+pnpm run build -> 从 content 目录下读取 mdx 内容，使用 contentlayer 生成内容数据 -> 使用 Next.js SSG 生成站点 -> Github Pages Deploy
