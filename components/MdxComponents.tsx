@@ -1,10 +1,6 @@
-/**
- * @mention 该组件永远不应该作为客户端组件使用
- */
 "use client"
 import Image from "next/image"
 import { useMDXComponent } from "next-contentlayer2/hooks"
-import WritingsLists from "./WritingsList"
 import { AutoToc } from "./AutoToc"
 import { StickyToc } from "./StickyToc"
 import dynamic from "next/dynamic"
@@ -13,7 +9,6 @@ const FontPreviewExample = dynamic(() => import("./FontPreviewExample"), { ssr: 
 
 const components = {
   Image,
-  BlogLists: WritingsLists,
   FontPreviewExample:FontPreviewExample
 }
 

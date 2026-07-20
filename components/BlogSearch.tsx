@@ -1,166 +1,181 @@
 "use client"
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { useRouter } from 'next/navigation'
-import { CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, Command } from "@/components/ui/command"
-import { Search } from "lucide-react"
-import { allWorks, allWritings, type Work, type Writings } from '@/.contentlayer/generated'
-import { Matrix, search } from 'text-search-engine'
-import { HighlightWithTarget } from 'text-search-engine/react'
-import { CommandLoading } from 'cmdk'
-import { debounce } from 'radash'
 
-interface HighlightedTextProps {
-  text: string
-  highlightRange: [number, number]
-  contextRange: number  // 高亮文本前后要显示的字符数
+import { useCallback, useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
+import { CommandDialog, CommandInput, CommandItem, CommandList, Command } from "@/components/ui/command"
+import { Matrix, search } from "text-search-engine"
+
+interface SearchDocument {
+  title: string
+  description?: string
+  slug: string
+  category?: string
+  date: string
+  tags?: string[]
+  content: string
 }
 
-export const HighlightedText: React.FC<HighlightedTextProps> = ({ text, highlightRange, contextRange }) => {
-  let [start, end] = highlightRange
-  end +=1
-  
-  
-  // 计算上下文的起始和结束位置
-  const contextStart = Math.max(0, start - contextRange)
-  const contextEnd = Math.min(text.length, end + contextRange)
-  
-  // 提取上下文文本
-  const beforeContext = text.slice(contextStart, start)
-  const highlightedText = text.slice(start, end)
-  const afterContext = text.slice(end, contextEnd)
-  
-  // 如果上下文不是从文本开头或结尾开始，添加省略号
-  const prefix = contextStart > 0 ? '...' : ''
-  const suffix = contextEnd < text.length ? '...' : ''
+interface BlogSearchProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+interface SearchResult {
+  document: SearchDocument
+  bodyMatches?: Matrix
+  score: number
+}
+
+function isSearchDocument(value: unknown): value is SearchDocument {
+  if (typeof value !== "object" || value === null) return false
+
+  const document = value as Partial<SearchDocument>
+  return typeof document.title === "string"
+    && typeof document.slug === "string"
+    && typeof document.content === "string"
+    && typeof document.date === "string"
+}
+
+function HighlightedText({ text, highlightRange }: { text: string, highlightRange?: [number, number] }) {
+  if (!highlightRange) return null
+
+  const [start, inclusiveEnd] = highlightRange
+  const end = inclusiveEnd + 1
+  const contextStart = Math.max(0, start - 20)
+  const contextEnd = Math.min(text.length, end + 20)
 
   return (
     <p>
-      {prefix}
-      {beforeContext}
-      <span className="bg-blue-400 dark:bg-blue-600 font-bold">{highlightedText}</span>
-      {afterContext}
-      {suffix}
+      {contextStart > 0 && "..."}
+      {text.slice(contextStart, start)}
+      <span className="bg-blue-400 font-bold dark:bg-blue-600">{text.slice(start, end)}</span>
+      {text.slice(end, contextEnd)}
+      {contextEnd < text.length && "..."}
     </p>
   )
 }
 
+function calculateMatrixPower(matrix: Matrix) {
+  return matrix.reduce((total, [start, end]) => total + end - start, 0)
+}
 
-// 新增的搜索结果组件
-
-export default function BlogSearch() {
+export default function BlogSearch({ open, onOpenChange }: BlogSearchProps) {
   const router = useRouter()
-  const [open, setOpen] = useState(false)
+  const [documents, setDocuments] = useState<SearchDocument[] | null>(null)
+  const [indexError, setIndexError] = useState<string | null>(null)
+  const [isLoadingIndex, setIsLoadingIndex] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [filteredPosts, setFilteredPosts] = useState<Array<Writings | Work>>([])
+  const [isSearching, setIsSearching] = useState(false)
+  const [results, setResults] = useState<SearchResult[]>([])
+  const hasRequestedIndex = useRef(false)
 
-  const [loading, setLoading] = useState(false)
-  const matrixContentMappingRef = useRef<Record<string,Matrix>>({})
+  const loadIndex = useCallback(async () => {
+    setIsLoadingIndex(true)
+    setIndexError(null)
 
-  const caculateMatrixPower = (matrix:Matrix) => {
-    return matrix.reduce(
-      (acc,[start,end]) => acc + (end - start),0
-    )
-  }
+    try {
+      const response = await fetch("/search-index.json")
+      if (!response.ok) throw new Error(`Search index request failed: ${response.status}`)
 
+      const payload: unknown = await response.json()
+      if (!Array.isArray(payload) || !payload.every(isSearchDocument)) {
+        throw new Error("Search index has an invalid format")
+      }
 
-  const handleSearch = useCallback((query: string) => {
-    const result = allWritings.filter(post => {
-      return search(post.title, query) !== undefined
-    }).slice(0, 5)
-    setFilteredPosts(result)
-    setLoading(false)
+      setDocuments(payload)
+    } catch {
+      setIndexError("搜索索引加载失败，请检查网络后重试。")
+    } finally {
+      setIsLoadingIndex(false)
+    }
   }, [])
 
-  const handleSearchAsync = async (query: string) => {
+  useEffect(() => {
+    if (!open || documents || hasRequestedIndex.current) return
+    hasRequestedIndex.current = true
+    void loadIndex()
+  }, [documents, loadIndex, open])
 
-    const mapping:Record<string,number> = {}
-    const result = [...allWritings,...allWorks].filter(post => {
-      const searchBodyPower = search(post.body.raw, query) 
-      const searchTitlePower = search(post.title,query)
-      if(searchBodyPower === undefined && searchTitlePower === undefined){
-        return false
-      }
-      const resultPower = (searchBodyPower !== undefined? caculateMatrixPower(searchBodyPower):0) + 10*(searchTitlePower != undefined? caculateMatrixPower(searchTitlePower) : 0)
-      mapping[post.title] = resultPower
-      if(searchBodyPower != undefined){
-        matrixContentMappingRef.current[post.title] = searchBodyPower
-      }
-      return searchBodyPower != undefined || searchTitlePower != undefined
-    }).sort((pre,next) => {
-      return mapping[next.title] - mapping[pre.title]
-    }).slice(0, 20)
-    // console.log(result,mapping)
-    setFilteredPosts(result)
-    setLoading(false)
-  }
-
-  const debouncedSearch = debounce({ delay: 1000 }, handleSearchAsync)
+  const retryIndex = useCallback(() => {
+    hasRequestedIndex.current = true
+    void loadIndex()
+  }, [loadIndex])
 
   useEffect(() => {
-
-    // setLoading(true)
-    if(searchQuery != ''){
-      debouncedSearch(searchQuery)
+    const query = searchQuery.trim()
+    if (!documents || !query) {
+      setResults([])
+      setIsSearching(false)
+      return
     }
-  }, [searchQuery])
+
+    setIsSearching(true)
+    const timer = window.setTimeout(() => {
+      const nextResults = documents
+        .map((document): SearchResult | null => {
+          const bodyMatches = search(document.content, query)
+          const titleMatches = search(document.title, query)
+          if (bodyMatches === undefined && titleMatches === undefined) return null
+
+          const score = (bodyMatches ? calculateMatrixPower(bodyMatches) : 0)
+            + (titleMatches ? 10 * calculateMatrixPower(titleMatches) : 0)
+
+          return { document, bodyMatches, score }
+        })
+        .filter((result): result is SearchResult => result !== null)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 20)
+
+      setResults(nextResults)
+      setIsSearching(false)
+    }, 200)
+
+    return () => window.clearTimeout(timer)
+  }, [documents, searchQuery])
 
   const handleSelect = useCallback((slug: string) => {
-    setOpen(false)
+    onOpenChange(false)
     router.push(slug)
-  }, [router])
+  }, [onOpenChange, router])
 
   return (
-    <>
-      <button
-        className="w-[24px] h-[24px] flex items-center justify-center rounded-full bg-white dark:bg-slate-950 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-        onClick={() => setOpen(true)}
-      >
-        <Search className="w-[23px] h-[23px] text-gray-600 dark:text-gray-300" />
-      </button>
-      <CommandDialog
-        open={open}
-        onOpenChange={setOpen}
-      // key={searchQuery}
-      // className='fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0'
-      >
-        <Command shouldFilter={false}>
-          <CommandInput
-            placeholder="输入关键词搜索文章..."
-            value={searchQuery}
-            onValueChange={setSearchQuery}
-            className="p-4 text-base focus:outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
-          />
+    <CommandDialog open={open} onOpenChange={onOpenChange}>
+      <Command shouldFilter={false}>
+        <CommandInput
+          placeholder="输入关键词搜索文章..."
+          value={searchQuery}
+          onValueChange={setSearchQuery}
+          disabled={isLoadingIndex || Boolean(indexError)}
+          className="p-4 text-base focus:outline-none bg-transparent text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
+        />
 
-          <CommandList className="max-h-[400px] overflow-y-auto">
-            {loading && <CommandLoading className='w-full'>正在搜索中...</CommandLoading>}
-            <CommandEmpty className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
-              没有找到相关文章
-            </CommandEmpty>
-            {/* <CommandGroup key={searchQuery}> */}
-              {filteredPosts.map((post) => (
-                <CommandItem
-                  key={post._raw.sourceFileName}
-                  // value={post.title}
-                  onSelect={()=>handleSelect(post.slug)}
-                  className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer dark:data-[selected=true]:bg-accent-dark"
-                >
-                  <div>
-                    {post.title}
-                    {/* <HighlightWithTarget target={searchQuery} source={post.title} /> */}
-                    <HighlightedText text={post.body.raw} highlightRange={matrixContentMappingRef.current[post.title] === undefined ? [0,0] : matrixContentMappingRef.current[post.title][0]} contextRange={20}></HighlightedText>
-                  </div>
-                </CommandItem>
-              ))}
-            {/* </CommandGroup> */}
-          </CommandList>
-        </Command>
-        {/* <SearchResults 
-          key={searchQuery}
-          searchQuery={searchQuery}
-          filteredPosts={filteredPosts}
-          onSelect={handleSelect}
-        /> */}
-      </CommandDialog>
-    </>
+        <CommandList className="max-h-[400px] overflow-y-auto">
+          {isLoadingIndex && <p className="p-4 text-sm text-gray-500">正在加载搜索索引...</p>}
+          {indexError && (
+            <div className="p-4 text-sm text-gray-500" role="alert">
+              <p>{indexError}</p>
+              <button type="button" className="mt-2 underline" onClick={retryIndex}>重试</button>
+            </div>
+          )}
+          {documents && !searchQuery.trim() && <p className="p-4 text-sm text-gray-500">输入关键词开始搜索。</p>}
+          {isSearching && <p className="p-4 text-sm text-gray-500">正在搜索...</p>}
+          {documents && searchQuery.trim() && !isSearching && results.length === 0 && (
+            <p className="p-4 text-sm text-gray-500">没有找到相关文章。</p>
+          )}
+          {results.map(({ document, bodyMatches }) => (
+            <CommandItem
+              key={document.slug}
+              onSelect={() => handleSelect(document.slug)}
+              className="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:data-[selected=true]:bg-accent-dark dark:hover:bg-gray-700"
+            >
+              <div>
+                {document.title}
+                <HighlightedText text={document.content} highlightRange={bodyMatches?.[0]} />
+              </div>
+            </CommandItem>
+          ))}
+        </CommandList>
+      </Command>
+    </CommandDialog>
   )
 }
