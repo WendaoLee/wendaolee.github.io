@@ -8,11 +8,14 @@ export async function generateMetadata():Promise<Metadata>{
         keywords:["李问道","李问道的文章","Wendaolee","Wendaolee's blog","Erika Lee","Erika Lee's blog","Blogs of Wendaolee"],
         authors: [{name:"李问道",url:"https://leewendao.otterstack.cn"},{name:"Wendao Lee",url:"https://leewendao.otterstack.cn"},{name:"Erika Lee",url:"https://leewendao.otterstack.cn"},{name:"Wendaolee",url:"https://leewendao.otterstack.cn"}],
         creator: "WendaoLee",
+        alternates: {
+            canonical: "https://leewendao.otterstack.cn/writings",
+        },
         openGraph: {
-            images: ["/wendaolee.jpeg"],
+            images: ["https://leewendao.otterstack.cn/wendaolee.jpeg"],
             type: "website",
             siteName: "文章列表 - 李问道的博客 / Blog of Wendaolee",
-            url:"https://leewendao.otterstack.cn",
+            url:"https://leewendao.otterstack.cn/writings",
             title:"文章列表 - 李问道的博客 / Blog of Wendaolee",
             description:"李问道的文章索引列表。 // Here is WendaoLee(or Erika Lee)'s blogs' list.You can find something interesting here.",
           },

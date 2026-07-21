@@ -32,9 +32,20 @@ export async function generateMetadata({
     return {};
   }
 
+  const url = `https://leewendao.otterstack.cn/page/${page.slugAsParams}`;
+
   return {
     title: page.title,
     description: page.description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      type: "website",
+      url,
+      title: page.title,
+      description: page.description,
+    },
   };
 }
 

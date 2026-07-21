@@ -4,6 +4,17 @@ import { Metadata } from "next";
 export async function generateMetadata():Promise<Metadata>{
     return {
         title: "文章外的产出 - 李问道的博客 / Works of Wendaolee",
+        description: "李问道的作品、演示文稿和进行中的项目。",
+        alternates: {
+            canonical: "https://leewendao.otterstack.cn/works",
+        },
+        openGraph: {
+            type: "website",
+            url: "https://leewendao.otterstack.cn/works",
+            title: "文章外的产出 - 李问道的博客 / Works of Wendaolee",
+            description: "李问道的作品、演示文稿和进行中的项目。",
+            images: ["https://leewendao.otterstack.cn/wendaolee.jpeg"],
+        },
     }
 }
 

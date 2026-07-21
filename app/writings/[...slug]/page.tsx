@@ -36,6 +36,7 @@ export async function generateMetadata({
                             .with("blog", () => "technology")
                             .otherwise(() => post.category)
   const postTags = post.tags ?? []
+  const url = `https://leewendao.otterstack.cn${post.slug}`
 
   return {
     title: `${post.title} - 李问道的博客 / Blog of Wendaolee`,
@@ -43,14 +44,24 @@ export async function generateMetadata({
     category: postSEOCategory, 
     keywords: postTags,
     authors:[{name:"李问道",url:"https://leewendao.otterstack.cn"},{name:"Wendaolee",url:"https://leewendao.otterstack.cn"},{name:"Erika Lee",url:"https://leewendao.otterstack.cn"},{name:"leewendao",url:"https://leewendao.otterstack.cn"}],
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
-        images: ["/wendaolee.jpeg"],
-        type: "website",
-        siteName: `${post.title} - 李问道的博客 / Blog of Wendaolee`,
-        url:"https://leewendao.otterstack.cn",
+        images: ["https://leewendao.otterstack.cn/wendaolee.jpeg"],
+        type: "article",
+        siteName: "李问道的博客 / Blog of Wendaolee",
+        url,
         title:`${post.title} - 李问道的博客 / Blog of Wendaolee`,
         description:post.description,
+        publishedTime: post.date,
       },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} - 李问道的博客 / Blog of Wendaolee`,
+      description: post.description,
+      images: ["https://leewendao.otterstack.cn/wendaolee.jpeg"],
+    },
   }
 }
 
@@ -67,9 +78,26 @@ export default async function PostPage({ params }: PostProps) {
     notFound()
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    dateModified: post.date,
+    mainEntityOfPage: `https://leewendao.otterstack.cn${post.slug}`,
+    image: "https://leewendao.otterstack.cn/wendaolee.jpeg",
+    author: {
+      "@type": "Person",
+      name: "李问道",
+      url: "https://leewendao.otterstack.cn",
+    },
+  }
+
   return (
     <>
     <article className="min-w-full py-6 prose dark:prose-invert">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <h1 className="text-xl mb-2 md:text-2xl">{post.title}</h1>
       {/* <div className="flex justify-between h-fit">
         <p className="text-lg text-slate-600 dark:text-slate-400 my-0">

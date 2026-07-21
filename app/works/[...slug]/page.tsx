@@ -36,6 +36,7 @@ export async function generateMetadata({
                             .with("blog", () => "technology")
                             .otherwise(() => post.category)
   const postTags = post.tags ?? []
+  const url = `https://leewendao.otterstack.cn${post.slug}`
 
   return {
     title: `${post.title} - 李问道的博客 / Blog of Wendaolee`,
@@ -43,14 +44,24 @@ export async function generateMetadata({
     category: postSEOCategory, 
     keywords: postTags,
     authors:[{name:"李问道",url:"https://leewendao.otterstack.cn"},{name:"Wendaolee",url:"https://leewendao.otterstack.cn"},{name:"Erika Lee",url:"https://leewendao.otterstack.cn"},{name:"leewendao",url:"https://leewendao.otterstack.cn"}],
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
-        images: ["/wendaolee.jpeg"],
-        type: "website",
-        siteName: `${post.title} - 李问道的博客 / Works of Wendaolee`,
-        url:"https://leewendao.otterstack.cn",
+        images: ["https://leewendao.otterstack.cn/wendaolee.jpeg"],
+        type: "article",
+        siteName: "李问道的博客 / Works of Wendaolee",
+        url,
         title:`${post.title} - 李问道的博客 / Works of Wendaolee`,
         description:post.description,
+        publishedTime: post.date,
       },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} - 李问道的博客 / Works of Wendaolee`,
+      description: post.description,
+      images: ["https://leewendao.otterstack.cn/wendaolee.jpeg"],
+    },
   }
 }
 
