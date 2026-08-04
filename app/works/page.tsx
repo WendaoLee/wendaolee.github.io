@@ -22,12 +22,12 @@ const slides = [
     {
         title: "RAG 懵懂指南",
         link: "https://1drv.ms/p/c/21572062c88e2c1a/ERosjshiIFcggCGvBQAAAAABShUoIvLb-1X8JPc4roG2eQ?e=jW4193",
-        additional: "去年夏天在公司内部分享的内容",
+        additional: "2024年夏天在公司内部分享的内容",
     },
     {
         title: "开源社区 Github 的使用以及如何评估一个开源项目",
         link: "https://1drv.ms/p/c/21572062c88e2c1a/ERosjshiIFcggCG7BQAAAAABIx3gmY4BD6wF9sOuqKmisQ?e=SVjdyL",
-        additional: "去年夏天给实验室的同学分享的浅显内容",
+        additional: "2024年夏天给实验室的同学分享的浅显内容",
     }
 ]
 
