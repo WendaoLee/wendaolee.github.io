@@ -29,7 +29,7 @@ date: 2024-08-06
 
 关于这门课的核心观点，你可以用下面这张图去理解：
 
-![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/1-General.png)
+![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/1-General.webp)
 
 即，代数结构通常由这三部分组成：
 1. 由构成该代数结构的元素组成的集合
@@ -169,7 +169,7 @@ const sampleNumberTree: FullBinaryTree<number> = {
 
 这样写可能有点抽象，用一张图表示我们定义的 `sampleNumberTree` 是这样：
 
-![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/2-fullBinaryTree.png)
+![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/2-fullBinaryTree.webp)
 
 我们可以说 一个数值全二叉树（树的节点值为 `number`）以及它的合并（此处称之为 fork ）操作构成了一个原群 `<FullBinaryTree<number>,fork>` :
 
@@ -209,7 +209,7 @@ $$f(1+2)=e^{1+2}=e^3=e*e^2=f(1)*f(2)$$
 
 用一张草图说明也许会好一些（画得比较丑，凑合一下）：
 
-![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/3-Homomorphism.jpg)
+![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/3-Homomorphism.webp)
 
 
 上面的指数函数便是 实数加法原群与实数乘法原群 之间的同态态射，因为 $f(x+y)=e^{x+y}=e^xe^y=f(x)*f(y)$ 。
@@ -421,11 +421,11 @@ export const nesum: nesum = (a: NEList<number>): number => {
 
 例如，向量的旋转便可以视为一个实数加法半群从左边作用（Action）在向量集合上：
 
-![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/4-VectorRotation.png)
+![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/4-VectorRotation.webp)
 
 例如，实数集的幂等可被视为一个自然乘法半群从右边作用于实数集上：
 
-![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/5-Power.png)
+![](/img/【Blog】用%20Typescript%20描述原群、半群与幺半群/5-Power.webp)
 
 这两个例子径直来自于Tom Schrijvers在PKU的课程的Slides ^[1]。它的意义在于提供了一种视角，即我们可以把对象的行为看作是一种代数结构对某个集合的作用。
 

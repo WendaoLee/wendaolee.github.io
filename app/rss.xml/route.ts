@@ -1,37 +1,48 @@
-import RSS from 'rss'
-import { rankedWritings } from '@/lib/filteredDatas'
-import { NextResponse } from 'next/server'
+import RSS from "rss";
+import { rankedWritings } from "@/lib/filteredDatas";
+import { NextResponse } from "next/server";
+
+export const dynamic = "force-static";
+
+const SITE_URL = "https://leewendao.otterstack.cn";
 
 export async function GET() {
-    const feed = new RSS({
-        title: "李问道博客最新文章 / Wendaole's new writings",
-        description: "苔痕深院雨，人影小窗灯——李问道的个人博客。",
-        site_url: 'https://leewendao.otterstack.cn',
-        feed_url: 'https://leewendao.otterstack.cn/rss.xml',
-        image_url: 'https://leewendao.otterstack.cn/wendaolee.jpeg',
-        custom_elements: [
-            {
-                'follow_challenge': [
-                    { feedId: '66483857348895744' },
-                    { userId: '66482764915559424' }
-                ]
-            }
-        ]
-    })
+  const feed = new RSS({
+    title: "李问道博客最新文章 / Wendaolee's new writings",
+    description: "苔痕深院雨，人影小窗灯——李问道的个人博客。",
+    site_url: SITE_URL,
+    feed_url: `${SITE_URL}/rss.xml`,
+    image_url: `${SITE_URL}/wendaolee.jpeg`,
+    language: "zh-CN",
+    custom_elements: [
+      {
+        follow_challenge: [
+          { feedId: "66483857348895744" },
+          { userId: "66482764915559424" },
+        ],
+      },
+    ],
+  });
 
-    rankedWritings.slice(0, 10).forEach(post => {
-        feed.item({
-            title: post.title,
-            description: post.description as string,
-            url: `https://leewendao.otterstack.cn${post.slug}`,
-            date: post.date,
-        })
-    })
+  rankedWritings.slice(0, 20).forEach((post) => {
+    const categories = [post.category, ...(post.tags ?? [])].filter(
+      (item): item is string => Boolean(item)
+    );
 
-    return new NextResponse(feed.xml(), {
-        headers: {
-            'Content-Type': 'application/xml',
-            'Content-Disposition': 'inline; filename="rss.xml"'
-        }
-    })
+    feed.item({
+      title: post.title,
+      description: post.description ?? post.title,
+      url: `${SITE_URL}${post.slug}`,
+      date: post.date,
+      author: "李问道",
+      categories,
+    });
+  });
+
+  return new NextResponse(feed.xml({ indent: true }), {
+    headers: {
+      "Content-Type": "application/xml; charset=utf-8",
+      "Content-Disposition": 'inline; filename="rss.xml"',
+    },
+  });
 }

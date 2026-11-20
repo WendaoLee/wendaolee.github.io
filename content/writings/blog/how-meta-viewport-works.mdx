@@ -17,11 +17,11 @@ date: 2023-01-10
 
 例如下图：
 
-![图像像素说明-1.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/图像像素说明-1.jpg)
+![图像像素说明-1.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/图像像素说明-1.webp)
 
 当你把它无限放大，便能看到这样的一个个小方格点，这便是像素的具象体现：
 
-![图像像素说明-2.png](/img/pic-meta标签实现移动端网页适配简易原理说明/图像像素说明-2.png)
+![图像像素说明-2.png](/img/pic-meta标签实现移动端网页适配简易原理说明/图像像素说明-2.webp)
 
 请注意：**像素**本身只是一个抽象的单位。因为对于任何图像我们都可以以不同的尺寸进行分割，从而使得它像是由不同大小的方块或原点组成。像素本身并不是一个存在**固定大小长度**的概念，而只是一个抽象描述。
 
@@ -29,7 +29,7 @@ date: 2023-01-10
 
 下图展示了一个显示WIKI页面的电子屏幕的放大图，可以明显看到发出三原色光的各个设备像素，每个像素可凭借三原色的光的混合（请参见光的混合原理）显现出不同的颜色：
 
-![显示屏-设备像素.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/显示屏-设备像素.jpg)
+![显示屏-设备像素.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/显示屏-设备像素.webp)
 （图片来源https://zhuanlan.zhihu.com/p/44553199）
 
 也就是说，我们有以下两个概念：
@@ -41,7 +41,7 @@ date: 2023-01-10
 
 我们现实中见到的诸如分辨率等参数，实际上说的就是**设备像素**。如下图，它的意思是该设备的显示器在横向上有2560个设备像素、纵向有1600个设备像素：
 
-![显示屏-分辨率.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/显示屏-分辨率.jpg)
+![显示屏-分辨率.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/显示屏-分辨率.webp)
 
 ## 2.0 设备画面的显示：由程序控制的设备独立像素
 
@@ -71,7 +71,7 @@ CSS像素便是我们在编写Web页面时经常会遇见的单位 `px`。对于
 
 简单来讲，从上到下，CSS像素、设备独立像素与设备像素的抽象层关系是这样的：
 
-![不同pixel概念-1.png](/img/pic-meta标签实现移动端网页适配简易原理说明/不同pixel概念-1.png)
+![不同pixel概念-1.png](/img/pic-meta标签实现移动端网页适配简易原理说明/不同pixel概念-1.webp)
 
 也就是说：浏览器会根据计算得出的 CSS像素与设备独立像素 的比率，将页面中的CSS像素换算为设备独立像素，而后告诉操作系统，最后让操作系统令我们屏幕前的网页借助设备像素以恰当大小显示。
 
@@ -86,28 +86,28 @@ CSS像素便是我们在编写Web页面时经常会遇见的单位 `px`。对于
 
 该仓库提供了一个关于本文后面所述的meta标签的属性viewport的实验场。您可以通过点击Basics中不同的`<meta name="viewport">`标签前往不同`content`下的页面：
 
-![viewport_example_0.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/viewport_example_0.jpg)
+![viewport_example_0.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/viewport_example_0.webp)
 
 作者贴心地在这些页面中列出了各种当前页面的参数值 (reported values) 与页面占据的设备独立像素大小：
 
-![viewport_example_1.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/viewport_example_1.jpg)
+![viewport_example_1.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/viewport_example_1.webp)
 
 其中参数的说明我们会在下文逐个说明。此处我们关注的只是`window.width`与`window.height`这两项参数，在**桌面端**它们能够正常工作，它们代表的是用户使用的屏幕的宽度与高度：
 
-![screen_width_height.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/screen_width_height.jpg)
+![screen_width_height.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/screen_width_height.webp)
 （来自参考2）
 
 现在，我的电脑屏幕的**设备独立像素**分辨率为2560x1600，该参数和我电脑屏幕的**设备像素**一致：
 
-![experiment-0.png](/img/pic-meta标签实现移动端网页适配简易原理说明/experiment-0.png)
+![experiment-0.png](/img/pic-meta标签实现移动端网页适配简易原理说明/experiment-0.webp)
 
 因此，此时`screen.width`与`screen.height`与上面的值一致：
 
-![experiment-1.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/experiment-1.jpg)
+![experiment-1.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/experiment-1.webp)
 
 但若我更改分辨率为1280x800，此时`screen.width`与`screen.height`也发生了改变：
 
-![experiment-2.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/experiment-2.jpg)
+![experiment-2.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/experiment-2.webp)
 
 但显然，**设备像素**是没有发生改变的。改变的只是设备独立像素。这一点同样可以在桌面端通过放大缩小页面观察到`window.devicePixelRatio`该项数值的改变验证。
 
@@ -122,16 +122,16 @@ CSS像素便是我们在编写Web页面时经常会遇见的单位 `px`。对于
 
 举例来讲，在下面的动图中，您在滑动垂直滚动条查阅网站内容时，便是在移动**可视视窗**在**布局视窗上**查看不同的内容：
 
-![visual_viewport_0_gif.gif](/img/pic-meta标签实现移动端网页适配简易原理说明/visual_viewport_0_gif.gif)
+![visual_viewport_0_gif.gif](/img/pic-meta标签实现移动端网页适配简易原理说明/visual_viewport_0_gif.webp)
 （在桌面端浏览器滚动查看所有内容）
 
 下面的图是可视视窗在移动端浏览器上的例子，该例子中，用户使用手机只查看到网站的一部分，用户看见的这一部分就是**可视视窗**，而他/她所浏览的整个网页存在于**布局视窗**之上：
 
-![mobile_visualviewport.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/mobile_visualviewport.jpg)
+![mobile_visualviewport.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/mobile_visualviewport.webp)
 
 默认情况下，浏览器尽量保证可视视窗与布局视窗的大小相匹配，也就是说，往往在页面初始加载完毕时，**可视视窗的大小会等同于布局视窗的大小**。这一点上移动端与桌面端的处理不太一样。默认情况下，大多数移动端浏览器会以980px的宽度渲染布局视窗，默认的可视视窗与布局视窗等同，如此呈现出的页面见下：
 
-![mq_none.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/mq_none.jpg)
+![mq_none.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/mq_none.webp)
 （小屏幕下，以这样宽度渲染布局视窗显然使得页面实在太小了）
 
 
@@ -144,10 +144,10 @@ CSS像素便是我们在编写Web页面时经常会遇见的单位 `px`。对于
 
 这是桌面端的示例。在可视视窗发生改变时，对应的布局视窗的大小也在随之更改：
 
-![visual_viewport_gif.gif](/img/pic-meta标签实现移动端网页适配简易原理说明/visual_viewport_gif.gif)
+![visual_viewport_gif.gif](/img/pic-meta标签实现移动端网页适配简易原理说明/visual_viewport_gif.webp)
 这是移动端的示例。可视视窗不断改变，但是布局视窗一直不改变：
 
-![visual_viewport_mobile_gif.gif](/img/pic-meta标签实现移动端网页适配简易原理说明/visual_viewport_mobile_gif.gif)
+![visual_viewport_mobile_gif.gif](/img/pic-meta标签实现移动端网页适配简易原理说明/visual_viewport_mobile_gif.webp)
 
 关于可视视窗，Blog https://www.quirksmode.org/blog/archives/2015/09/a_new_device_ad.html 给出了一个非常nice的线上演示demo https://www.quirksmode.org/mobile/viewports/ 。
 
@@ -165,10 +165,10 @@ CSS像素便是我们在编写Web页面时经常会遇见的单位 `px`。对于
 
 `meta`标签的`viewport`元数据的值的参考可见MDN：
 
-![meta_viewport.png](/img/pic-meta标签实现移动端网页适配简易原理说明/meta_viewport.png)
+![meta_viewport.png](/img/pic-meta标签实现移动端网页适配简易原理说明/meta_viewport.webp)
 其中，我们常用的`<meta name="viewport" content="width=device-width, initial-scale=1">`的作用便是：调整布局视窗宽度为设备宽度（这一宽度同样为设备独立像素），并令设备宽度与布局视窗大小为等级1的缩放。这种情况下绝大多数正常布局的网页都能恰当地通过浏览器与操作系统的协调调整到适应的大小：
 
-![mobile_mediaqueries.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/mobile_mediaqueries.jpg)
+![mobile_mediaqueries.jpg](/img/pic-meta标签实现移动端网页适配简易原理说明/mobile_mediaqueries.webp)
 
 您可以通过手机浏览器访问 https://wendaolee.github.io/understanding-viewport/ 更加直观地体会。
 

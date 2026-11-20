@@ -9,7 +9,7 @@ date: 2024-10-29
 
 这个问题非常有趣。简单来讲，就是当你在 **生产环境** 下，在 Chormium 系的浏览器中（例如 Edge,Chorme）在目标网页打开开发者工具时，网页以及开发者工具会迅速崩溃，并且抛出错误码：STATUS_BREAKPOINT。
 
-![基于久远的版本的错误演示](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192508432.gif)
+![基于久远的版本的错误演示](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192508432.webp)
 
 问题巧妙的地方在于：
 1. **它不影响正常使用**。网页的所有功能都是正常的。这一点是最神奇的。
@@ -26,7 +26,7 @@ date: 2024-10-29
 
 受限于训练数据，即使如 GPT 大神这样的LLM也只能给出几个不符合我们情况的方向参考：
 
-![GPT大神给出的代码排查建议](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192508701.png)
+![GPT大神给出的代码排查建议](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192508701.webp)
 
 即使我用 repopack 将整个代码仓打包问 GPT ，它也没能找到问题所在。
 
@@ -53,7 +53,7 @@ date: 2024-10-29
 
 只是说来尴尬，当时的我并没有排查到这上。因为看到原文，我印象里是没引入过这些样式的，我记忆里对于我自己写过的 scrollbar 样式的代码只有 [MDN 文档里的 scrollbar-width](https://developer.mozilla.org/zh-CN/docs/Web/CSS/scrollbar-width) ，但我注释了后发现问题并不来源于此。然后因为我觉得我没有写过这些代码——实际上也并不是我写的——于是，我开始怀疑是其他原因引发的问题，忘了先用 IDE 的搜索功能看看项目里有没有谁引入了这些代码，开始拜托我的兄弟去排查一下是哪次的 commit 引入的该问题。
 
-![唉，现在想想有点小后悔，感觉浪费了一点时间](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192508864.png)
+![唉，现在想想有点小后悔，感觉浪费了一点时间](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192508864.webp)
 
 ## 我们定位到该问题的过程
 
@@ -71,7 +71,7 @@ date: 2024-10-29
 
 那时的我以为会是什么 service worker 或是 indexDB 相关的操作（跟随GPT大神的思路）引发的问题，正在在不同文件的变更中切着查看，突然眼前飘过一片绿色的 diff，眼熟且让人郁郁的颜色让我直接出声：”哦，我知道是哪里的问题了——原来还是这个问题。“
 
-![问题所在](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192509215.png)
+![问题所在](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029192509215.webp)
 
 注释掉了 `-webkit-scrollbar` 的 CSS 选择器及其值或注释掉 `scrollbar-width: none;` 后，问题便消失了。
 
@@ -83,11 +83,11 @@ date: 2024-10-29
 对于这个问题，前边我搜索到的资料中，[chrome因为样式而导致网页崩溃问题-fb0cdf8e3ca2](https://medium.com/@alanhe421/chrome%E5%9B%A0%E4%B8%BA%E6%A0%B7%E5%BC%8F%E8%80%8C%E5%AF%BC%E8%87%B4%E7%BD%91%E9%A1%B5%E5%B4%A9%E6%BA%83%E9%97%AE%E9%A2%98-fb0cdf8e3ca2) 的作者提供了一个简单复现的 playground : [https://alanhe421.github.io/test-page/web-crash.html?source=post_page-----fb0cdf8e3ca2--------------------------------
 ](https://alanhe421.github.io/test-page/web-crash.html?source=post_page-----fb0cdf8e3ca2--------------------------------)
 
-![复现playground](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029193152095.png)
+![复现playground](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029193152095.webp)
 
 而原作者的 playground 和我们一样，同时存在 `-webkit-scrollbar` 与 `scrollbar-width` 属性：
 
-![同时存在 --webkit-scrollbar 和 scrollbar-width](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029194243907.png)
+![同时存在 --webkit-scrollbar 和 scrollbar-width](/img/【Blog】小记一下似乎是%20Chormium%20在%20scrollbar%20样式上的%20Bug%20引发的开发者工具崩溃问题/IMG-20241029194243907.webp)
 
 感觉这个问题是 Chromium 的 Bug。我在 Chromium 的 Issues Tracker 中搜索了最近的相关 Issue，但是我不太清除具体的原因。我个人倾向于这个 Issue 里的反馈：
 

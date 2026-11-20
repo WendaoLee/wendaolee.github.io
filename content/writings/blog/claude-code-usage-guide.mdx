@@ -18,9 +18,9 @@ Claude Code 是 Anthropic 这家虚伪但确实有实力的公司推出的命令
 
 由于它是运行在这样一个黑黢黢的终端里的，需要你输入命令才能交互调用：
 
-![终端就是这样黑黢黢的东西](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920100607402.png)
+![终端就是这样黑黢黢的东西](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920100607402.webp)
 
-![Claude Code 的运行界面，所有和 Claude Code 交互都是通过这样的页面进行](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920101527222.png)
+![Claude Code 的运行界面，所有和 Claude Code 交互都是通过这样的页面进行](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920101527222.webp)
 
 因此，我觉得 Claude Code 只适用于以下人群：
 
@@ -31,7 +31,7 @@ Claude Code 是 Anthropic 这家虚伪但确实有实力的公司推出的命令
 
 **Claude Code 是我认为的真 Agent ，真智能体**。如果你有足够的兴趣去 diy ，完全可以在你的电脑上实现一个比较好用的终端助理。例如，我在我自己的 PC 上为 Claude Code 添加了一个 demo 也称不上的记忆功能，用于让我在想要到社交媒体上发布我在无限暖暖里的截图时（在这里吐槽一下叠纸把目录藏得有点深，弄得我每回都要重新找一下），可以打开无限暖暖的截图目录：
 
-![虽然我没怎么细致优化过，这里的命令并不能打开目录，但它能给到目录位置就行](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920103257439.png)
+![虽然我没怎么细致优化过，这里的命令并不能打开目录，但它能给到目录位置就行](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920103257439.webp)
 
 ## 除了 Claude Code 的安装外，你还可以安装什么？
 
@@ -63,7 +63,7 @@ Claude Code 的配置文件一般位于你电脑上用户配置文件夹的 `~/.
 
 你可以通过 CCCS 的 UI 界面对配置页面进行修改，通过往默认配置里添加 `env` 字段实现不同模型的切换（这也是为啥我挑到 CCCS 的原因，它没做太多封装并且有 GUI 界面。我知道社区里还有更多比较好的 Claude Code GUI，不过因为我先用了这个，所以在这里只推荐这个）：
 
-![我平常会换着使用不同的模型](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250908161610543.png)
+![我平常会换着使用不同的模型](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250908161610543.webp)
 
 需要注意的是，如果你想要使用 Claude 模型，那么只需要把 `env` 这个字段删掉即可。没有特殊的 env 配置的话 Claude Code 默认会调用 Anthropic 官方的 API。
 
@@ -91,11 +91,11 @@ npm install -g ccusage
 }
 ```
 
-![ccusage 的用量预览 bar](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920104042402.png)
+![ccusage 的用量预览 bar](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920104042402.webp)
 
 或者是通过输入命令 `npx ccusage@latest blocks --live` 实施监控每五小时窗口内你当前 token 的用量：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920110904539.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920110904539.webp)
 
 
 
@@ -114,23 +114,23 @@ npm install -g ccusage
 
 基本上阅读完这一章节后，你便能对 Claude Code 建立起基本的使用认知。接下来我将以今年五月修改过的 [AxRythem](https://github.com/Acgnu/AxRythem) 这个项目为例进行说明：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920110146620.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920110146620.webp)
 
 ### 1. `/init` 与 `CLAUDE.md` ，最重要的项目记忆文件
 
 好吧，假设我是一个对 [AxRythem](https://github.com/Acgnu/AxRythem) 这个项目啥也不懂的新开发。显然，Claude Code 和我一样，对这个项目没有任何了解，这种情况下，我们会使用 `/init` 命令，去生成一个名为 `CLAUDE.md` 的项目文档：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920110728075.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920110728075.webp)
 
 需要注意的是，Claude Code 默认会使用英文的 Prompt 去解析项目，因此我建议你在输入 `/init` 命令时，附带中文指令，要求它生成中文版本的 CLAUDE.md 帮助你阅读（就像是我上面的图片做的那样）。
 
 按下 enter 键入命令后，Claude Code 便会为你扫描整个代码仓目录，梳理完大致架构后，它会输出结果，让你确认是否创建 `CLAUDE.md` 文件：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920111105211.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920111105211.webp)
 
 确认 YES 后，便会在项目的根目录下生成 `CLAUDE.md` 文件：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920111344758.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920111344758.webp)
 
 `CLAUDE.md` 是 Claude Code 的记忆文件。这里生成的记忆文件主要用来提示大模型这个项目的整体架构以及用途。**在每次 Claude Code 调用大模型进行推理时，都会将相应的 `CLAUDE.md` 的内容作为大模型调用的上下文传入**，从而帮助大模型更好地理解你的项目。
 
@@ -138,7 +138,7 @@ npm install -g ccusage
 
 其中，在这里需要着重说明的是， Claude Code 的记忆分为两种，一个是全局记忆，一个是项目记忆，当你输入 `/memory` 命令时，便能选择打开对应的记忆文件进行编辑：
 
-![User Memory 是全局记忆，Project Memory 是项目根目录下的 Claude.md文件](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920111831403.png)
+![User Memory 是全局记忆，Project Memory 是项目根目录下的 Claude.md文件](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920111831403.webp)
 
 项目记忆是根据你每回 Claude Code 打开的项目的不同而发生改变，而全局记忆是在你的这台设备上，永远能够存在的记忆。它们都是名为 `CLAUDE.md` 的文本文件，只是存放的位置不同：
 
@@ -221,13 +221,13 @@ Claude Code 具备以下模式：
 
 通过 `alt + m` 能够在这三个模式之间进行切换，Claude Code 会在下方实时显示你当前的编辑模式，如果下面没有小字说明是默认模式：
 
-![编辑模式](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920114011173.png)
+![编辑模式](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920114011173.webp)
 
-![计划模式](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920114055642.png)
+![计划模式](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920114055642.webp)
 
 除此之外，还有一个 Vibe Coding 狂热者们喜欢的 dangerous 模式，需要你在启动 Claude Code 时附带 `--dangerously-skip-permissions` 模式启动，例如 `claude --dangerously-skip-permissions`：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920114423625.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920114423625.webp)
 
 dangerous 模式下，**Claude Code 具备所有终端能够具备的权限**，并且它执行任务时不会要求任何人工确认。**因此，它能造成命令行能够造成的一切破坏**。我已经见到了不少 Claude Code 擅自在修改数据库时把库进行删除操作的新闻报导了，我自己之前尝试 dangerous mode 时也遇到过它尝试启动进程无果后把我所有的 Node 进程全杀掉的情况（理论上来讲，应该通过查询占用端口后根据 pid 杀死任务，但是大模型就是可能会抽风发生这样的情况）。因此**除非你是从零开始想偷懒让 Claude Code 帮你完成项目，不然我不建议开启这个模式**。
 
@@ -237,11 +237,11 @@ dangerous 模式下，**Claude Code 具备所有终端能够具备的权限**，
 
 除了 dangerous 模式外，即使是具备读写权限的编辑模式与计划模式，由于前文你知道的大模型会发生抽风的原因，出于安全考虑，当 Claude Code 要运行读写之外的命令时，也会请求用户授权。例如调用 curl 发送请求到某个地址：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920140138667.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920140138667.webp)
 
 这种情况下，你可以通过在同意的时候，同时允许它不用再询问该命令。它会在你的项目根目录下新增一个 `.claude` 目录作为 Claude Code 的**项目配置**，同时在下方新增 `settings.local.json` ，往里面添加 `curl` 命令的 `permissions` 相关的配置项，以让 Claude Code 在之后不需要你的允许便可以调用 curl：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920141924336.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920141924336.webp)
 
 `settings.local.json` 是项目级的配置。如果你需要修改全局配置，同理，在全局配置 `~/.claude/` 目录（就是前文所说的 CCCS 修改的 `settings.json` 目录以及全局记忆 `CLAUDE.md` 所位于的目录）下有名为 `settings.json` 的文件可以用于全局配置。如果你想配置 curl 命令在所有项目都不需要征求你的同意便可以允许，那么在全局配置文件进行修改即可。
 
@@ -280,7 +280,7 @@ Hooks 是 Claude Code 官方提供的方便你在 Claude Code 运行的周期内
 
 我个人是因为工作是使用飞书的，因此我单独建立了一个只有我一个人的飞书群，往里面添加了一个飞书的 Webhook 机器人去发送通知：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920143422546.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920143422546.webp)
 
 当然，这边的通知脚本可以直接通过一条 curl 请求实现，不过因为 Windows 下的 curl 有点小问题，因此我还是用了一段 Node.js 脚本。由于这段脚本调用的是我司的飞书通知基建接口，没有啥借鉴意义，故而在这里就不放出相应的脚本代码了。
 
@@ -288,7 +288,7 @@ Hooks 是 Claude Code 官方提供的方便你在 Claude Code 运行的周期内
 
 在调用大模型的时候，我们应该有这样的一个心智模型：**于用户对话而言，大模型本质上是一个无状态函数**，和大模型对话，实质上是在一个上下文窗口里不断地进行累增的对话，在这个上下文窗口里，你的**每一次新增对话都会把前一步对话得到的结果和历史对话内容一同传入**。而模型本身的上下文窗口大小有限，因此你应当养成控制好和模型对话的上下文的习惯，尽量把和你任务最相关的上下文信息提供给大模型。
 
-![来源Deepseek官方，这里讲的是上下文缓存，但它形象地展示了多轮对话里的上下文窗口变化，因此我用了这张图说明](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920144009356.png)
+![来源Deepseek官方，这里讲的是上下文缓存，但它形象地展示了多轮对话里的上下文窗口变化，因此我用了这张图说明](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920144009356.webp)
 
 Claude Code 中，关于上下文控制的主要有这三个命令：
 
@@ -300,19 +300,19 @@ Claude Code 中，关于上下文控制的主要有这三个命令：
 
 这是一个**新的任务的上下文窗口**，它很纯净，只有预设的系统提示词（System prompt）、系统工具（System tools，你给 Claude Code 预设的工具）以及记忆文件（Memory Files，即`CLAUDE.md`）：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920145538653.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920145538653.webp)
 
 当我运行 `/resume` ，加载了一个先前的任务后，它的上下文窗口因为承载了先前任务的历史上下文信息，如你所见，表示历史对话的 `Messages` 部分膨胀了很多，里面的紫方块的占据面积变了不少：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920151341083.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920151341083.webp)
 
 运行了 `/compact` 命令后，相应的上下文窗口会被压缩，如你所见，从原本的 12.9k messages 压缩到了 6k messages：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920151736175.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920151736175.webp)
 
 运行了 `/clear` 后，整个上下文窗口就被重置了，**恢复到了初始状态**：
 
-![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920151901557.png)
+![](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920151901557.webp)
 
 ## 我使用 Claude Code 的习惯
 
@@ -354,7 +354,7 @@ Claude Code 中，关于上下文控制的主要有这三个命令：
 
 当然，Claude Code 针对这种情况也有 plan mode 和 sub-agents 等功能，**但我个人使用下来感觉效果不佳**。虽然 plan mode 和 sub-agents 能够减轻我对代码的干预程度，但它同时也意味着我无法及时验收对应的结果，无法及时修正相应的错误结果——除非我一直盯着，但如果我一直盯着它的输出，又有什么意义呢？
 
-![这是我在 IDE 开发时，平常会习惯打开的多个 Claude Code 进程截图](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920155549655.png)
+![这是我在 IDE 开发时，平常会习惯打开的多个 Claude Code 进程截图](/img/【Blog】我是如何使用%20Claude%20Code%20的？/IMG-20250920155549655.webp)
 
 ### 2. 试着让大模型分析后再进行修改
 

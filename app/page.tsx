@@ -26,14 +26,14 @@ export default function Home() {
         <div className="mt-[5%] text-base flex flex-col leading-normal">
           <header>
             <div className="w-full mb-4 flex items-center justify-between gap-6">
-              <div className="avatar">
-                <div className="rounded-full w-16 md:w-24">
-                  <img
-                    src="/wendaolee.jpeg"
-                    alt="avatar"
-                    className="mt-0 mb-0 object-contain"
-                  />
-                </div>
+              <div className="shrink-0 w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden">
+                <img
+                  src="/wendaolee.jpeg"
+                  alt="李问道头像"
+                  width={96}
+                  height={96}
+                  className="w-full h-full mt-0 mb-0 object-cover"
+                />
               </div>
               <div className="flex flex-col flex-grow items-start">
                 <div className="flex align-middle items-center gap-2">
@@ -50,7 +50,7 @@ export default function Home() {
 
             </div>
           </header>
-          <div className="divider"></div>
+          <div className="my-6 w-full border-t border-slate-200 dark:border-slate-800" />
           <section className="mb-[20px] w-full">
             李问道。随便写写东西的人。
             <br />
@@ -84,14 +84,14 @@ export default function Home() {
             想要与我联系可以在下方找到联系方式😉。
             <br />
           </section>
-          <div className="divider"></div>
+          <div className="my-6 w-full border-t border-slate-200 dark:border-slate-800" />
           <section className="mb-0" style={{ width: "80%", display: "flex" }}>
             Wendao Lee, also known as Erika Lee, is a writer and a programmer.
             <br />
             Most of the articles here are Chinese.
             <br />
           </section>
-          <div className="divider"></div>
+          <div className="my-6 w-full border-t border-slate-200 dark:border-slate-800" />
           <section>
             <h2 className="mb-0 mt-0">你可以在这里找到我👏</h2>
             <h4 className="mb-[20px] mt-0">Contact</h4>
@@ -108,7 +108,7 @@ export default function Home() {
                 <a href="https://www.douban.com/people/leewendao">李问道</a>
               </li>
               <li>
-                微信公众号: <a href="/page/wechat">水獭日知社</a>
+                微信公众号: <Link href="/page/wechat">水獭日知社</Link>
               </li>
             </ul>
           </section>

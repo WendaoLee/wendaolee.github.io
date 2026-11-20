@@ -29,11 +29,11 @@ date: 2024-09-02
 
 当你从其他网站上复制了一些内容并粘贴到Google文档中，不难发现其中一些格式会被保留下来，比如链接、字体大小和颜色等：
 
-![复制内容时格式保留的示例](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/1-copy-paste-rich-content.png)
+![复制内容时格式保留的示例](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/1-copy-paste-rich-content.webp)
 
 但是如果我们把内容黏贴到 VSCode 中，那么只会保留原始的文本内容：
 
-![复制内容时格式保留的示例](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/2-copy-paste-into-vscode.png)
+![复制内容时格式保留的示例](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/2-copy-paste-into-vscode.webp)
 
 剪切板是通过将信息以用MIME类型标记的不同[数据表示形式（representations）](https://www.w3.org/TR/clipboard-apis/#list-of-representations)进行存储以来满足这两种使用场景的。W3C关于剪切板相关的[规范](https://www.w3.org/TR/clipboard-apis/#mandatory-data-types-x)要求，向剪切板写入数据或从剪切板读取数据时，这三种数据类型必须要被支持：
 
@@ -340,7 +340,7 @@ Google Docs有一个复制按钮，它可以在右键菜单中找到。
 
 我运行了 profiler，点击了复制按钮，并查看了结果。结果显示，点击复制按钮会触发对 `document.execCommand("copy")` 的调用:
 
-![3-通过 profile 查看 Google Doc 的复制按钮的结果](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/3-google-docs-exec-command.png)
+![3-通过 profile 查看 Google Doc 的复制按钮的结果](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/3-google-docs-exec-command.webp)
 
 
 这让我感到很惊讶。发现这一点时，我的第一反应是：“这不是已弃用的复制文本到剪贴板的方法吗？”
@@ -371,11 +371,11 @@ document.execCommand("copy");
 
 让我们试试Google Docs中的“粘贴”按钮，看看它能做些什么。
 
-![4-Google Doc的黏贴按钮](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/4-google-docs-paste-button.png)
+![4-Google Doc的黏贴按钮](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/4-google-docs-paste-button.webp)
 
 在我的MacBook上，我收到了一个弹出窗口，它提示我需要安装一个扩展程序才能使用粘贴按钮。
 
-![5-MacBook上使用黏贴按钮提示需要安装扩展程序](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/5-google-docs-paste-popup.png)
+![5-MacBook上使用黏贴按钮提示需要安装扩展程序](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/5-google-docs-paste-popup.webp)
 
 但奇怪的是，在我的Windows笔记本电脑上，粘贴按钮却可以正常使用。
 
@@ -389,7 +389,7 @@ document.queryCommandSupported("paste");
 
 Safari 考虑到用户的隐私问题，要求我确认粘贴操作。我认为这是一个非常好的设计。这让用户非常清楚地知道网站会从剪贴板中读取内容。
 
-![6-在Mac上进行黏贴需要确认](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/6-google-docs-paste-confirm.png)
+![6-在Mac上进行黏贴需要确认](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/6-google-docs-paste-confirm.webp)
 
 为什么Chrome允许 `execCommand("paste")` 在Windows上运行，但在macOS上却不行？可惜的是，我没能找到任何相关信息。
 
@@ -412,7 +412,7 @@ Safari 考虑到用户的隐私问题，要求我确认粘贴操作。我认为�
 
 Figma 是一个基于Web的应用程序（其原生应用的技术栈使用了 Electron）。让我们看看他们的复制按钮会把什么内容复制到剪贴板上。
 
-![7-Figma的复制按钮](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/7-figma-copy-button.png)
+![7-Figma的复制按钮](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/7-figma-copy-button.webp)
 
 Figma的复制按钮会将两个表示形式复制到剪贴板中： `text/plain` 和 `text/html` 。这让我感到惊讶。Figma是如何用纯HTML表示它们的各种布局和样式功能的呢？
 
@@ -458,7 +458,7 @@ console.log(URL.createObjectURL(blob));
 
 然后我将生成的blob文件下载为一个 `.fig` 文件，并将其上传到 `.fig`文件解析器中，然后得到了结果：
 
-![8-figma复制内容的解析结果](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/8-figma-data.png)
+![8-figma复制内容的解析结果](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/8-figma-data.webp)
 
 现在，我们能够明确了：
 
@@ -501,7 +501,7 @@ Chrome在剪贴板中添加了四个条目：
 - `org.chromium.web-custom-data` 存储了从网页复制的自定义表示数据。
 - `org.chromium.source-url`保存了复制操作对应的的源网页的网址。
 
-![9-org.chromium.web-custom-data 存储了从网页复制的自定义表示数据](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/9-pasteboard-chrome.png)
+![9-org.chromium.web-custom-data 存储了从网页复制的自定义表示数据](/img/【Translation】Web浏览器的剪切板是如何存储不同类型的数据的/9-pasteboard-chrome.webp)
 
 Firefox也会创建 `public.html` 和 `public.utf8-plain-text` 的条目，但它会将自定义数据写入 `org.mozilla.custom-clipdata` 。并且它不像Chrome那样存储源URL。
 

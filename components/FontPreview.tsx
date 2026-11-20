@@ -106,13 +106,13 @@ export const FontPreview: React.FC<FontPreviewProps> = ({
   }, [fontFaces])
 
 
-  if(window === undefined){
+  if (typeof window === 'undefined') {
     return <div></div>
   }
 
   // 检查字体是否可用
   const isFontAvailable = (fontFamily: string) => {
-    if(window === undefined || window.document === undefined){
+    if (typeof window === 'undefined' || window.document === undefined) {
       return false
     }
     return window.document.fonts.check(`12px "${fontFamily}"`)

@@ -1,142 +1,202 @@
-"use client"
+"use client";
 
-import { useCallback, useEffect, useRef, useState } from "react"
-import { useRouter } from "next/navigation"
-import { CommandDialog, CommandInput, CommandItem, CommandList, Command } from "@/components/ui/command"
-import { Matrix, search } from "text-search-engine"
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 
-interface SearchDocument {
-  title: string
-  description?: string
-  slug: string
-  category?: string
-  date: string
-  tags?: string[]
-  content: string
+interface PagefindSearchResultItem {
+  id: string;
+  data: () => Promise<PagefindDocumentData>;
+}
+
+interface PagefindDocumentData {
+  url: string;
+  excerpt: string;
+  meta?: {
+    title?: string;
+  };
+}
+
+interface PagefindModule {
+  init?: () => Promise<void>;
+  search: (query: string) => Promise<{
+    results: PagefindSearchResultItem[];
+  }>;
+}
+
+interface SearchHit {
+  id: string;
+  url: string;
+  title: string;
+  excerpt: string;
 }
 
 interface BlogSearchProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
-interface SearchResult {
-  document: SearchDocument
-  bodyMatches?: Matrix
-  score: number
+function decodeHtmlEntities(input: string): string {
+  return input
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&#x27;/g, "'")
+    .replace(/&nbsp;/g, " ");
 }
 
-function isSearchDocument(value: unknown): value is SearchDocument {
-  if (typeof value !== "object" || value === null) return false
-
-  const document = value as Partial<SearchDocument>
-  return typeof document.title === "string"
-    && typeof document.slug === "string"
-    && typeof document.content === "string"
-    && typeof document.date === "string"
+function normalizeResultUrl(url: string): string {
+  if (url === "/index.html") return "/";
+  return url.replace(/\/index\.html$/, "").replace(/\.html$/, "") || "/";
 }
 
-function HighlightedText({ text, highlightRange }: { text: string, highlightRange?: [number, number] }) {
-  if (!highlightRange) return null
+function ExcerptText({ excerpt }: { excerpt: string }) {
+  if (!excerpt) return null;
 
-  const [start, inclusiveEnd] = highlightRange
-  const end = inclusiveEnd + 1
-  const contextStart = Math.max(0, start - 20)
-  const contextEnd = Math.min(text.length, end + 20)
+  const parts = excerpt.split(/(<mark>[\s\S]*?<\/mark>)/gi);
 
   return (
-    <p>
-      {contextStart > 0 && "..."}
-      {text.slice(contextStart, start)}
-      <span className="bg-blue-400 font-bold dark:bg-blue-600">{text.slice(start, end)}</span>
-      {text.slice(end, contextEnd)}
-      {contextEnd < text.length && "..."}
+    <p className="mt-1 text-xs leading-relaxed text-gray-600 dark:text-gray-300 line-clamp-2">
+      {parts.map((part, index) => {
+        const markMatch = part.match(/^<mark>([\s\S]*?)<\/mark>$/i);
+        if (markMatch) {
+          return (
+            <mark
+              key={index}
+              className="rounded px-0.5 bg-blue-200 text-slate-950 font-semibold dark:bg-blue-600 dark:text-white"
+            >
+              {decodeHtmlEntities(markMatch[1])}
+            </mark>
+          );
+        }
+        return (
+          <Fragment key={index}>
+            {decodeHtmlEntities(part.replace(/<[^>]+>/g, ""))}
+          </Fragment>
+        );
+      })}
     </p>
-  )
+  );
 }
 
-function calculateMatrixPower(matrix: Matrix) {
-  return matrix.reduce((total, [start, end]) => total + end - start, 0)
+async function importPagefind(): Promise<PagefindModule> {
+  const dynamicImport = new Function("url", "return import(url)") as (
+    url: string
+  ) => Promise<PagefindModule>;
+  const mod = await dynamicImport("/pagefind/pagefind.js");
+  if (typeof mod.init === "function") {
+    await mod.init();
+  }
+  return mod;
 }
 
 export default function BlogSearch({ open, onOpenChange }: BlogSearchProps) {
-  const router = useRouter()
-  const [documents, setDocuments] = useState<SearchDocument[] | null>(null)
-  const [indexError, setIndexError] = useState<string | null>(null)
-  const [isLoadingIndex, setIsLoadingIndex] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isSearching, setIsSearching] = useState(false)
-  const [results, setResults] = useState<SearchResult[]>([])
-  const hasRequestedIndex = useRef(false)
+  const router = useRouter();
+  const pagefindRef = useRef<PagefindModule | null>(null);
+  const [isReady, setIsReady] = useState(false);
+  const [indexError, setIndexError] = useState<string | null>(null);
+  const [isLoadingIndex, setIsLoadingIndex] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [results, setResults] = useState<SearchHit[]>([]);
+  const hasRequestedIndex = useRef(false);
 
   const loadIndex = useCallback(async () => {
-    setIsLoadingIndex(true)
-    setIndexError(null)
+    setIsLoadingIndex(true);
+    setIndexError(null);
 
     try {
-      const response = await fetch("/search-index.json")
-      if (!response.ok) throw new Error(`Search index request failed: ${response.status}`)
-
-      const payload: unknown = await response.json()
-      if (!Array.isArray(payload) || !payload.every(isSearchDocument)) {
-        throw new Error("Search index has an invalid format")
-      }
-
-      setDocuments(payload)
+      const pagefind = await importPagefind();
+      pagefindRef.current = pagefind;
+      setIsReady(true);
     } catch {
-      setIndexError("搜索索引加载失败，请检查网络后重试。")
+      const isDev = process.env.NODE_ENV === "development";
+      setIndexError(
+        isDev
+          ? "开发模式下尚未生成 Pagefind 静态索引，请运行 pnpm run build 后预览静态产物。"
+          : "搜索索引加载失败，请检查网络后重试。"
+      );
     } finally {
-      setIsLoadingIndex(false)
+      setIsLoadingIndex(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (!open || documents || hasRequestedIndex.current) return
-    hasRequestedIndex.current = true
-    void loadIndex()
-  }, [documents, loadIndex, open])
+    if (!open || isReady || hasRequestedIndex.current) return;
+    hasRequestedIndex.current = true;
+    void loadIndex();
+  }, [isReady, loadIndex, open]);
 
   const retryIndex = useCallback(() => {
-    hasRequestedIndex.current = true
-    void loadIndex()
-  }, [loadIndex])
+    hasRequestedIndex.current = true;
+    void loadIndex();
+  }, [loadIndex]);
 
   useEffect(() => {
-    const query = searchQuery.trim()
-    if (!documents || !query) {
-      setResults([])
-      setIsSearching(false)
-      return
+    const query = searchQuery.trim();
+    const pagefind = pagefindRef.current;
+
+    if (!isReady || !pagefind || !query) {
+      setResults([]);
+      setIsSearching(false);
+      return;
     }
 
-    setIsSearching(true)
-    const timer = window.setTimeout(() => {
-      const nextResults = documents
-        .map((document): SearchResult | null => {
-          const bodyMatches = search(document.content, query)
-          const titleMatches = search(document.title, query)
-          if (bodyMatches === undefined && titleMatches === undefined) return null
+    let cancelled = false;
+    setIsSearching(true);
 
-          const score = (bodyMatches ? calculateMatrixPower(bodyMatches) : 0)
-            + (titleMatches ? 10 * calculateMatrixPower(titleMatches) : 0)
+    const timer = window.setTimeout(async () => {
+      try {
+        const searchResponse = await pagefind.search(query);
+        if (cancelled) return;
 
-          return { document, bodyMatches, score }
-        })
-        .filter((result): result is SearchResult => result !== null)
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 20)
+        const topItems = searchResponse.results.slice(0, 15);
+        const loaded = await Promise.all(
+          topItems.map(async (item): Promise<SearchHit> => {
+            const data = await item.data();
+            return {
+              id: item.id,
+              url: normalizeResultUrl(data.url),
+              title: data.meta?.title || normalizeResultUrl(data.url),
+              excerpt: data.excerpt || "",
+            };
+          })
+        );
 
-      setResults(nextResults)
-      setIsSearching(false)
-    }, 200)
+        if (!cancelled) {
+          setResults(loaded);
+        }
+      } catch {
+        if (!cancelled) {
+          setResults([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsSearching(false);
+        }
+      }
+    }, 150);
 
-    return () => window.clearTimeout(timer)
-  }, [documents, searchQuery])
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [isReady, searchQuery]);
 
-  const handleSelect = useCallback((slug: string) => {
-    onOpenChange(false)
-    router.push(slug)
-  }, [onOpenChange, router])
+  const handleSelect = useCallback(
+    (url: string) => {
+      onOpenChange(false);
+      router.push(url);
+    },
+    [onOpenChange, router]
+  );
 
   return (
     <CommandDialog open={open} onOpenChange={onOpenChange}>
@@ -150,32 +210,47 @@ export default function BlogSearch({ open, onOpenChange }: BlogSearchProps) {
         />
 
         <CommandList className="max-h-[400px] overflow-y-auto">
-          {isLoadingIndex && <p className="p-4 text-sm text-gray-500">正在加载搜索索引...</p>}
+          {isLoadingIndex && (
+            <p className="p-4 text-sm text-gray-500">正在加载搜索索引...</p>
+          )}
           {indexError && (
             <div className="p-4 text-sm text-gray-500" role="alert">
               <p>{indexError}</p>
-              <button type="button" className="mt-2 underline" onClick={retryIndex}>重试</button>
+              <button
+                type="button"
+                className="mt-2 underline"
+                onClick={retryIndex}
+              >
+                重试
+              </button>
             </div>
           )}
-          {documents && !searchQuery.trim() && <p className="p-4 text-sm text-gray-500">输入关键词开始搜索。</p>}
-          {isSearching && <p className="p-4 text-sm text-gray-500">正在搜索...</p>}
-          {documents && searchQuery.trim() && !isSearching && results.length === 0 && (
+          {isReady && !searchQuery.trim() && (
+            <p className="p-4 text-sm text-gray-500">输入关键词开始搜索。</p>
+          )}
+          {isSearching && (
+            <p className="p-4 text-sm text-gray-500">正在搜索...</p>
+          )}
+          {isReady && searchQuery.trim() && !isSearching && results.length === 0 && (
             <p className="p-4 text-sm text-gray-500">没有找到相关文章。</p>
           )}
-          {results.map(({ document, bodyMatches }) => (
+          {results.map((hit) => (
             <CommandItem
-              key={document.slug}
-              onSelect={() => handleSelect(document.slug)}
-              className="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:data-[selected=true]:bg-accent-dark dark:hover:bg-gray-700"
+              key={hit.id}
+              value={`${hit.title}-${hit.id}`}
+              onSelect={() => handleSelect(hit.url)}
+              className="cursor-pointer px-4 py-2.5 hover:bg-gray-100 dark:data-[selected=true]:bg-accent-dark dark:hover:bg-gray-700"
             >
-              <div>
-                {document.title}
-                <HighlightedText text={document.content} highlightRange={bodyMatches?.[0]} />
+              <div className="w-full">
+                <div className="font-medium text-sm text-slate-900 dark:text-slate-100">
+                  {hit.title}
+                </div>
+                <ExcerptText excerpt={hit.excerpt} />
               </div>
             </CommandItem>
           ))}
         </CommandList>
       </Command>
     </CommandDialog>
-  )
+  );
 }

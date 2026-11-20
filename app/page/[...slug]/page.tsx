@@ -49,36 +49,32 @@ export async function generateMetadata({
   };
 }
 
-export const dynamicParams = false 
-export const dynamic = 'force-static'
+export const dynamicParams = false;
+export const dynamic = "force-static";
 
-export async function generateStaticParams(): Promise<{slug:string[]}[]> {
-  console.log(
-    allPages.map((page) => ({
-      slug: page.slugAsParams.split("/"),
-    }))
-  )
-  console.log('--end---')
+export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
   return allPages.map((page) => ({
     slug: page.slugAsParams.split("/"),
   }));
 }
 
 export default async function PagePage({ params }: PageProps) {
-  console.log({params})
   const page = await getPageFromParams(params);
 
   if (!page) {
     notFound();
   }
 
-  console.log(page.title)
-
   return (
-    <article className="py-6 prose dark:prose-invert">
-      {match(page.title)
-        .with("About", () => <WritingsLists></WritingsLists>)
-        .otherwise(() => <></>)}
+    <article className="py-6 prose dark:prose-invert" data-pagefind-body>
+      <span className="sr-only" data-pagefind-meta="title">
+        {page.title}
+      </span>
+      <div data-pagefind-ignore>
+        {match(page.title)
+          .with("About", () => <WritingsLists />)
+          .otherwise(() => null)}
+      </div>
 
       <hr />
       <Mdx code={page.body.code} />

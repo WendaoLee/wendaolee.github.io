@@ -3,29 +3,36 @@ import { IntelligentLink } from "./IntelligentLink";
 import { Rss } from "lucide-react";
 import SearchLauncher from "./SearchLauncher";
 
-export default function Header(){
-
-
+export default function Header() {
   const linkFontClass = "text-sm md:text-xl";
-    return (
-            <nav className="mb-10">
-              <div className="flex items-center justify-between ">
-                <nav className="mr-auto text-sm font-medium space-x-6">
 
-                  <IntelligentLink className={linkFontClass} href="/">Home</IntelligentLink>
-                  <IntelligentLink className={linkFontClass} href="/writings">Writings</IntelligentLink>
-                  <IntelligentLink className={linkFontClass} href="/works">Works</IntelligentLink>
-                  {/* <IntelligentLInk className={linkFontClass} href="/about"></Link> */}
-                </nav>
-                <div className="flex justify-between gap-3">
-                  <a href="/rss.xml" aria-label="使用rss订阅李问道的博客">
-                    <Rss/>
-                  </a>
-                  <SearchLauncher />
-                  <ModeToggle />
-                  <a href="/sitemap.xml" aria-label="使用sitemap订阅李问道的博客" className="hidden"></a>
-                </div>
-              </div>
-            </nav>
-    )
+  return (
+    <nav className="mb-10" data-pagefind-ignore>
+      <div className="flex items-center justify-between">
+        <nav className="mr-auto text-sm font-medium space-x-6">
+          <IntelligentLink className={linkFontClass} href="/">
+            Home
+          </IntelligentLink>
+          <IntelligentLink className={linkFontClass} href="/writings">
+            Writings
+          </IntelligentLink>
+          <IntelligentLink className={linkFontClass} href="/works">
+            Works
+          </IntelligentLink>
+        </nav>
+        <div className="flex justify-between gap-3">
+          <a href="/rss.xml" aria-label="使用rss订阅李问道的博客">
+            <Rss />
+          </a>
+          <SearchLauncher />
+          <ModeToggle />
+          <a
+            href="/sitemap.xml"
+            aria-label="使用sitemap订阅李问道的博客"
+            className="hidden"
+          ></a>
+        </div>
+      </div>
+    </nav>
+  );
 }

@@ -21,13 +21,13 @@ Cursor 和 VSCode 的最大的不同点在于它内置了 AI 进行代码的协�
 
 Github Copilot 在 VSCode 中是以一个插件导入的：
 
-![Github Copilot](/img/【Translation】改译-Cursor使用教程/1-GithubCopilot.png)
+![Github Copilot](/img/【Translation】改译-Cursor使用教程/1-GithubCopilot.webp)
 
 使用上，Copilot的辅助集中在这几点上：代码补全、和GPT一样的对话窗口与代码的生成重写。
 
 代码补全是我喜欢的 Copilot 的核心功能，它会在你书写代码的时候自动推理出后续的内容，你只需要按一下 `Tab` 键就能接收它的建议：
 
-![Github Copilot的代码补全，以我现在在书写的文档为例](/img/【Translation】改译-Cursor使用教程/2-GithubCopilot的代码补全.png)
+![Github Copilot的代码补全，以我现在在书写的文档为例](/img/【Translation】改译-Cursor使用教程/2-GithubCopilot的代码补全.webp)
 
 它的最大优点是沉浸式的体验：我可以很方便地复写一些样板代码，不需要离开我的编辑器，不需要去复制黏贴原有的代码——这是不讲生成效果而言的，然而事实上它在大部分情况下确实能够生成出我想要的代码。
 
@@ -37,11 +37,11 @@ Github Copilot 在 VSCode 中是以一个插件导入的：
 
 最后是平平无奇的编辑器内的代码生成编辑重写，你可以通过 VSCode 的小灯泡（正式名叫 Code Action，用于对代码做出一些行为）触发：
 
-![Github Copilot的代码生成重写会出现在 Code Action](/img/【Translation】改译-Cursor使用教程/4-生成编辑重写-1.png)
+![Github Copilot的代码生成重写会出现在 Code Action](/img/【Translation】改译-Cursor使用教程/4-生成编辑重写-1.webp)
 
 选择使用 Copilot 进行修改后，会弹出相应的 prompt 输入框，你可以输入 `/doc` 之类的命令帮助 Copilot 是进行文档生成或是更好地对你的代码做出修改/重写：
 
-![Github Copilot的代码生成重写](/img/【Translation】改译-Cursor使用教程/4-生成编辑重写-2.png)
+![Github Copilot的代码生成重写](/img/【Translation】改译-Cursor使用教程/4-生成编辑重写-2.webp)
 
 虽然看起来很 awesome ，但是我个人的实际体验是不太行的。:( 因为它的重写大多数情况下会重新生成一份代码，然后我又要去删除掉原有的代码......只能说，我用 Copilot 主要就是爱代码补全这个功能。
 
@@ -51,17 +51,17 @@ Github Copilot 在 VSCode 中是以一个插件导入的：
 
 对话窗口，我的天哪，Copilot 和它对比真的是个垃圾，因为 Cursor 对话生成的代码是可以直接应用到你的代码上的：
 
-![Cursor对话窗的应用功能，那个apply就是将它修改的代码应用到代码上](/img/【Translation】改译-Cursor使用教程/5-Cursor的对话窗的apply功能.png)
+![Cursor对话窗的应用功能，那个apply就是将它修改的代码应用到代码上](/img/【Translation】改译-Cursor使用教程/5-Cursor的对话窗的apply功能.webp)
 
 之所以 Cursor 能直接将修改部分的内容应用到你的代码上，是因为它自己微调了一个模型，让 LLM 输出了 Git 那样的 [diff fomat](https://www.cursor.com/blog/instant-apply#diff-models)。借助 diff format 它能够精确地修改相应地代码段。
 
 并且更舒服的是， Cusor 在一次对话里能够方便地传递多个源代码文件或是扫描你整个项目的代码仓（按下 `ctrl + enter`）提取出相关内容作为向大模型询问的上下文，以获得更精确的回答：
 
-![可以通过相关UI快速添加相关文件，按下`ctrl + enter`会基于代码仓的代码进行对话](/img/【Translation】改译-Cursor使用教程/6-Cursor的对话框的加文件功能.png)
+![可以通过相关UI快速添加相关文件，按下`ctrl + enter`会基于代码仓的代码进行对话](/img/【Translation】改译-Cursor使用教程/6-Cursor的对话框的加文件功能.webp)
 
 生成速度和索引速度非常流畅，因为它会类似于 JetBrains 那样对代码仓建立索引，不过它的索引是做向量化（embeddings，习惯翻译是向量内嵌，但我喜欢叫它向量化），因此在索引的时候可以便捷地做相似性的搜索以获得更好的生成效果。
 
-![Cursor的索引功能](/img/【Translation】改译-Cursor使用教程/7-Cursor的索引功能.png)
+![Cursor的索引功能](/img/【Translation】改译-Cursor使用教程/7-Cursor的索引功能.webp)
 
 除此之外，Cursor 自己内置了比较方便的快捷键，在后文里我会提到这些内容。
 
@@ -87,17 +87,17 @@ Cursor 具有以下快捷键使用相应的AI功能。
 
 使用 `CTRL/CMD + L` 键在编辑器的右边打开对话框（这个 `L` 是 vim 键位下的向右，vim 键位下的方向键是 `h,j,k,l` 在键盘上为一行的键位，`h`在左边所以向左，`l` 在右边向右，`j` 向下 `k` 向上。我很喜欢这一点）。
 
-![图源原文，右边打开的便是对话框，引用的其他来源的图片都会在前边说明](/img/【Translation】改译-Cursor使用教程/8-cursor-ctrl-cmd-plus-l.png)
+![图源原文，右边打开的便是对话框，引用的其他来源的图片都会在前边说明](/img/【Translation】改译-Cursor使用教程/8-cursor-ctrl-cmd-plus-l.webp)
 
 #### 2. `CTRL/CMD + K` 打开生成窗口
 
 使用 `CTRL/CMD + K` 键在光标停留上方（因为 `k` 代表向上！💕）打开生成窗口：
 
-![图源原文，上方打开的是生成代码的对话框](/img/【Translation】改译-Cursor使用教程/9-cursor-ctrl-cmd-plus-k.png)
+![图源原文，上方打开的是生成代码的对话框](/img/【Translation】改译-Cursor使用教程/9-cursor-ctrl-cmd-plus-k.webp)
 
 需要额外说明的是，当你选中一块内容后，按下 `CTRL/CMD + K` 键，也能够打开相应的窗口，此时生成内容依据的上下文会是你选中的内容：
 
-![选中内容生成](/img/【Translation】改译-Cursor使用教程/10-选中内容生成.png)
+![选中内容生成](/img/【Translation】改译-Cursor使用教程/10-选中内容生成.webp)
 
 #### 3. `CTRL/CMD + I` 打开 Composer
 
@@ -105,15 +105,15 @@ Cursor 具有以下快捷键使用相应的AI功能。
 
 想要使用 Composer ，首先要在 Cursor 的设置里打开它，你需要按这个顺序访问它的设置页面：`File > Prefereces > Cursor Settings > Features > Enable Composer`
 
-![图源原文，Composer设置](/img/【Translation】改译-Cursor使用教程/11-composer.png)
+![图源原文，Composer设置](/img/【Translation】改译-Cursor使用教程/11-composer.webp)
 
 使用 `CTRL + I` 打开的 `Composer` 是这样的一个可以拖动的小面板界面：
 
-![Composer的小面板界面](/img/【Translation】改译-Cursor使用教程/12-Composer的小界面.png)
+![Composer的小面板界面](/img/【Translation】改译-Cursor使用教程/12-Composer的小界面.webp)
 
 你可以在这里输入一个分步骤、涉及多文件的复杂修改，而后 Composor 会同时生成涉及到的文件的所有修改。但通常而言，使用 Composer 应该在通过小面板界面的右上角的按钮打开它的完整界面：
 
-![打开Composer的完整界面](/img/【Translation】改译-Cursor使用教程/13-Composor.png)
+![打开Composer的完整界面](/img/【Translation】改译-Cursor使用教程/13-Composor.webp)
 
 它会比较清晰地在左边列出在你累计的对话中，你要修改那些文件的哪些地方，并且你可以直接 apply 相关的修改。
 
@@ -131,7 +131,7 @@ Cursor 具有以下快捷键使用相应的AI功能。
 
 当你在对话框输入 `@Files` 注记时，Cursor 会自动弹出对你代码仓库的检索列表，你可以输入你想要导入上下文的文件名，而后按下确认键，相应的文件里的内容便会届时自动注入到上下文中：
 
-![`@Files`注记](/img/【Translation】改译-Cursor使用教程/14-Files注记.png)
+![`@Files`注记](/img/【Translation】改译-Cursor使用教程/14-Files注记.webp)
 
 #### 2. `@Code` 注记，传递指定代码块的上下文
 
@@ -139,13 +139,13 @@ Cursor 具有以下快捷键使用相应的AI功能。
 
 代码块的识别是由你开发环境的 LSP 决定的，大多数情况下都是精确的：
 
-![`@Code`注记](/img/【Translation】改译-Cursor使用教程/15-Code注记.png)
+![`@Code`注记](/img/【Translation】改译-Cursor使用教程/15-Code注记.webp)
 
 #### 3. `@Docs` 注记，从函数或库的官方文档里获取上下文
 
 `@Docs` 注记能够从函数或库的官方文档里获取上下文。目前，它只能从可访问的在线文档里获取上下文。因此，你自己写的类似于 JSDoc 之类的文档信息除非你能整一个线上地址，否则是没用的~我个人觉得这个功能不是很泛用。
 
-![`@Docs`注记，通常使用需要你手动导入文档](/img/【Translation】改译-Cursor使用教程/16-Docs注记.png)
+![`@Docs`注记，通常使用需要你手动导入文档](/img/【Translation】改译-Cursor使用教程/16-Docs注记.webp)
 
 #### 4. `@Web` 注记，从搜索引擎的搜索内容获取上下文
 
@@ -183,7 +183,7 @@ Cursor 具有以下快捷键使用相应的AI功能。
 
 我感觉平时开发不会用到，因为它要传递过滤条件设置过滤参数：
 
-![`@Codebase`注记需要你传递数量、过滤/排序时使用的模型等信息](/img/【Translation】改译-Cursor使用教程/20-Codebase注记.png)
+![`@Codebase`注记需要你传递数量、过滤/排序时使用的模型等信息](/img/【Translation】改译-Cursor使用教程/20-Codebase注记.webp)
 
 它和通过 `CTRL + enter` 快捷键的区别估计就在于你能够自定义查询的过滤规则。但我感觉没啥用。
 

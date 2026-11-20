@@ -1,69 +1,92 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react";
+import type { TocHeading } from "./AutoToc";
 
-/**
- * 表示标题的数据结构
- */
-interface Heading {
-  id: string
-  text: string
-  level: number
-}
+const indentClassByLevel: Record<number, string> = {
+  1: "pl-0",
+  2: "pl-4",
+  3: "pl-8",
+};
 
 /**
- * 固定在右侧的目录组件
+ * 固定在右侧的目录组件（大屏展示，含当前章节高亮）
  */
-export function StickyToc() {
-  const [headings, setHeadings] = useState<Heading[]>([])
+export function StickyToc({ headings }: { headings: TocHeading[] }) {
+  const visibleHeadings = useMemo(
+    () => (headings ?? []).filter((heading) => heading.level < 4),
+    [headings]
+  );
+  const [activeId, setActiveId] = useState<string>(visibleHeadings[0]?.id ?? "");
 
   useEffect(() => {
-    const headingElements = Array.from(
-      document.querySelectorAll("article h1, article h2, article h3, article h4")
-    ) as HTMLElement[]
+    if (visibleHeadings.length === 0) return;
 
-    headingElements.shift()
+    const elements = visibleHeadings
+      .map((heading) => document.getElementById(heading.id))
+      .filter((el): el is HTMLElement => el !== null);
 
-    const headingsData = headingElements.map((heading) => ({
-      id: heading.id,
-      text: heading.innerText,
-      level: Number(heading.tagName[1])
-    }))
+    if (elements.length === 0) return;
 
-    setHeadings(headingsData)
-  }, [])
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries.find((entry) => entry.isIntersecting);
+        if (visibleEntry?.target.id) {
+          setActiveId(visibleEntry.target.id);
+        }
+      },
+      {
+        rootMargin: "-80px 0px -70% 0px",
+        threshold: 0,
+      }
+    );
 
-  if (headings.length === 0) return null
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [visibleHeadings]);
+
+  if (visibleHeadings.length === 0) return null;
 
   return (
-    <div className="hidden 2xl:block fixed right-[8%] top-20 w-64 max-h-[calc(100vh-6rem)] overflow-y-auto" style={{scrollbarWidth:'none'}}>
+    <aside
+      aria-label="侧边文章目录"
+      data-pagefind-ignore
+      className="hidden 2xl:block fixed right-[8%] top-20 w-64 max-h-[calc(100vh-6rem)] overflow-y-auto not-prose"
+      style={{ scrollbarWidth: "none" }}
+    >
       <nav className="space-y-1">
         <div className="mb-4">
-          <span className="text-base font-semibold" style={{ letterSpacing: '1px' }}>目录</span>
+          <span className="text-base font-semibold tracking-wide text-slate-800 dark:text-slate-100">
+            目录
+          </span>
         </div>
-        <ul className="space-y-2">
-          {headings.filter((heading) => heading.level < 4).map((heading) => (
-            <li 
-              key={heading.id}
-              className={`
-                ${heading.level === 1 ? 'pl-0' : ''}
-                ${heading.level === 2 ? 'pl-4' : ''}
-                ${heading.level === 3 ? 'pl-8' : ''}
-              `}
-              style={{
-                listStyle:'none'
-              }}
-            >
-              <a 
-                href={`#${heading.id}`}
-                className="block text-sm no-underline text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors"
+        <ul className="space-y-2 list-none m-0 p-0">
+          {visibleHeadings.map((heading, index) => {
+            const isActive = activeId === heading.id;
+            return (
+              <li
+                key={`${heading.id}-${index}`}
+                className={indentClassByLevel[heading.level] ?? "pl-8"}
               >
-                {heading.text}
-              </a>
-            </li>
-          ))}
+                <a
+                  href={`#${heading.id}`}
+                  aria-current={isActive ? "location" : undefined}
+                  className={`block text-sm no-underline transition-colors ${
+                    isActive
+                      ? "font-semibold text-slate-950 dark:text-white"
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  }`}
+                >
+                  {heading.text}
+                </a>
+              </li>
+            );
+          })}
         </ul>
       </nav>
-    </div>
-  )
+    </aside>
+  );
 }

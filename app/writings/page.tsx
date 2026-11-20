@@ -28,7 +28,7 @@ export default function WritingsPage(){
             <header>
                 <h1 className="mb-0">本站存放的文章列表</h1>
             </header>
-            <h4 className="mt-0">Wrtings</h4>
+            <h4 className="mt-0">Writings</h4>
             <p>是的，我还有很多文章没搬过来😴</p>
             <WritingsLists></WritingsLists>
         </div>

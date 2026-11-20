@@ -5,35 +5,47 @@ on:
     branches:
       - main  # 当推送到 main 分支时触发
 
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'  # 确保使用与项目相同的 Node.js 版本
-      
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Restore Next.js build cache
+        uses: actions/cache@v4
         with:
-          version: 8
+          path: |
+            .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('app/**', 'components/**', 'lib/**') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
+            ${{ runner.os }}-nextjs-
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build project
         run: pnpm run build
 
       - name: Move CNAME file
-        run: mv CNAME ./out/CNAME
+        run: cp CNAME ./out/CNAME
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out  # 静态导出文件夹路径
