@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { allWritings } from "@/.contentlayer/generated";
+import { rankedWritings } from "@/lib/filteredDatas";
 import { getReadableDate } from "@/lib/date";
 
 const CATEGORIES = [
@@ -42,10 +42,6 @@ const CATEGORIES = [
 ] as const;
 
 export default function WritingsLists() {
-  const sortedWritings = [...allWritings].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
-
   return (
     <div>
       {CATEGORIES.map(({ key, title, description, navId, ariaLabel }) => (
@@ -54,7 +50,7 @@ export default function WritingsLists() {
           <p className="mt-0">{description}</p>
           <nav id={navId} aria-label={ariaLabel}>
             <ul>
-              {sortedWritings
+              {rankedWritings
                 .filter((post) => post.category === key)
                 .map((post) => (
                   <li key={post.slug}>
@@ -63,6 +59,11 @@ export default function WritingsLists() {
                       aria-label={post.title}
                       href={post.slug}
                     >
+                      {post.isDraft && (
+                        <span className="mr-1.5 inline-block rounded bg-amber-100 px-1.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
+                          DRAFT
+                        </span>
+                      )}
                       {post.title}
                     </Link>{" "}
                     , {getReadableDate(post.date)}

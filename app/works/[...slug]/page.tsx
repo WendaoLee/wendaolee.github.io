@@ -1,11 +1,11 @@
 import "katex/dist/katex.min.css";
 import { notFound } from "next/navigation";
-import { allWorks } from "contentlayer/generated";
 
 import { Metadata } from "next";
 import { Mdx } from "@/components/MdxComponents";
 import { match } from "ts-pattern";
 import Utterances from "@/components/Comments";
+import { visibleWorks } from "@/lib/filteredDatas";
 
 interface PostProps {
   params: {
@@ -15,7 +15,7 @@ interface PostProps {
 
 async function getPostFromParams(params: PostProps["params"]) {
   const slug = params?.slug?.join("/");
-  const post = allWorks.find((post) => post.slugAsParams === slug);
+  const post = visibleWorks.find((post) => post.slugAsParams === slug);
 
   if (!post) {
     return null;
@@ -72,7 +72,7 @@ export async function generateMetadata({
 }
 
 export function generateStaticParams(): PostProps["params"][] {
-  return allWorks.map((post) => ({
+  return visibleWorks.map((post) => ({
     slug: post.slugAsParams.split("/"),
   }));
 }
@@ -88,6 +88,14 @@ export default async function PostPage({ params }: PostProps) {
     <>
       <article className="min-w-full py-6 prose dark:prose-invert" data-pagefind-body>
         <h1 className="mb-2" data-pagefind-meta="title">
+          {post.isDraft && (
+            <span
+              data-pagefind-ignore
+              className="mr-2 inline-block align-middle rounded bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
+            >
+              DRAFT
+            </span>
+          )}
           {post.title}
         </h1>
         {post.description && (

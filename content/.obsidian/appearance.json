@@ -4,5 +4,6 @@
   "baseFontSize": 17,
   "enabledCssSnippets": [
     "vim"
-  ]
+  ],
+  "showRibbon": true
 }

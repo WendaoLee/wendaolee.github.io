@@ -1,4 +1,4 @@
-import { allWorks, allWritings } from "@/.contentlayer/generated";
+import { visibleWorks, visibleWritings } from "@/lib/filteredDatas";
 import { getReadableDate } from "@/lib/date";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default function Home() {
-  const listedUpdateds = [...allWritings,...allWorks]
+  const listedUpdateds = [...visibleWritings, ...visibleWorks];
   const processedWritings = listedUpdateds
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .map((post) => {
@@ -127,6 +127,11 @@ export default function Home() {
                 {processedWritings.map((post) => (
                   <li key={post._id}>
                     <Link href={post.slug}>
+                      {post.isDraft && (
+                        <span className="mr-1.5 inline-block rounded bg-amber-100 px-1.5 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
+                          DRAFT
+                        </span>
+                      )}
                       <span>{post.title}</span>
                     </Link>
                     <span>, {post.date}</span>

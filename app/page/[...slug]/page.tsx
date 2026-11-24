@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { allPages } from "@/.contentlayer/generated";
+import { visiblePages } from "@/lib/filteredDatas";
 import { match } from "ts-pattern";
 
 import { Mdx } from "@/components/MdxComponents";
@@ -14,7 +14,7 @@ interface PageProps {
 
 async function getPageFromParams(params: PageProps["params"]) {
   const slug = params?.slug?.join("/");
-  const page = allPages.find((page) => page.slugAsParams === slug);
+  const page = visiblePages.find((page) => page.slugAsParams === slug);
 
   if (!page) {
     return null;
@@ -53,7 +53,7 @@ export const dynamicParams = false;
 export const dynamic = "force-static";
 
 export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
-  return allPages.map((page) => ({
+  return visiblePages.map((page) => ({
     slug: page.slugAsParams.split("/"),
   }));
 }

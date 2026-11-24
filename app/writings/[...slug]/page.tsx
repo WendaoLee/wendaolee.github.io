@@ -1,14 +1,13 @@
 import "katex/dist/katex.min.css";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { allWritings } from "contentlayer/generated";
 
 import { Metadata } from "next";
 import { Mdx } from "@/components/MdxComponents";
 import { match } from "ts-pattern";
 import Utterances from "@/components/Comments";
 import { getReadableDate } from "@/lib/date";
-import { rankedWritings } from "@/lib/filteredDatas";
+import { rankedWritings, visibleWritings } from "@/lib/filteredDatas";
 
 interface PostProps {
   params: {
@@ -18,7 +17,7 @@ interface PostProps {
 
 async function getPostFromParams(params: PostProps["params"]) {
   const slug = params?.slug?.join("/");
-  const post = allWritings.find((post) => post.slugAsParams === slug);
+  const post = visibleWritings.find((post) => post.slugAsParams === slug);
 
   if (!post) {
     return null;
@@ -75,7 +74,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams(): Promise<PostProps["params"][]> {
-  return allWritings.map((post) => ({
+  return visibleWritings.map((post) => ({
     slug: post.slugAsParams.split("/"),
   }));
 }
@@ -118,6 +117,14 @@ export default async function PostPage({ params }: PostProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <h1 className="text-xl mb-2 md:text-2xl" data-pagefind-meta="title">
+          {post.isDraft && (
+            <span
+              data-pagefind-ignore
+              className="mr-2 inline-block align-middle rounded bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
+            >
+              DRAFT
+            </span>
+          )}
           {post.title}
         </h1>
         {post.description && (

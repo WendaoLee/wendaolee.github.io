@@ -27,6 +27,16 @@ const computedFields = {
     type: "json",
     resolve: (doc) => extractHeadings(doc.body.raw),
   },
+  isDraft: {
+    type: "boolean",
+    resolve: (doc) => {
+      if (typeof doc.draft === "boolean") return doc.draft;
+      if (typeof doc.draft === "string") {
+        return doc.draft.trim().toLowerCase() === "true";
+      }
+      return false;
+    },
+  },
 }
 
 export const Page = defineDocumentType(() => ({
@@ -40,6 +50,10 @@ export const Page = defineDocumentType(() => ({
     },
     description: {
       type: "string",
+    },
+    draft: {
+      type: "json",
+      required: false,
     },
   },
   computedFields,
@@ -71,7 +85,11 @@ export const Post = defineDocumentType(() => ({
         type:"string"
       },
       required:false
-    }
+    },
+    draft: {
+      type: "json",
+      required: false,
+    },
   },
   computedFields,
 }))
@@ -102,13 +120,18 @@ export const Work = defineDocumentType(() => ({
         type:"string"
       },
       required:false
-    }
+    },
+    draft: {
+      type: "json",
+      required: false,
+    },
   },
   computedFields,
 }))
 
 export default makeSource({
   contentDirPath: "./content",
+  contentDirExclude: [".obsidian", "templates"],
   documentTypes: [Post, Page, Work],
   mdx: {
     remarkPlugins: [remarkMath, remarkGfm],

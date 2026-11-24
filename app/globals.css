@@ -69,3 +69,274 @@ body {
     position: absolute;
   }
 }
+
+/* Artalk comment widget refinements (Infinity Nikki warm pink theme) */
+#artalk-comments-container.artalk,
+#artalk-comments-container .artalk,
+body .atk-layer-wrap {
+  --at-color-main: #e86b99;
+  --at-color-light: #f08ab0;
+  --at-color-bg-light: rgba(232, 107, 153, 0.12);
+  --at-color-border: #e2e8f0;
+  --at-color-bg: #ffffff;
+  --at-color-bg-grey: #f8fafc;
+}
+
+.dark #artalk-comments-container.artalk,
+.dark #artalk-comments-container .artalk,
+#artalk-comments-container.artalk.atk-dark-mode,
+#artalk-comments-container .artalk.atk-dark-mode,
+body .atk-layer-wrap.atk-dark-mode {
+  --at-color-main: #f48fb1;
+  --at-color-light: #f8b4cb;
+  --at-color-bg-light: rgba(244, 143, 177, 0.16);
+  --at-color-border: #1e293b;
+  --at-color-bg: #0f172a;
+  --at-color-bg-grey: #1e293b;
+}
+
+@keyframes atkFlashOnce {
+  0% {
+    background: rgba(232, 107, 153, 0.22);
+  }
+  to {
+    background: 0 0;
+  }
+}
+
+/* Stack nickname, email, and website onto separate rows with persistent labels */
+#artalk-comments-container .atk-main-editor > .atk-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid var(--at-color-border);
+}
+
+#artalk-comments-container .atk-main-editor > .atk-header .atk-blog-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+#artalk-comments-container .atk-main-editor > .atk-header .atk-blog-field-label {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #475569;
+  user-select: none;
+}
+
+.dark #artalk-comments-container .atk-main-editor > .atk-header .atk-blog-field-label {
+  color: #cbd5e1;
+}
+
+#artalk-comments-container .atk-main-editor > .atk-header .atk-blog-required-star {
+  color: var(--at-color-main);
+  font-weight: 700;
+}
+
+#artalk-comments-container .atk-main-editor > .atk-header .atk-blog-optional-tag {
+  font-weight: 400;
+  color: #94a3b8;
+}
+
+#artalk-comments-container .atk-main-editor > .atk-header input {
+  flex: none;
+  width: 100%;
+  margin-right: 0 !important;
+  padding: 7px 10px;
+  border: 1px solid var(--at-color-border);
+  border-radius: 6px;
+  background-color: var(--at-color-bg-grey);
+  color: var(--at-color-font);
+  font-size: 14px;
+  line-height: 1.5;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+#artalk-comments-container .atk-main-editor > .atk-header input:focus {
+  border-color: var(--at-color-main);
+  background-color: var(--at-color-bg);
+  box-shadow: 0 0 0 2px var(--at-color-bg-light);
+}
+
+/* Send button & Notification Center text in Nikki pink */
+#artalk-comments-container .atk-main-editor > .atk-bottom .atk-send-btn {
+  background-color: #e86b99;
+  color: #ffffff;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: background-color 150ms ease, opacity 150ms ease;
+}
+
+#artalk-comments-container .atk-main-editor > .atk-bottom .atk-send-btn:hover {
+  background-color: #d95686;
+}
+
+.dark #artalk-comments-container .atk-main-editor > .atk-bottom .atk-send-btn,
+#artalk-comments-container.atk-dark-mode .atk-main-editor > .atk-bottom .atk-send-btn {
+  background-color: #e86b99;
+  color: #ffffff;
+}
+
+.dark #artalk-comments-container .atk-main-editor > .atk-bottom .atk-send-btn:hover,
+#artalk-comments-container.atk-dark-mode .atk-main-editor > .atk-bottom .atk-send-btn:hover {
+  background-color: #f08ab0;
+}
+
+#artalk-comments-container .atk-list-header .atk-right-action > [data-action="open-sidebar"],
+#artalk-comments-container .atk-list-header .atk-right-action > [data-action="open-sidebar"] .atk-text {
+  color: #e86b99;
+  font-weight: 500;
+  transition: color 150ms ease, opacity 150ms ease;
+}
+
+#artalk-comments-container .atk-list-header .atk-right-action > [data-action="open-sidebar"]:hover {
+  opacity: 0.8;
+}
+
+.dark #artalk-comments-container .atk-list-header .atk-right-action > [data-action="open-sidebar"],
+.dark #artalk-comments-container .atk-list-header .atk-right-action > [data-action="open-sidebar"] .atk-text,
+#artalk-comments-container.atk-dark-mode .atk-list-header .atk-right-action > [data-action="open-sidebar"],
+#artalk-comments-container.atk-dark-mode .atk-list-header .atk-right-action > [data-action="open-sidebar"] .atk-text {
+  color: #f48fb1;
+}
+
+#artalk-comments-container .atk-list-header {
+  overflow: visible;
+}
+
+#artalk-comments-container .atk-list-footer > .atk-copyright {
+  display: none !important;
+}
+
+#artalk-comments-container .atk-blog-powered-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+}
+
+#artalk-comments-container .atk-blog-powered-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 9999px;
+  border: 1px solid #cbd5e1;
+  background: transparent;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+}
+
+#artalk-comments-container .atk-blog-powered-btn:hover,
+#artalk-comments-container .atk-blog-powered-wrap:focus-within .atk-blog-powered-btn {
+  color: #e86b99;
+  border-color: #f08ab0;
+  background-color: rgba(232, 107, 153, 0.1);
+}
+
+.dark #artalk-comments-container .atk-blog-powered-btn {
+  border-color: #475569;
+  color: #94a3b8;
+}
+
+.dark #artalk-comments-container .atk-blog-powered-btn:hover,
+.dark #artalk-comments-container .atk-blog-powered-wrap:focus-within .atk-blog-powered-btn {
+  color: #f48fb1;
+  border-color: #f48fb1;
+  background-color: rgba(244, 143, 177, 0.14);
+}
+
+#artalk-comments-container .atk-blog-powered-popover {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  z-index: 30;
+  width: 268px;
+  max-width: calc(100vw - 32px);
+  white-space: normal;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.55;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: opacity 150ms ease, transform 150ms ease, visibility 150ms ease;
+}
+
+/* Invisible hover bridge so moving cursor to the link keeps tooltip open */
+#artalk-comments-container .atk-blog-powered-popover::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 10px;
+}
+
+.dark #artalk-comments-container .atk-blog-powered-popover {
+  border-color: #334155;
+  background-color: #0f172a;
+  color: #cbd5e1;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+#artalk-comments-container .atk-blog-powered-wrap:hover .atk-blog-powered-popover,
+#artalk-comments-container .atk-blog-powered-wrap:focus-within .atk-blog-powered-popover {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+#artalk-comments-container .atk-blog-avatar-tip {
+  display: block;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e2e8f0;
+  color: inherit;
+}
+
+.dark #artalk-comments-container .atk-blog-avatar-tip {
+  border-bottom-color: #334155;
+}
+
+#artalk-comments-container .atk-blog-avatar-tip a,
+#artalk-comments-container .atk-blog-powered-popover .atk-copyright a {
+  color: #e86b99;
+  text-decoration: none;
+}
+
+#artalk-comments-container .atk-blog-avatar-tip a:hover,
+#artalk-comments-container .atk-blog-powered-popover .atk-copyright a:hover {
+  text-decoration: underline;
+}
+
+.dark #artalk-comments-container .atk-blog-avatar-tip a,
+.dark #artalk-comments-container .atk-blog-powered-popover .atk-copyright a {
+  color: #f48fb1;
+}
+
+#artalk-comments-container .atk-blog-powered-popover .atk-copyright {
+  display: block;
+  padding: 0;
+  margin: 0;
+  font-size: 11px;
+  color: #94a3b8;
+}

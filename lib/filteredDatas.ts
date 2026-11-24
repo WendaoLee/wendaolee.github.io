@@ -1,6 +1,22 @@
-import { allWritings } from "@/.contentlayer/generated";
+import { allPages, allWorks, allWritings } from "@/.contentlayer/generated";
 
-export const rankedWritings = [...allWritings].sort(
+export const SHOW_DRAFTS = process.env.NODE_ENV !== "production";
+
+export function isVisibleDoc(doc: { isDraft?: boolean }): boolean {
+  return SHOW_DRAFTS || !doc.isDraft;
+}
+
+export const visibleWritings = allWritings.filter(isVisibleDoc);
+
+export const visibleWorks = allWorks.filter(isVisibleDoc);
+
+export const visiblePages = allPages.filter(isVisibleDoc);
+
+export const rankedWritings = [...visibleWritings].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+
+export const rankedWorks = [...visibleWorks].sort(
   (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
 );
 

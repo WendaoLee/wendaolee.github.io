@@ -1,24 +1,24 @@
 import type { MetadataRoute } from "next";
-import { allPages, allWorks, allWritings } from "@/.contentlayer/generated";
+import { visiblePages, visibleWorks, visibleWritings } from "@/lib/filteredDatas";
 
 const SITE_URL = "https://leewendao.otterstack.cn";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const writings: MetadataRoute.Sitemap = allWritings.map((ele) => ({
+  const writings: MetadataRoute.Sitemap = visibleWritings.map((ele) => ({
     url: `${SITE_URL}${ele.slug}`,
     lastModified: new Date(ele.date),
     changeFrequency: "weekly",
     priority: ele.category === "blog" ? 0.9 : 0.6,
   }));
 
-  const works: MetadataRoute.Sitemap = allWorks.map((ele) => ({
+  const works: MetadataRoute.Sitemap = visibleWorks.map((ele) => ({
     url: `${SITE_URL}${ele.slug}`,
     lastModified: new Date(ele.date),
     changeFrequency: "weekly",
     priority: 0.7,
   }));
 
-  const pages: MetadataRoute.Sitemap = allPages.map((ele) => ({
+  const pages: MetadataRoute.Sitemap = visiblePages.map((ele) => ({
     url: `${SITE_URL}/page/${ele.slugAsParams}`,
     changeFrequency: "monthly",
     priority: 0.5,

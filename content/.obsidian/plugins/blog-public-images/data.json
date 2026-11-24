@@ -1,0 +1,9 @@
+{
+  "publicDirRelative": "../public",
+  "imageSubDir": "img",
+  "convertToWebp": true,
+  "webpQuality": 0.82,
+  "useSlugSubfolder": true,
+  "autoInsertFrontmatter": true,
+  "defaultDraft": true
+}

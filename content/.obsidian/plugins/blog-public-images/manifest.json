@@ -1,0 +1,9 @@
+{
+  "id": "blog-public-images",
+  "name": "Blog Public Images",
+  "version": "1.1.0",
+  "minAppVersion": "1.0.0",
+  "description": "Preview /img/... images from ../public, paste/drop images into ../public/img/<slug>/ as WebP, and auto-insert directory-aware Frontmatter for new .mdx files.",
+  "author": "WendaoLee",
+  "isDesktopOnly": true
+}

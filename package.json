@@ -8,6 +8,8 @@
     "preview": "next build && next start",
     "start": "next start",
     "lint": "next lint",
+    "new": "node scripts/new-post.mjs",
+    "sync-images": "node scripts/sync-images.mjs",
     "pack": "npx repopack"
   },
   "dependencies": {
