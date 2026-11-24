@@ -74,6 +74,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="zh-CN" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://selfhosted.memene.cn" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://comments.otterstack.cn" crossOrigin="anonymous" />
         <link
           rel="stylesheet"
           href="https://selfhosted.memene.cn/assets/font/OPPO_Sans_4/result.css"

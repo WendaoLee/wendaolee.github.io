@@ -248,43 +248,17 @@ function deferAdminCheckToSubmit(instance: ArtalkInstance) {
 }
 
 const Comments: React.FC = () => {
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const artalkRef = useRef<ArtalkInstance | null>(null);
   const pathname = usePathname();
   const { resolvedTheme } = useTheme();
-  const [shouldLoad, setShouldLoad] = useState(false);
-  const [status, setStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
   const isDark = resolvedTheme === "dark";
 
-  // Lazy load comments when the container scrolls near the viewport
+  // Load and initialize Artalk immediately on mount (and re-init cleanly on route change)
   useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper || shouldLoad) return;
-
-    if (typeof IntersectionObserver === "undefined") {
-      setShouldLoad(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setShouldLoad(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "200px 0px" }
-    );
-
-    observer.observe(wrapper);
-    return () => observer.disconnect();
-  }, [shouldLoad]);
-
-  // Initialize Artalk once triggered (and re-init cleanly on route change)
-  useEffect(() => {
-    if (!shouldLoad || !containerRef.current) return;
+    if (!containerRef.current) return;
 
     let cancelled = false;
     let domObserver: MutationObserver | null = null;
@@ -358,7 +332,7 @@ const Comments: React.FC = () => {
     };
     // Theme changes are synced without re-mounting via setDarkMode below
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shouldLoad, pathname]);
+  }, [pathname]);
 
   // Sync dark/light mode changes to Artalk
   useEffect(() => {
@@ -369,7 +343,6 @@ const Comments: React.FC = () => {
 
   return (
     <section
-      ref={wrapperRef}
       aria-label="评论区"
       data-pagefind-ignore
       className="not-prose mt-10 min-h-[120px]"
@@ -378,9 +351,7 @@ const Comments: React.FC = () => {
         <p className="text-sm text-slate-500 dark:text-slate-400">
           {status === "error"
             ? "评论区加载失败，请刷新页面重试。"
-            : shouldLoad
-              ? "Comments is loading... / 评论区正在加载中..."
-              : "向下滚动加载评论区..."}
+            : "Comments is loading... / 评论区正在加载中..."}
         </p>
       )}
       <div ref={containerRef} id="artalk-comments-container" />
