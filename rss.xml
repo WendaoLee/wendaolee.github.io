@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[李问道博客最新文章 / Wendaolee's new writings]]></title>
+        <description><![CDATA[苔痕深院雨，人影小窗灯——李问道的个人博客。]]></description>
+        <link>https://leewendao.otterstack.cn</link>
+        <image>
+            <url>https://leewendao.otterstack.cn/wendaolee.jpeg</url>
+            <title>李问道博客最新文章 / Wendaolee&apos;s new writings</title>
+            <link>https://leewendao.otterstack.cn</link>
+        </image>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Wed, 25 Nov 2026 03:00:55 GMT</lastBuildDate>
+        <atom:link href="https://leewendao.otterstack.cn/rss.xml" rel="self" type="application/rss+xml"/>
+        <language><![CDATA[zh-CN]]></language>
+        <follow_challenge>
+            <feedId>66483857348895744</feedId>
+            <userId>66482764915559424</userId>
+        </follow_challenge>
+        <item>
+            <title><![CDATA[【Essay】当我把自己的Mygo同人挂到博客后，我见识到了什么叫性压抑]]></title>
+            <description><![CDATA[翻看我个人博客的必应 SEO 后台，发现我写的纯爱 MyGO 同人竟引来了一堆令人震撼的 R18 与猎奇搜索词。有感而发后的一篇随笔。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/essay/what-u-will-find-in-seo-of-mygo</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/essay/what-u-will-find-in-seo-of-mygo</guid>
+            <category><![CDATA[essay]]></category>
+            <category><![CDATA[随笔]]></category>
+            <category><![CDATA[MyGO]]></category>
+            <category><![CDATA[李问道]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Tue, 24 Nov 2026 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Translation】 我教会了我家狗子用 AI 做游戏]]></title>
+            <description><![CDATA[对博文 I taught my dog to vibe code games 的翻译，原作者 Caleb Leak 。原标题直译应该是“我教会了我家狗子用 AI 做游戏”。一个我喜欢的故事。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/translations/i-taught-my-dog-vibe-code-games-zh</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/translations/i-taught-my-dog-vibe-code-games-zh</guid>
+            <category><![CDATA[translation]]></category>
+            <category><![CDATA[翻译]]></category>
+            <category><![CDATA[AI Coding]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Sun, 19 Apr 2026 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Essay】2025年个人阅读过的文艺作品拉黑&推荐清单]]></title>
+            <description><![CDATA[2025年李问道个人读过的文艺作品的个人清点，把其中觉得值得列出来的拉黑以及推荐作品罗列了一下。
+]]></description>
+            <link>https://leewendao.otterstack.cn/writings/essay/2025-reading-list</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/essay/2025-reading-list</guid>
+            <category><![CDATA[essay]]></category>
+            <category><![CDATA[年度回顾]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Thu, 12 Feb 2026 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Translation】 为什么有了 AI 后，软件开发更累了？]]></title>
+            <description><![CDATA[对博文 AI fatigue is real and nobody talks about it 的翻译，原作者 Siddhant Khare 。原标题直译应该是“AI疲劳真实存在，却鲜有人提及”。这篇博文主要讲述了软件开发中开发者对AI 编码的疲劳现象，并且给出了作者自己应对该问题的方法论。也可以说这是一篇AI时代下的软件开发的方法论指南。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/translations/ai-fatigue-is-real</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/translations/ai-fatigue-is-real</guid>
+            <category><![CDATA[translation]]></category>
+            <category><![CDATA[翻译]]></category>
+            <category><![CDATA[AI Coding]]></category>
+            <category><![CDATA[WIP]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Tue, 10 Feb 2026 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Essay】一些零碎的胡思乱想 II]]></title>
+            <description><![CDATA[李问道的一些凌乱的感想拾遗。大多是平日里随便写的一些杂碎的东西。本篇收录了2024年11月到2026年1月间的所有杂碎的感想。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/essay/some-thoughts-part-two</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/essay/some-thoughts-part-two</guid>
+            <category><![CDATA[essay]]></category>
+            <category><![CDATA[随笔]]></category>
+            <category><![CDATA[碎碎念]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Sun, 08 Feb 2026 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Essay】荒漠]]></title>
+            <description><![CDATA[去年那件事对我最大的影响是：我所在它身上所看到的美好希望彻底破灭了。它曾经点燃我的热忱也在岁月与人事的消磨中变成了冰冷的烬尘。我遗失了自己，总在前进的街口不住遗忘。我似乎真的走在一片荒漠之上——尽管人生不只有荒漠，但漫步挣扎的时间里，似乎眼前的便是未来的全部。令人痛苦不堪。
+]]></description>
+            <link>https://leewendao.otterstack.cn/writings/essay/lostland</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/essay/lostland</guid>
+            <category><![CDATA[essay]]></category>
+            <category><![CDATA[杂文]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Tue, 09 Dec 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Story | 合辑】暧昧 & 千早爱音和长崎爽世差点结婚了 & 陌生人，偶遇，短暂的谈话]]></title>
+            <description><![CDATA[收拾旧稿整理的合辑。主要收录了我个人过去写的 Mygo 同人文中自己比较喜欢的三篇：《暧昧》、《千早爱音和长崎爽世差点结婚了》、《陌生人，偶遇，短暂的谈话》。放在个人博客上主要用于存档。里面的主CP都是爱素。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/story/mygo-collection</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/story/mygo-collection</guid>
+            <category><![CDATA[story]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Wed, 08 Oct 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Blog】我是如何使用 Claude Code 的？]]></title>
+            <description><![CDATA[个人关于 Claude Code 的使用习惯分享，主要包括 CCCS 等辅助扩展、Claude Code 需要熟悉的基础命令和配置以及个人使用习惯技巧的分享。文章有点长，如果你能读完我给你磕一个。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/blog/claude-code-usage-guide</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/blog/claude-code-usage-guide</guid>
+            <category><![CDATA[blog]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Sat, 20 Sep 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[SHOW 正组 | 2025年7月~8月内容合辑]]></title>
+            <description><![CDATA[李问道个人看到的一些项目的随手记录，这是2025年7月~8月的内容合辑。让我觉得有趣的东西是网站大小控制在14kb比15kb快612ms、SoundSlice网站发现用户频繁上传ChatGPT生成的ASCII指法谱，而他们根本不支持此功能。原来ChatGPT错误推荐用户去SoundSlice上传。最后他们真的添加了这个功能。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/notes/show-douban-zhengzu-2025-july-aug</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/notes/show-douban-zhengzu-2025-july-aug</guid>
+            <category><![CDATA[note]]></category>
+            <category><![CDATA[SHOW 正组]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Wed, 10 Sep 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Essay】关于deepseekv3.1，个人的一点感想]]></title>
+            <description><![CDATA[我个人睡前测试 Claude Code + Deepseek V3.1 后的个人感想。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/essay/my-thoughts-about-deepseekv31</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/essay/my-thoughts-about-deepseekv31</guid>
+            <category><![CDATA[essay]]></category>
+            <category><![CDATA[随笔]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Fri, 22 Aug 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Translation】三思而后行 Deliberate Once]]></title>
+            <description><![CDATA[本文是对 Nate Soares 的博文 Deliberate Once 的个人翻译，探讨如何通过一次充分的深度思考避免反复自我怀疑与内耗。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/translations/deliberate-onece</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/translations/deliberate-onece</guid>
+            <category><![CDATA[translation]]></category>
+            <category><![CDATA[翻译]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Wed, 20 Aug 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Story】于是，我变成了魔法少女]]></title>
+            <description><![CDATA[更新至 Chapter 1。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/story/so-i-become-majo</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/story/so-i-become-majo</guid>
+            <category><![CDATA[story]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Mon, 18 Aug 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Note】一些收集的字体的效果预览]]></title>
+            <description><![CDATA[个人收藏用。快速预览某些字体的效果]]></description>
+            <link>https://leewendao.otterstack.cn/writings/notes/fonts-preview</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/notes/fonts-preview</guid>
+            <category><![CDATA[note]]></category>
+            <category><![CDATA[字体]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Tue, 05 Aug 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[SHOW 正组 | 2025年5月~6月内容合辑]]></title>
+            <description><![CDATA[李问道个人看到的一些项目的随手记录，这是2025年5月~6月的内容合辑。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/notes/show-douban-zhengzu-2025-may-june</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/notes/show-douban-zhengzu-2025-may-june</guid>
+            <category><![CDATA[note]]></category>
+            <category><![CDATA[SHOW 正组]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Mon, 07 Jul 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Essay】关于恶役千金与转生题材的故事的一些思考与吐槽]]></title>
+            <description><![CDATA[随笔。
+]]></description>
+            <link>https://leewendao.otterstack.cn/writings/essay/about-jp-some-kind-story</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/essay/about-jp-some-kind-story</guid>
+            <category><![CDATA[essay]]></category>
+            <category><![CDATA[随笔]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Sun, 11 May 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Essay】战场上吃个饭被炮弹炸到了，给我授个勋没问题吧？]]></title>
+            <description><![CDATA[近日读书有感。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/essay/absurd-reality</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/essay/absurd-reality</guid>
+            <category><![CDATA[essay]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Sun, 04 May 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[SHOW 正组 | 2025年3月~4月内容合辑]]></title>
+            <description><![CDATA[李问道个人看到的一些项目的随手记录，这是2025年3月~4月的内容合辑。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/notes/show-douban-zhengzu-2025-march-apirl</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/notes/show-douban-zhengzu-2025-march-apirl</guid>
+            <category><![CDATA[note]]></category>
+            <category><![CDATA[SHOW 正组]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Sat, 03 May 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Translation】改译 | 不确定性计算器]]></title>
+            <description><![CDATA[对 Filip Hráček 的博文 Unsure Calculator 的改译。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/translations/unsure-calculator</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/translations/unsure-calculator</guid>
+            <category><![CDATA[translation]]></category>
+            <category><![CDATA[翻译]]></category>
+            <category><![CDATA[不确定性计算器]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Wed, 16 Apr 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Short Story】你所嘲笑的事]]></title>
+            <description><![CDATA[我还是分不清。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/story/what-you-smile</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/story/what-you-smile</guid>
+            <category><![CDATA[story]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Sat, 12 Apr 2025 00:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[【Note】关于OpenTelemetry的Traces、Metrics与Logs]]></title>
+            <description><![CDATA[个人关于建立线上服务监控与量测的概念Traces、Metrics与Logs的学习笔记。]]></description>
+            <link>https://leewendao.otterstack.cn/writings/notes/opentelemetry-note</link>
+            <guid isPermaLink="true">https://leewendao.otterstack.cn/writings/notes/opentelemetry-note</guid>
+            <category><![CDATA[note]]></category>
+            <category><![CDATA[OpenTelemetry]]></category>
+            <dc:creator><![CDATA[李问道]]></dc:creator>
+            <pubDate>Fri, 21 Mar 2025 00:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>
