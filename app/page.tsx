@@ -12,11 +12,17 @@ export const metadata: Metadata = {
 export default function Home() {
   const listedUpdateds = [...visibleWritings, ...visibleWorks];
   const processedWritings = listedUpdateds
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .sort((a, b) => {
+      const updatedDiff =
+        new Date(b.lastUpdateDate ?? b.date).getTime() -
+        new Date(a.lastUpdateDate ?? a.date).getTime();
+      if (updatedDiff !== 0) return updatedDiff;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    })
     .map((post) => {
       return {
         ...post,
-        date: getReadableDate(post.date),
+        date: getReadableDate(post.lastUpdateDate ?? post.date),
       };
     })
     .slice(0, 8);
