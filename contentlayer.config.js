@@ -75,6 +75,10 @@ export const Post = defineDocumentType(() => ({
       type: "date",
       required: true,
     },
+    lastUpdateDate: {
+      type: "date",
+      required: false,
+    },
     category:{
       type:"string",
       required:false
@@ -109,6 +113,10 @@ export const Work = defineDocumentType(() => ({
     date: {
       type: "date",
       required: true,
+    },
+    lastUpdateDate: {
+      type: "date",
+      required: false,
     },
     category:{
       type:"string",

@@ -5,6 +5,7 @@ category: translation
 tags:
   - 翻译
 date: {{date}}
+lastUpdateDate: {{date}}
 draft: true
 ---
 

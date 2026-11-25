@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { Mdx } from "@/components/MdxComponents";
 import { match } from "ts-pattern";
 import Utterances from "@/components/Comments";
+import { getReadableDate } from "@/lib/date";
 import { visibleWorks } from "@/lib/filteredDatas";
 
 interface PostProps {
@@ -61,6 +62,7 @@ export async function generateMetadata({
       title: `${post.title} - 李问道的博客 / Works of Wendaolee`,
       description: post.description,
       publishedTime: post.date,
+      modifiedTime: post.lastUpdateDate ?? post.date,
     },
     twitter: {
       card: "summary_large_image",
@@ -84,6 +86,11 @@ export default async function PostPage({ params }: PostProps) {
     notFound();
   }
 
+  const lastModified = post.lastUpdateDate ?? post.date;
+  const publishedDateText = getReadableDate(post.date);
+  const updatedDateText = getReadableDate(lastModified);
+  const hasUpdated = Boolean(post.lastUpdateDate && updatedDateText !== publishedDateText);
+
   return (
     <>
       <article className="min-w-full py-6 prose dark:prose-invert" data-pagefind-body>
@@ -98,6 +105,22 @@ export default async function PostPage({ params }: PostProps) {
           )}
           {post.title}
         </h1>
+        <div
+          className="not-prose text-xs md:text-sm text-slate-500 dark:text-slate-400 mb-3 flex flex-wrap items-center gap-x-2 gap-y-1"
+          data-pagefind-ignore
+        >
+          <span>
+            发布于 <time dateTime={post.date}>{publishedDateText}</time>
+          </span>
+          {hasUpdated && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>
+                更新于 <time dateTime={lastModified}>{updatedDateText}</time>
+              </span>
+            </>
+          )}
+        </div>
         {post.description && (
           <p
             className="text-base md:text-lg text-slate-600 dark:text-slate-400"

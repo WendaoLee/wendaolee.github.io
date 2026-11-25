@@ -4,6 +4,7 @@ description:
 category: story
 tags: []
 date: {{date}}
+lastUpdateDate: {{date}}
 draft: true
 ---
 

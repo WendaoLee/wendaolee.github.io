@@ -121,12 +121,14 @@ const tagsBlock =
     : `tags: []`;
 
 const isDraft = !flags.has("--publish");
+const today = getTodayDate();
 const frontmatter = `---
 title: ${formatYamlValue(fullTitle)}
 description: 
 category: ${config.category}
 ${tagsBlock}
-date: ${getTodayDate()}
+date: ${today}
+lastUpdateDate: ${today}
 draft: ${isDraft}
 ---
 

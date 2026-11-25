@@ -13,13 +13,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "writings/story/mygo-collection.mdx.md",
+                "file": "writings/essay/what-u-will-find-in-seo-of-mygo.mdx",
                 "mode": "source",
-                "source": true,
+                "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "mygo-collection.mdx"
+              "title": "what-u-will-find-in-seo-of-mygo"
             }
           }
         ]
@@ -42,7 +42,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "文件列表"
@@ -137,7 +139,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "bases:创建新数据库": false,
+      "bases:新建数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
@@ -147,25 +149,31 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "97166d9d73036bbf",
+  "active": "442c2da69698810b",
   "lastOpenFiles": [
-    "writings/story/the-cucumber-of-happiness.mdx",
+    "writings/essay/how-to-write-article-with-doubans-poor-text-editor.mdx",
+    "writings/essay/ender-magnolia-my-judge.mdx",
+    "writings/essay/absurd-reality.mdx",
+    "writings/essay/what-u-will-find-in-seo-of-mygo.mdx",
+    "writings/notes/invest-note-wendaolee-2026.mdx",
+    "writings/notes/instantdb-first-glance.mdx",
+    "writings/notes/notes-of-haskell-applicative.mdx",
+    "writings/essay/2025-reading-list.mdx",
+    "writings/essay/2020-my-poems.mdx",
+    "writings/notes/notes-of-haskell-functor.mdx",
+    "writings/notes/fp-ts.mdx",
+    "templates/blog.md",
+    "templates/work.md",
+    "templates/story.md",
+    "templates/note.md",
+    "templates/essay.md",
+    "writings/notes/未命名.md",
     "writings/story/mygo-collection.mdx.md",
-    "writings/story/mygo-Much-Ado-About-Nothing.mdx",
-    "writings/story/so-i-become-majo.mdx",
-    "works/wip/llm.mdx",
     "writings/story/what-you-smile.md",
-    "writings/story/what-you-smile.mdx",
-    "writings/story/something-you-know.mdx",
-    "writings/notes/opentelemetry-note.mdx",
-    "writings/essay/3-12-my-dream.mdx",
-    "writings/notes/some-pieces.mdx",
-    "works/wip/note.mdx",
     "writings/notes/langgraphjs-detail.md",
     "works/wip/AI 项目.md",
     "img/AI 项目/IMG-20250206123924264.png",
     "img/AI 项目/IMG-20250206123648896.png",
-    "img/AI 项目",
     "img/AI 项目/IMG-20250206123632662.png",
     "works/wip/img/20220801220738_1 1.jpg",
     "works/wip/img/20220801220738_1.jpg",

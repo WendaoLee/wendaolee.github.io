@@ -6,14 +6,14 @@ const SITE_URL = "https://leewendao.otterstack.cn";
 export default function sitemap(): MetadataRoute.Sitemap {
   const writings: MetadataRoute.Sitemap = visibleWritings.map((ele) => ({
     url: `${SITE_URL}${ele.slug}`,
-    lastModified: new Date(ele.date),
+    lastModified: new Date(ele.lastUpdateDate ?? ele.date),
     changeFrequency: "weekly",
     priority: ele.category === "blog" ? 0.9 : 0.6,
   }));
 
   const works: MetadataRoute.Sitemap = visibleWorks.map((ele) => ({
     url: `${SITE_URL}${ele.slug}`,
-    lastModified: new Date(ele.date),
+    lastModified: new Date(ele.lastUpdateDate ?? ele.date),
     changeFrequency: "weekly",
     priority: 0.7,
   }));

@@ -63,6 +63,7 @@ export async function generateMetadata({
       title: `${post.title} - 李问道的博客 / Blog of Wendaolee`,
       description: post.description,
       publishedTime: post.date,
+      modifiedTime: post.lastUpdateDate ?? post.date,
     },
     twitter: {
       card: "summary_large_image",
@@ -93,13 +94,18 @@ export default async function PostPage({ params }: PostProps) {
       ? rankedWritings[currentIndex + 1]
       : null;
 
+  const lastModified = post.lastUpdateDate ?? post.date;
+  const publishedDateText = getReadableDate(post.date);
+  const updatedDateText = getReadableDate(lastModified);
+  const hasUpdated = Boolean(post.lastUpdateDate && updatedDateText !== publishedDateText);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     description: post.description,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: lastModified,
     mainEntityOfPage: `https://leewendao.otterstack.cn${post.slug}`,
     image: "https://leewendao.otterstack.cn/wendaolee.jpeg",
     author: {
@@ -127,6 +133,22 @@ export default async function PostPage({ params }: PostProps) {
           )}
           {post.title}
         </h1>
+        <div
+          className="not-prose text-xs md:text-sm text-slate-500 dark:text-slate-400 mb-3 flex flex-wrap items-center gap-x-2 gap-y-1"
+          data-pagefind-ignore
+        >
+          <span>
+            发布于 <time dateTime={post.date}>{publishedDateText}</time>
+          </span>
+          {hasUpdated && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>
+                更新于 <time dateTime={lastModified}>{updatedDateText}</time>
+              </span>
+            </>
+          )}
+        </div>
         {post.description && (
           <p
             className="text-base md:text-lg text-slate-600 dark:text-slate-400"
